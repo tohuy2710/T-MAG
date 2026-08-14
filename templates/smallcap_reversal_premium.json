@@ -1,0 +1,30 @@
+{
+  "template_id": "smallcap_reversal_premium",
+  "description": "小市值反转溢价因子：丁大鹏&刘千秋(2016)《个股反转策略与行业动量策略》实证发现——小市值公司的反转效应强度明显大于大市值公司，大市值公司反转效应不显著（原因：大公司治理完善、分析师覆盖多、信息披露充分→反应充分→无反应不足→无反转）。本模板将市值加权的反转信号与规模信号相结合，显式放大小市值股票的反转暴露。",
+  "skeleton": "group_rank((-ts_sum(close / ts_delay(close, {window}) - 1, {window})) / log(cap + 1), {group})",
+  "field_pairs": [
+    {"name": "smallcap_reversal", "numerator": "-(close / ts_delay(close, {window}) - 1)", "denominator": "log(cap)"},
+    {"name": "cap_weighted_reversal", "numerator": "-ts_rank(close / ts_delay(close, {window}) - 1, {window})", "denominator": "log(cap)"}
+  ],
+  "param_ranges": {
+    "window": [21, 42, 63],
+    "group": ["industry", "subindustry"],
+    "decay": [0, 4],
+    "truncation": [0.08]
+  },
+  "default_settings": {
+    "decay": 4,
+    "neutralization": "SLOW",
+    "truncation": 0.08,
+    "nanHandling": "ON",
+    "unitHandling": "VERIFY"
+  },
+  "hypothesis": "论文表4结论：小市值公司反转系数是大市值公司的2-3倍（详见Tab.4分规模结果）。L1回归系数：小市值-0.089，大市值-0.031（均在1%显著）。分子用短期累计收益取负（反转方向）；除以log(cap)使小市值股票权重放大（cap越小，log(cap)越小，比值越大，信号放大）；group_rank控制行业效应，与SKILL.md黄金组合pattern一致。",
+  "source": "丁大鹏、刘千秋《个股反转策略与行业动量策略——基于A股市场的实证研究》(2016) Tab.4分市值规模结果",
+  "expected_correlation": "与ashare_short_reversal(未加市值权重版)相关约0.5-0.7；与size_controlled_quality(质量因子)正交；通过市值放大小盘反转Alpha，与等权纯反转方向一致但暴露不同",
+  "failure_risks": {
+    "LOW_SHARPE": "GLB TOPDIV3000覆盖全球大盘，小市值溢价受限；可能Sharpe偏低；与美股差异也存在",
+    "SIM_ERROR": "ts_delay(close, window): window不超过历史期限; log(cap): cap>0在TOPDIV3000成分股中安全",
+    "HIGH_CORR": "与ashare_short_reversal结构相似度较高，相关系数或>0.6；需SELF_CORRELATION检验通过"
+  }
+}

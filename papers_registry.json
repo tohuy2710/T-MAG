@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "target_config": "GLB/TOPDIV3000/delay=1",
+  "stats": {
+    "total": 14,
+    "consumed": 0,
+    "remaining": 14
+  },
+  "sources": {
+    "src_001": {
+      "locator": "papers/alpha_101.pdf",
+      "title": "101 Formulaic Alphas",
+      "type": "pdf",
+      "status": "templates_extracted",
+      "read_date": "2026-08-12T10:40:31.930351+00:00",
+      "extraction_attempts": 1,
+      "templates_created": [
+        "kakushadze_shortterm_mean_reversion",
+        "kakushadze_price_volume_correlation",
+        "kakushadze_volatility_scaled_intraday"
+      ],
+      "extraction_completed_at": "2026-08-13T08:55:41.444352+00:00"
+    },
+    "src_002": {
+      "locator": "papers/1. A股市场的动量反转效应研究.pdf",
+      "title": "A股市场的动量反转效应研究",
+      "type": "pdf",
+      "status": "templates_extracted",
+      "read_date": "2026-08-12T10:40:36.960417+00:00",
+      "extraction_attempts": 1,
+      "templates_created": [
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum",
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum",
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum",
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum",
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum",
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum",
+        "ashare_short_term_reversal",
+        "smallcap_enhanced_reversal",
+        "cross_industry_momentum"
+      ],
+      "extraction_completed_at": "2026-08-13T10:21:22.831271+00:00"
+    },
+    "src_003": {
+      "locator": "papers/10. 基于机构持股信息的Portable_Alpha策略增强.pdf",
+      "title": "基于机构持股信息的Portable_Alpha策略增强",
+      "type": "pdf",
+      "status": "extraction_failed",
+      "read_date": "2026-08-12T10:40:41.990423+00:00",
+      "extraction_attempts": 1
+    },
+    "src_004": {
+      "locator": "papers/11. Level2行情选股因子初探.pdf",
+      "title": "Level2行情选股因子初探",
+      "type": "pdf",
+      "status": "extraction_failed",
+      "read_date": "2026-08-12T10:40:47.023184+00:00",
+      "extraction_attempts": 1
+    },
+    "src_005": {
+      "locator": "papers/12. \"量\"与\"价\"的结合.pdf",
+      "title": "量与价的结合",
+      "type": "pdf",
+      "status": "extraction_failed",
+      "read_date": "2026-08-12T16:54:08.003514+00:00",
+      "extraction_attempts": 1
+    },
+    "src_006": {
+      "locator": "papers/13. 因子大讲坛.pdf",
+      "title": "因子大讲坛",
+      "type": "pdf",
+      "status": "agent_requested",
+      "request_date": "2026-08-13T08:55:52.859585+00:00"
+    },
+    "src_007": {
+      "locator": "papers/14. 交易行为的波动和股票预期收益.pdf",
+      "title": "交易行为的波动和股票预期收益",
+      "type": "pdf",
+      "status": "unread"
+    },
+    "src_008": {
+      "locator": "papers/15. 选股因子空头收益的转化.pdf",
+      "title": "选股因子空头收益的转化",
+      "type": "pdf",
+      "status": "unread"
+    },
+    "src_009": {
+      "locator": "papers/16. \"博彩型\"股票的预期收益.pdf",
+      "title": "博彩型股票的预期收益",
+      "type": "pdf",
+      "status": "unread"
+    },
+    "src_010": {
+      "locator": "papers/17. 选股因子的正交.pdf",
+      "title": "选股因子的正交",
+      "type": "pdf",
+      "status": "unread"
+    },
+    "src_011": {
+      "locator": "papers/18. 价格形态选股因子.pdf",
+      "title": "价格形态选股因子",
+      "type": "pdf",
+      "status": "unread"
+    },
+    "src_012": {
+      "locator": "papers/19. 高频因子之股票收益分布特征.pdf",
+      "title": "高频因子之股票收益分布特征",
+      "type": "pdf",
+      "status": "unread"
+    },
+    "src_013": {
+      "locator": "papers/12. “量”与“价”的结合.pdf",
+      "title": "“量”与“价”的结合",
+      "type": "research_report",
+      "status": "unread"
+    },
+    "src_014": {
+      "locator": "papers/16. “博彩型”股票的预期收益.pdf",
+      "title": "“博彩型”股票的预期收益",
+      "type": "research_report",
+      "status": "unread"
+    }
+  }
+}

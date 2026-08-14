@@ -1,0 +1,454 @@
+#!/usr/bin/env python3
+"""llm_producer.py — Minimal LLM-driven candidate producer (prototype).
+
+This is an alternative *producer* for the existing **candidate seam**:
+
+    {"expression": <FASTEXPR str>, "settings": {...}, ...}
+
+The rest of the pipeline (brain_api.simulate / batch_simulate_stream /
+compute_correlation / quality_filter / submit_alpha / update_lessons_from_result)
+consumes candidates and does NOT care whether the expression came from a
+template grid (generate_candidates.expand_template) or from an LLM. So this file
+can drop in next to `expand_template` without touching the downstream.
+
+Design (mirrors the project's existing depth handoff, see mining_loop.py):
+  1. build_generation_request(...)  -> write llm_request.json describing the
+     task + field menu + prior lessons. An outer agent/LLM fills llm_response.json.
+     NOTE: we deliberately do NOT call any model endpoint from here. The project
+     already uses this file-handoff pattern for its depth phase, and direct model
+     calls from mining code are out of scope for a producer prototype.
+  2. ExpressionValidator                -> FASTEXPR sanity: balanced parens,
+     known operators, and every field token exists in the BRAIN reference.
+  3. concept_signature(expr)            -> a stable "concept" key (sorted
+     operators + fields) to replace template_id in the lessons feedback loop
+     and to dedup near-identical LLM output.
+  4. to_candidates(items)               -> validate each item and emit drop-in
+     candidate dicts.
+
+CLI:
+  # 1) emit a request for the LLM to fill
+  python3 scripts/llm_producer.py request --n 8 --out llm_request.json
+  # 2) after the LLM writes llm_response.json, turn it into candidates
+  python3 scripts/llm_producer.py build --response llm_response.json --out candidates.json
+  # quick self-test with a built-in sample (no LLM needed)
+  python3 scripts/llm_producer.py selftest
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from research_target import ResearchTarget, load_target
+
+# Reuse existing infrastructure rather than reinventing it.
+from generate_candidates import (  # noqa: E402
+    FieldValidator,
+    deduplicate,
+    KNOWN_OPERATORS,
+    PRICE_VOLUME_BUILTINS as _PV_BUILTINS,
+    GROUP_BUILTINS as _GROUP_BUILTINS,
+)
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+SKILL_DIR = SCRIPT_DIR.parent
+FIELDS_PATH = load_target().fields_path
+LESSONS_PATH = SKILL_DIR / "lessons.json"
+
+DEFAULT_SETTINGS = {**load_target().base_settings(), "decay": 4, "nanHandling": "ON"}
+
+# --------------------------------------------------------------------------- #
+# FASTEXPR knowledge. KNOWN_OPERATORS is imported from generate_candidates so
+# the template grid, the structure fingerprint, and this LLM validator can never
+# drift apart. Price/volume builtins here also fold in the group builtins
+# (industry/subindustry/...) since both are valid bare tokens for validation.
+# --------------------------------------------------------------------------- #
+PRICE_VOLUME_BUILTINS = _PV_BUILTINS | _GROUP_BUILTINS
+
+# Numeric-literal / noise tokens to skip during field validation.
+SKIP_TOKENS = KNOWN_OPERATORS | PRICE_VOLUME_BUILTINS | {
+    "true", "false", "na", "inf", "nan",
+}
+
+
+# --------------------------------------------------------------------------- #
+# Expression validation
+# --------------------------------------------------------------------------- #
+class ExpressionValidator:
+    """Layered validation for a raw LLM-produced FASTEXPR expression."""
+
+    def __init__(self, field_validator: FieldValidator | None = None):
+        if field_validator is not None:
+            self.fv = field_validator
+        else:
+            target = load_target()
+            self.fv = FieldValidator(
+                target.require_fields_reference(), target.excluded_dataset_ids
+            )
+
+    def _balanced(self, expr: str) -> bool:
+        depth = 0
+        for ch in expr:
+            if ch == "(":
+                depth += 1
+            elif ch == ")":
+                depth -= 1
+                if depth < 0:
+                    return False
+        return depth == 0
+
+    def _unknown_function_calls(self, expr: str) -> list[str]:
+        """Any `name(` where name is not a known operator is suspicious."""
+        called = re.findall(r"([a-z_][a-z0-9_]*)\s*\(", expr.lower())
+        return sorted({c for c in called if c not in KNOWN_OPERATORS})
+
+    def _identifiers(self, expr: str) -> list[str]:
+        """Identifier tokens that are NOT immediately followed by '(' (i.e. not
+        function calls) — candidate field names."""
+        # Strip numeric literals first (incl. scientific notation like 1e-6),
+        # otherwise the 'e' in '1e-6' is mis-tokenized as a field name.
+        cleaned = re.sub(r"\b\d+\.?\d*(?:[eE][+-]?\d+)?\b", " ", expr)
+        ids = []
+        for m in re.finditer(r"[a-z_][a-z0-9_]*", cleaned.lower()):
+            tok = m.group(0)
+            after = cleaned[m.end():m.end() + 1]
+            if after.lstrip().startswith("("):
+                continue  # it's a function call, handled separately
+            ids.append(tok)
+        return ids
+
+    def _scientific_notation(self, expr: str) -> list[str]:
+        """BRAIN's FASTEXPR parser rejects scientific-notation literals
+        (e.g. `1e-6`, `2.5E3`) — it chokes on the 'e' with
+        "Unexpected character 'e'". Our local identifier scrubber happily
+        strips these, so they pass field validation but fail at simulation.
+        Catch them up front and tell the LLM to use a plain decimal instead.
+        """
+        return sorted(set(re.findall(r"\b\d+\.?\d*[eE][+-]?\d+\b", expr)))
+
+    def validate(self, expr: str) -> tuple[bool, list[str]]:
+        """Return (ok, errors)."""
+        errors: list[str] = []
+        if not expr or not expr.strip():
+            return False, ["empty expression"]
+        if not self._balanced(expr):
+            errors.append("unbalanced parentheses")
+        sci = self._scientific_notation(expr)
+        if sci:
+            errors.append(
+                f"scientific-notation literal(s) not supported by BRAIN: {sci} "
+                "(use a plain decimal, e.g. 0.000001 instead of 1e-6)"
+            )
+        unknown_fns = self._unknown_function_calls(expr)
+        if unknown_fns:
+            errors.append(f"unknown operator(s): {unknown_fns}")
+        bad_fields = []
+        for tok in self._identifiers(expr):
+            if tok in _PV_BUILTINS and "pv1" in self.fv.excluded_dataset_ids:
+                bad_fields.append(f"{tok} (excluded dataset pv1)")
+                continue
+            if tok in SKIP_TOKENS:
+                continue
+            if tok.isdigit():
+                continue
+            if not self.fv.is_valid(tok):
+                bad_fields.append(tok)
+        if bad_fields:
+            errors.append(f"unknown field(s): {sorted(set(bad_fields))}")
+        return (len(errors) == 0), errors
+
+
+# --------------------------------------------------------------------------- #
+# Concept signature (replaces template_id in the lessons feedback loop)
+# --------------------------------------------------------------------------- #
+def concept_signature(expr: str) -> str:
+    """Stable signature = sorted operators '+' sorted non-builtin fields.
+
+    Lets the lessons loop aggregate LLM factors by *idea* even though each one
+    is a unique string, and dedup near-identical variants.
+    """
+    low = expr.lower()
+    ops = sorted({op for op in KNOWN_OPERATORS if re.search(rf"\b{op}\s*\(", low)})
+    cleaned = re.sub(r"\b\d+\.?\d*(?:[eE][+-]?\d+)?\b", " ", low)
+    ids = set(re.findall(r"[a-z_][a-z0-9_]*", cleaned)) - KNOWN_OPERATORS
+    fields = sorted(i for i in ids if not i.isdigit())
+    return "ops:" + ",".join(ops) + "|f:" + ",".join(fields)
+
+
+# --------------------------------------------------------------------------- #
+# Request handoff (LLM fills this)
+# --------------------------------------------------------------------------- #
+def _field_menu(fv: FieldValidator, limit: int = 60) -> list[str]:
+    """A small, high-signal slice of the field universe for the LLM prompt."""
+    return fv.field_list[:limit]
+
+
+def _structure_guidance(lessons: dict[str, Any]) -> dict[str, Any]:
+    """Distill v2 rollups into positive/negative structural examples for the LLM.
+
+    The append-only experiment log aggregates into rollups by structure
+    (ast_hash), data category (field_class), and decay. We surface:
+      * winners        — structures with a SUBMIT/OBSERVE pass, ranked by sharpe.
+      * avoid          — structures with enough evidence and zero passes
+                         (action 'skip') or low pass-rate ('deprioritize').
+      * field_classes  — per-category pass tallies so the LLM leans toward
+                         categories that have produced edge.
+    Empty when there are no rollups yet (cold start), so the prompt degrades
+    gracefully to the original behavior.
+    """
+    rollups = lessons.get("rollups", {})
+    by_ast = rollups.get("by_ast", {})
+    by_fc = rollups.get("by_field_class", {})
+
+    winners = []
+    avoid = []
+    for ast, r in by_ast.items():
+        entry = {
+            "ast_hash": ast,
+            "ops": r.get("ops", []),
+            "field_classes": r.get("field_classes", []),
+            "tested": r.get("tested", 0),
+            "avg_sharpe": round(r.get("avg_sharpe", 0.0), 3),
+            "best_sharpe": r.get("best_sharpe"),
+            "examples": r.get("examples", [])[:2],
+        }
+        if (r.get("submit", 0) + r.get("observe", 0)) > 0:
+            winners.append(entry)
+        elif r.get("action") in ("skip", "deprioritize"):
+            entry["failure_modes"] = r.get("failure_modes", {})
+            avoid.append(entry)
+    winners.sort(key=lambda e: (e["best_sharpe"] or 0), reverse=True)
+    avoid.sort(key=lambda e: e["tested"], reverse=True)
+
+    field_classes = {
+        fc: {
+            "tested": r.get("tested", 0),
+            "passes": r.get("submit", 0) + r.get("observe", 0),
+            "avg_sharpe": round(r.get("avg_sharpe", 0.0), 3),
+        }
+        for fc, r in by_fc.items()
+    }
+    return {
+        "winning_structures": winners[:5],
+        "avoid_structures": avoid[:5],
+        "field_class_performance": field_classes,
+    }
+
+
+def build_generation_request(
+    lessons: dict[str, Any],
+    n: int = 8,
+    fields_path: Path | None = None,
+    target: ResearchTarget | None = None,
+) -> dict[str, Any]:
+    target = target or load_target()
+    reference_path = fields_path or target.require_fields_reference()
+    fv = FieldValidator(reference_path, target.excluded_dataset_ids)
+    guidance = _structure_guidance(lessons)
+    rules = [
+        f"Each expression must be valid FASTEXPR for {target.region} {target.universe}, delay {target.delay}.",
+        f"Use ONLY these operators: {sorted(KNOWN_OPERATORS)}.",
+        "Fields must come from fields_menu (full list in references). "
+        f"Never use a field from datasets {sorted(target.excluded_dataset_ids)}.",
+        "Because pv1 is excluded, do NOT use price/volume builtins: "
+        f"{sorted(_PV_BUILTINS)}.",
+        f"The simulation will be expanded across these neutralizations: {list(target.neutralizations)}.",
+        "Prefer cross-sectional neutralization (rank/group_rank) for stationarity.",
+        "Use plain decimals for small constants (e.g. 0.000001), NOT scientific notation like 1e-6 — BRAIN's parser rejects it.",
+        "Avoid reusing concepts marked 'deprioritize' in lessons_summary.",
+    ]
+    if guidance["winning_structures"]:
+        rules.append(
+            "Build on 'winning_structures' in structure_guidance (these have shown "
+            "edge): reuse their operator/field-class shape with NEW fields or windows."
+        )
+    if guidance["avoid_structures"]:
+        rules.append(
+            "Do NOT reproduce any structure in 'avoid_structures' (tested with no "
+            "edge); their ast_hash/ops are dead ends."
+        )
+    return {
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "task": "Generate WorldQuant BRAIN FASTEXPR alpha expressions directly (no templates).",
+        "n_requested": n,
+        "rules": rules,
+        "fields_menu_sample": _field_menu(fv),
+        "target": {
+            "region": target.region,
+            "universe": target.universe,
+            "delay": target.delay,
+            "neutralizations": list(target.neutralizations),
+            "excluded_dataset_ids": sorted(target.excluded_dataset_ids),
+        },
+        "fields_reference_path": str(reference_path),
+        "lessons_summary": {
+            "concepts": lessons.get("concepts", lessons.get("patterns", {})),
+            "param_insights": lessons.get("param_insights", {}),
+        },
+        "structure_guidance": guidance,
+        "response_contract": {
+            "write_to": "llm_response.json",
+            "schema": {
+                "status": "DONE",
+                "items": [
+                    {
+                        "expression": "<FASTEXPR string>",
+                        "hypothesis": "<why this should have edge>",
+                        "settings": "<optional overrides, e.g. {'decay': 8}>",
+                    }
+                ],
+            },
+        },
+    }
+
+
+# --------------------------------------------------------------------------- #
+# Build candidates from an LLM response
+# --------------------------------------------------------------------------- #
+def to_candidates(
+    items: list[dict[str, Any]],
+    validator: ExpressionValidator | None = None,
+    target: ResearchTarget | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Validate LLM items and emit drop-in candidates.
+
+    Returns (candidates, rejected) where each rejected entry carries its errors.
+    """
+    target = target or load_target()
+    if validator is None:
+        validator = ExpressionValidator(
+            FieldValidator(target.require_fields_reference(), target.excluded_dataset_ids)
+        )
+    candidates: list[dict[str, Any]] = []
+    rejected: list[dict[str, Any]] = []
+    for item in items:
+        expr = str(item.get("expression", "")).strip()
+        ok, errors = validator.validate(expr)
+        if not ok:
+            rejected.append({"expression": expr, "errors": errors})
+            continue
+        sig = concept_signature(expr)
+        base_settings = {**DEFAULT_SETTINGS, **(item.get("settings") or {})}
+        for neutralization in target.neutralizations:
+            settings = target.settings_for(base_settings, neutralization=neutralization)
+            candidates.append({
+                "expression": expr,
+                "settings": settings,
+                # `template_id` kept for downstream compatibility (lessons key);
+                # here it holds the concept signature instead of a template name.
+                "template_id": sig,
+                "concept_id": sig,
+                "source": "llm",
+                "hypothesis": item.get("hypothesis", ""),
+                "params": {
+                    "decay": settings.get("decay"),
+                    "neutralization": settings["neutralization"],
+                },
+            })
+    return deduplicate(candidates), rejected
+
+
+# --------------------------------------------------------------------------- #
+# Built-in sample (for selftest — no LLM round trip needed)
+# --------------------------------------------------------------------------- #
+SAMPLE_LLM_ITEMS = [
+    {
+        "expression": "group_rank(ts_mean(returns, 20) / (ts_std_dev(returns, 20) + 0.000001), subindustry)",
+        "hypothesis": "Risk-adjusted momentum, industry-neutral.",
+        "settings": {"decay": 8},
+    },
+    {
+        "expression": "rank(-ts_delta(close, 5) / close)",
+        "hypothesis": "Short-term price reversal.",
+    },
+    {
+        "expression": "group_rank(operating_income / equity, industry)",
+        "hypothesis": "Profitability cross-section.",
+    },
+    {
+        # invalid: unknown operator 'magic_smooth'
+        "expression": "magic_smooth(returns, 10)",
+        "hypothesis": "should be rejected",
+    },
+    {
+        # invalid: unknown field 'totally_made_up_field'
+        "expression": "rank(totally_made_up_field / close)",
+        "hypothesis": "should be rejected",
+    },
+    {
+        # invalid: unbalanced parens
+        "expression": "rank(ts_mean(returns, 10)",
+        "hypothesis": "should be rejected",
+    },
+    {
+        # invalid: scientific-notation literal (BRAIN parser rejects '1e-6')
+        "expression": "rank(returns / (ts_std_dev(returns, 20) + 1e-6))",
+        "hypothesis": "should be rejected",
+    },
+]
+
+
+# --------------------------------------------------------------------------- #
+# CLI
+# --------------------------------------------------------------------------- #
+def _load_lessons() -> dict[str, Any]:
+    if LESSONS_PATH.exists():
+        try:
+            return json.loads(LESSONS_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+    return {}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Minimal LLM candidate producer")
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    p_req = sub.add_parser("request", help="Write llm_request.json for the LLM to fill")
+    p_req.add_argument("--n", type=int, default=8)
+    p_req.add_argument("--out", type=str, default=str(SKILL_DIR / "llm_request.json"))
+
+    p_build = sub.add_parser("build", help="Turn llm_response.json into candidates")
+    p_build.add_argument("--response", type=str, default=str(SKILL_DIR / "llm_response.json"))
+    p_build.add_argument("--out", type=str, default=str(SKILL_DIR / "candidates.json"))
+
+    sub.add_parser("selftest", help="Run built-in sample through the producer")
+
+    args = parser.parse_args()
+
+    if args.cmd == "request":
+        req = build_generation_request(_load_lessons(), n=args.n)
+        Path(args.out).write_text(json.dumps(req, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"Wrote generation request to {args.out} (n={args.n})")
+        return
+
+    if args.cmd == "build":
+        resp = json.loads(Path(args.response).read_text(encoding="utf-8"))
+        items = resp.get("items", [])
+        cands, rejected = to_candidates(items)
+        Path(args.out).write_text(json.dumps(cands, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+        print(f"Accepted {len(cands)} candidate(s), rejected {len(rejected)}.")
+        for r in rejected:
+            print(f"  [reject] {r['expression'][:60]!r}: {r['errors']}")
+        print(f"Written to {args.out}")
+        return
+
+    if args.cmd == "selftest":
+        print("Loading field reference for validation...")
+        cands, rejected = to_candidates(SAMPLE_LLM_ITEMS)
+        print(f"\nAccepted {len(cands)} / rejected {len(rejected)} (expect 3 / 4)\n")
+        for c in cands:
+            print(f"  [ok] {c['expression']}")
+            print(f"        concept_id = {c['concept_id']}")
+            print(f"        decay={c['settings']['decay']} neut={c['settings']['neutralization']}")
+        print()
+        for r in rejected:
+            print(f"  [reject] {r['expression'][:55]!r}\n           -> {r['errors']}")
+        return
+
+
+if __name__ == "__main__":
+    main()

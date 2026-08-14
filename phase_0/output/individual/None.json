@@ -1,0 +1,8 @@
+{
+  "expression": "group_rank(-ts_rank((close - ts_delta(close, 20)) / ts_delta(close, 20), 20), subindustry)",
+  "template_id": "ashare_short_term_reversal",
+  "status": "ERROR",
+  "alpha_id": null,
+  "sim_data": null,
+  "simulated_at": "2026-08-13T15:27:41.343493+00:00"
+}

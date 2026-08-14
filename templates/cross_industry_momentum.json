@@ -1,0 +1,37 @@
+{
+  "template_id": "cross_industry_momentum",
+  "description": "Template khai thác động lực giá theo ngành (Cross-Industry Momentum). Chiến lược đo lường và xếp hạng hiệu suất trung bình của các ngành trong quá khứ để nắm bắt xu hướng tiếp diễn dòng tiền giữa các nhóm ngành.",
+  "hypothesis": "Sự luân chuyển dòng tiền giữa các nhóm ngành và tâm lý hành vi đám đông tạo ra xu hướng động lực giá ở cấp độ ngành, đặc biệt phát huy hiệu quả dương trong các giai đoạn thị trường tăng trưởng (Bull market).",
+  "skeleton": "group_rank(ts_mean(({close} - ts_delta({close}, {window})) / ts_delta({close}, {window}), {window}), {group})",
+  "field_pairs": [
+    {
+      "close": "close"
+    },
+    {
+      "close": "vwap"
+    }
+  ],
+  "param_ranges": {
+    "window": [
+      20,
+      60,
+      120
+    ],
+    "group": [
+      "industry",
+      "subindustry"
+    ]
+  },
+  "default_settings": {
+    "decay": 10,
+    "neutralization": "MARKET"
+  },
+  "tags": [
+    "momentum",
+    "technical"
+  ],
+  "source": "个股反转策略与行业动量策略——基于A股市场的实证研究 (Ding & Liu)",
+  "notes": "Thực nghiệm bài báo cho thấy chiến lược động lượng ngành chỉ mang lại lợi nhuận dương đáng kể trong thời kỳ thị trường tăng trưởng (Bull market).",
+  "_ingested_at": "2026-08-13T10:21:22.830856+00:00",
+  "_source": "llm_extraction"
+}

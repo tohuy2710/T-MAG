@@ -1,0 +1,31 @@
+{
+  "pool_ratios": {
+    "exploitation": 0.7,
+    "cross_domain": 0.2,
+    "wildcard": 0.1
+  },
+  "coverage_thresholds": {
+    "pool_a": 0.8,
+    "pool_b": 0.7,
+    "pool_c": 0.5
+  },
+  "scoring_weights": {
+    "keyword_match": 0.5,
+    "coverage": 0.3,
+    "usage": 0.2
+  },
+  "cross_category_rules": {
+    "fundamental": ["analyst", "model"],
+    "analyst": ["fundamental", "model"],
+    "technical": ["fundamental", "model"],
+    "model": ["fundamental", "analyst"],
+    "volume": ["sentiment", "options"],
+    "sentiment": ["volume", "fundamental"],
+    "options": ["volume", "technical"]
+  },
+  "wildcard_mutation": {
+    "enabled": true,
+    "type_safe": true,
+    "min_coverage": 0.5
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "template_id": "kakushadze_price_volume_correlation",
+  "description": "Bài báo nhấn mạnh các alpha thực tế hầu hết là sự kết hợp của dữ liệu giá và khối lượng (price-volume). Template này đánh giá tín hiệu đảo chiều dựa trên mối tương quan giữa sự dịch chuyển giá và khối lượng giao dịch.",
+  "hypothesis": "Mối tương quan dương cao giữa giá và khối lượng trong ngắn hạn là dấu hiệu của việc thị trường đang quá mua/quá bán (overbought/oversold) quá mức, dự báo sự kiệt sức của xu hướng và sự đảo chiều sắp diễn ra.",
+  "skeleton": "group_rank(-ts_corr({price_field}, {volume_field}, {window}), {group})",
+  "field_pairs": [
+    {
+      "price_field": "close",
+      "volume_field": "volume"
+    },
+    {
+      "price_field": "vwap",
+      "volume_field": "adv_20d"
+    },
+    {
+      "price_field": "close",
+      "volume_field": "adv_20d"
+    }
+  ],
+  "param_ranges": {
+    "window": [
+      5,
+      10,
+      20
+    ],
+    "group": [
+      "industry",
+      "subindustry"
+    ]
+  },
+  "default_settings": {
+    "decay": 5,
+    "neutralization": "INDUSTRY"
+  },
+  "tags": [
+    "technical",
+    "volume",
+    "mean_reversion"
+  ],
+  "source": "101 Formulaic Alphas (Kakushadze, 2015)",
+  "notes": "Đại diện cho dòng alpha kinh điển khai thác động lượng kết hợp giữa giá và thanh khoản."
+}

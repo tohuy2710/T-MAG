@@ -1,0 +1,32 @@
+{
+  "template_id": "kakushadze_volatility_scaled_intraday",
+  "description": "Bài báo ghi nhận lợi suất alpha có mối tương quan mạnh mẽ với biến động giá (volatility). Template này tạo tín hiệu đảo chiều nội ngày và chuẩn hóa tín hiệu đó thông qua biên độ dao động giá (đại diện cho volatility).",
+  "hypothesis": "Tín hiệu đảo chiều nội ngày (từ giá mở cửa đến đóng cửa) mang lại lợi suất alpha ổn định hơn khi nó được điều chỉnh theo biến động giá trong ngày (high - low). Biến động càng thấp, độ tin cậy của sự đảo chiều càng cao.",
+  "skeleton": "group_rank(-({close} - {open}) / (({high} - {low}) + 0.001), {group})",
+  "field_pairs": [
+    {
+      "close": "close",
+      "open": "open",
+      "high": "high",
+      "low": "low"
+    }
+  ],
+  "param_ranges": {
+    "group": [
+      "industry",
+      "subindustry"
+    ]
+  },
+  "default_settings": {
+    "decay": 3,
+    "neutralization": "SUBINDUSTRY"
+  },
+  "tags": [
+    "technical",
+    "intraday",
+    "volatility",
+    "mean_reversion"
+  ],
+  "source": "101 Formulaic Alphas (Kakushadze, 2015)",
+  "notes": "Hệ số 0.001 được cộng vào mẫu số nhằm tránh lỗi chia cho 0 trong trường hợp giá high bằng giá low (cổ phiếu mất thanh khoản/đóng băng)."
+}

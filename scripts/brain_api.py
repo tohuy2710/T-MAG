@@ -1,0 +1,2041 @@
+"""Shared BRAIN API utilities for the alpha mining system.
+
+Provides:
+  - BrainClient: session management, adaptive concurrency, batch simulation
+  - DB I/O: load/save alpha_db.json, lessons.json
+  - Quality classification and lessons update
+
+Usage:
+    from brain_api import BrainClient, load_lessons, save_lessons
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import logging
+import math
+import os
+import statistics
+import threading
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import requests
+from requests.auth import HTTPBasicAuth
+
+from research_target import ResearchTarget, load_target
+
+# Structure fingerprint is the v2 lessons aggregation key. Defined in
+# generate_candidates (the lower-level producer module) so both the template
+# grid and the LLM path share one key space. generate_candidates does NOT
+# import brain_api, so this import is safe (no cycle).
+try:
+    from generate_candidates import structure_fingerprint, FieldValidator, FIELDS_PATH as _FIELDS_PATH
+except Exception:  # pragma: no cover - keeps brain_api importable in isolation
+    structure_fingerprint = None  # type: ignore
+    FieldValidator = None  # type: ignore
+    _FIELDS_PATH = None  # type: ignore
+
+# --------------------------------------------------------------------------- #
+# Config
+# --------------------------------------------------------------------------- #
+SCRIPT_DIR = Path(__file__).resolve().parent
+SKILL_DIR = SCRIPT_DIR.parent
+CREDENTIAL_PATH = SKILL_DIR / "credential.txt"
+ALPHA_DB_PATH = SKILL_DIR / "alpha_db.json"
+LESSONS_PATH = SKILL_DIR / "lessons.json"
+
+API_BASE = "https://api.worldquantbrain.com"
+
+LOG_LEVEL = os.getenv("WQ_LOG_LEVEL", "INFO").upper()
+if not logging.getLogger().handlers:
+    logging.basicConfig(
+        level=getattr(logging, LOG_LEVEL, logging.INFO),
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    )
+logger = logging.getLogger(__name__)
+
+HEADERS = {
+    "Accept": "application/json;version=2.0",
+    "Content-Type": "application/json",
+}
+
+DEFAULT_SETTINGS = load_target().base_settings()
+
+
+def _expr_fingerprint(expression: str) -> str:
+    """Stable short identifier for an expression without logging the formula."""
+    return hashlib.sha1(expression.encode("utf-8")).hexdigest()[:12]
+
+
+def _text_fingerprint(text: str) -> str | None:
+    if not text:
+        return None
+    return hashlib.sha1(text.encode("utf-8", errors="ignore")).hexdigest()[:12]
+
+
+# --------------------------------------------------------------------------- #
+# Credentials
+# --------------------------------------------------------------------------- #
+def load_dotenv_file(path: Path) -> None:
+    """Load a small dotenv subset without overwriting explicit environment variables."""
+    if not path.is_file():
+        return
+
+    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].lstrip()
+        if "=" not in line:
+            raise ValueError(f"Invalid .env entry at {path}:{line_number}; expected KEY=VALUE")
+
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not key:
+            raise ValueError(f"Invalid .env entry at {path}:{line_number}; key is empty")
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+            value = value[1:-1]
+        elif " #" in value:
+            value = value.split(" #", 1)[0].rstrip()
+        os.environ.setdefault(key, value)
+
+
+def load_local_env() -> None:
+    """Load repository and current-directory .env files exactly once each."""
+    seen: set[Path] = set()
+    for path in (SCRIPT_DIR.parent / ".env", Path.cwd() / ".env"):
+        resolved = path.resolve()
+        if resolved not in seen:
+            load_dotenv_file(resolved)
+            seen.add(resolved)
+
+
+def configure_session_auth(session: requests.Session) -> str | None:
+    """Configure a user-provided authenticated BRAIN session from env/cookie data."""
+    bearer_token = os.getenv("WQ_BRAIN_BEARER_TOKEN") or os.getenv("WQ_BRAIN_TOKEN")
+    cookie_header = os.getenv("WQ_BRAIN_COOKIE_HEADER") or os.getenv("WQ_BRAIN_COOKIE")
+    cookie_config = os.getenv("WQ_BRAIN_COOKIES")
+
+    if bearer_token and (cookie_header or cookie_config):
+        raise ValueError("Set one BRAIN session method: a bearer token or a cookie, not both.")
+    if cookie_header and cookie_config:
+        raise ValueError("Set either WQ_BRAIN_COOKIE_HEADER/WQ_BRAIN_COOKIE or WQ_BRAIN_COOKIES, not both.")
+
+    if bearer_token:
+        authorization = bearer_token.strip()
+        if not authorization:
+            raise ValueError("WQ_BRAIN_BEARER_TOKEN/WQ_BRAIN_TOKEN is empty.")
+        if not authorization.lower().startswith("bearer "):
+            authorization = f"Bearer {authorization}"
+        session.headers["Authorization"] = authorization
+        return "bearer token"
+
+    if cookie_header:
+        header = cookie_header.strip()
+        if header.lower().startswith("cookie:"):
+            header = header.split(":", 1)[1].strip()
+        if not header:
+            raise ValueError("WQ_BRAIN_COOKIE_HEADER/WQ_BRAIN_COOKIE is empty.")
+        session.headers["Cookie"] = header
+        return "cookie header"
+
+    if cookie_config:
+        cookie_config = cookie_config.strip()
+        # Support both JSON object form and raw Cookie header form.
+        try:
+            cookies = json.loads(cookie_config)
+        except json.JSONDecodeError:
+            cookies = None
+
+        if isinstance(cookies, dict):
+            if not cookies:
+                raise ValueError("WQ_BRAIN_COOKIES must be a non-empty JSON object of cookie names to values.")
+            for name, value in cookies.items():
+                if not isinstance(name, str) or not name:
+                    raise ValueError("WQ_BRAIN_COOKIES contains an invalid cookie name.")
+                session.cookies.set(name, str(value))
+            return "cookie JSON"
+
+        if isinstance(cookie_config, str) and cookie_config:
+            session.headers["Cookie"] = cookie_config
+            return "raw cookie string"
+
+        raise ValueError(
+            "WQ_BRAIN_COOKIES must be either a raw Cookie header string or "
+            "a JSON object of cookie names to values."
+        )
+
+    return None
+
+
+def load_credentials() -> tuple[str, str]:
+    env_user = os.getenv("WQ_BRAIN_USERNAME")
+    env_password = os.getenv("WQ_BRAIN_PASSWORD")
+    if env_user and env_password:
+        logger.info("Loaded BRAIN credentials from environment")
+        return env_user, env_password
+    if CREDENTIAL_PATH.exists():
+        username, password = json.loads(CREDENTIAL_PATH.read_text(encoding="utf-8"))
+        logger.info("Loaded BRAIN credentials from credential file path=%s", CREDENTIAL_PATH)
+        return str(username), str(password)
+    logger.info("BRAIN credentials not found env_present=%s credential_path=%s", bool(env_user or env_password), CREDENTIAL_PATH)
+    raise FileNotFoundError(
+        "BRAIN credentials not found. Set WQ_BRAIN_USERNAME/WQ_BRAIN_PASSWORD "
+        'or create credential.txt with ["username", "password"].'
+    )
+
+
+def wait_for_fresh_cookie() -> None:
+    """Pause and wait for user to update cookie in .env file when session expires."""
+    import time
+    from pathlib import Path
+    
+    env_path = Path(__file__).parent.parent / ".env"
+    
+    print("\n" + "=" * 70)
+    print("  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED")
+    print("=" * 70)
+    print("\nYour WorldQuant BRAIN session cookie has expired.")
+    print("\nTO CONTINUE:")
+    print("  1. Open https://platform.worldquantbrain.com in your browser")
+    print("  2. Log in (if needed)")
+    print("  3. Open Developer Tools (F12)")
+    print("  4. Go to Application → Cookies → platform.worldquantbrain.com")
+    print("  5. Find the 't' cookie")
+    print("  6. Copy its Value (JWT token starting with eyJ...)")
+    print(f"  7. Update the 't=' value in: {env_path}")
+    print("  8. Save the file")
+    print("  9. Return here and press ENTER to continue")
+    print("\nThe mining loop will resume from where it left off.")
+    print("=" * 70)
+    
+    input("\nPress ENTER after updating .env cookie (or Ctrl+C to abort)... ")
+    
+    # Reload environment after user updates .env
+    load_local_env()
+    print("\n[brain_api] Cookie reloaded from .env, resuming...\n")
+    logger.info("Cookie reloaded after user update, resuming operations")
+
+
+def create_session() -> requests.Session:
+    load_local_env()
+    session = requests.Session()
+    session.headers.update(HEADERS)
+
+    auth_method = configure_session_auth(session)
+    if auth_method:
+        logger.info("BRAIN authentication: using %s; password login skipped", auth_method)
+        return session
+
+    username, password = load_credentials()
+    session.auth = HTTPBasicAuth(username, password)
+
+    resp = session.post(f"{API_BASE}/authentication")
+    if resp.status_code != 201:
+        logger.info("BRAIN authentication failed status_code=%s body_len=%s body_hash=%s", resp.status_code, len(resp.text or ""), _text_fingerprint(resp.text or ""))
+        raise RuntimeError(f"BRAIN auth failed: {resp.status_code} {resp.text}")
+    logger.info("BRAIN authentication succeeded status_code=%s", resp.status_code)
+    return session
+
+
+# --------------------------------------------------------------------------- #
+# DB I/O
+# --------------------------------------------------------------------------- #
+def load_alpha_db() -> dict[str, Any]:
+    if ALPHA_DB_PATH.exists():
+        db = json.loads(ALPHA_DB_PATH.read_text(encoding="utf-8"))
+        logger.info("Loaded alpha DB path=%s alpha_count=%s", ALPHA_DB_PATH, len(db.get("alphas", {})))
+        return db
+    logger.info("Alpha DB not found; initializing empty DB path=%s", ALPHA_DB_PATH)
+    return {"alphas": {}, "last_update": None, "version": 1}
+
+
+def save_alpha_db(db: dict[str, Any]) -> None:
+    db["last_update"] = datetime.now(timezone.utc).isoformat()
+    ALPHA_DB_PATH.write_text(json.dumps(db, indent=2, default=str), encoding="utf-8")
+    logger.info("Saved alpha DB path=%s alpha_count=%s", ALPHA_DB_PATH, len(db.get("alphas", {})))
+
+
+LESSONS_VERSION = 2
+
+# #9: minimum-sample gates before any verdict/action flips away from the
+# neutral default. Below these counts a single lucky/unlucky run could brand a
+# template skip/deprioritize or a param prefer/deprioritize on noise.
+MIN_TESTED_FOR_ACTION = 10   # pattern- and rollup-level action gate
+MIN_COUNT_FOR_VERDICT = 5    # param_insights prefer/deprioritize gate
+
+# #8: multiple-testing correction. Mining tests a huge number of expressions;
+# with N independent trials the BEST in-sample Sharpe is inflated purely by
+# selection (the maximum of N noisy draws). To keep the SUBMIT bar honest we
+# raise the required Sharpe as N grows, by the expected maximum of N standard
+# normals (≈ the "haircut" in Bailey & López de Prado's deflated Sharpe). The
+# effective bar is `sharpe_threshold + MT_PENALTY_SCALE * E[max of N]`, capped
+# so a long campaign can't push the bar to absurd levels. Set scale 0 to
+# disable (env WQ_MT_PENALTY_SCALE).
+MT_PENALTY_SCALE = float(os.getenv("WQ_MT_PENALTY_SCALE", "0.0"))
+MT_PENALTY_CAP = float(os.getenv("WQ_MT_PENALTY_CAP", "1.0"))  # max Sharpe add-on
+
+
+def expected_max_of_n_gaussians(n: int) -> float:
+    """Expected value of the maximum of `n` i.i.d. standard normals.
+
+    Closed-form approximation (Bailey & López de Prado, "The Deflated Sharpe
+    Ratio"): E[max] ≈ (1-γ)·Φ⁻¹(1 - 1/N) + γ·Φ⁻¹(1 - 1/(N·e)), with γ the
+    Euler-Mascheroni constant. Returns 0.0 for N ≤ 1 (a single trial needs no
+    haircut).
+    """
+    if n <= 1:
+        return 0.0
+    gamma = 0.5772156649015329  # Euler–Mascheroni
+    nd = statistics.NormalDist()
+    z1 = nd.inv_cdf(1.0 - 1.0 / n)
+    z2 = nd.inv_cdf(1.0 - 1.0 / (n * math.e))
+    return (1.0 - gamma) * z1 + gamma * z2
+
+
+def multiple_testing_sharpe_penalty(trials: int) -> float:
+    """Sharpe add-on to apply to the SUBMIT threshold for `trials` experiments.
+
+    Scaled by MT_PENALTY_SCALE and clamped to MT_PENALTY_CAP so the bar stays
+    finite over a long campaign.
+    """
+    if trials <= 1 or MT_PENALTY_SCALE <= 0:
+        return 0.0
+    return min(MT_PENALTY_CAP, MT_PENALTY_SCALE * expected_max_of_n_gaussians(trials))
+
+
+def _empty_lessons() -> dict[str, Any]:
+    """A fresh, fully-formed v2 lessons document.
+
+    v2 is a *superset* of v1: the v1 concept/template aggregates (`patterns`,
+    `param_insights`) are retained (still consumed by the skip logic and the LLM
+    prompt), and two new structures are added:
+
+      * experiments — append-only list of raw simulation facts (one per result).
+        This is the actual "past-experience log": immutable evidence, never
+        rewritten, that any future analysis can re-aggregate from scratch.
+      * rollups     — a *derived cache* keyed by structure (ast_hash), data
+        category (field_class), and decay. Recomputable from `experiments` at
+        any time; kept inline so consumers don't have to re-scan every round.
+    """
+    return {
+        "patterns": {},
+        "param_insights": {},
+        "experiments": [],
+        "rollups": {"by_ast": {}, "by_field_class": {}, "by_decay": {}},
+        "version": LESSONS_VERSION,
+    }
+
+
+def _migrate_lessons(lessons: dict[str, Any]) -> dict[str, Any]:
+    """Bring any older/partial lessons doc up to the v2 shape, in place.
+
+    Backward compatible: a v1 file (or the canonical empty
+    {"patterns": {}, "param_insights": {}, "version": 1}) simply gains the new
+    `experiments`/`rollups` keys; nothing existing is dropped or rewritten.
+    """
+    lessons.setdefault("patterns", {})
+    lessons.setdefault("param_insights", {})
+    lessons.setdefault("experiments", [])
+    rollups = lessons.setdefault("rollups", {})
+    rollups.setdefault("by_ast", {})
+    rollups.setdefault("by_field_class", {})
+    rollups.setdefault("by_decay", {})
+    lessons["version"] = LESSONS_VERSION
+    return lessons
+
+
+def load_lessons() -> dict[str, Any]:
+    if LESSONS_PATH.exists():
+        lessons = json.loads(LESSONS_PATH.read_text(encoding="utf-8"))
+        prev_version = lessons.get("version")
+        lessons = _migrate_lessons(lessons)
+        logger.info(
+            "Loaded lessons path=%s version=%s->%s pattern_count=%s experiment_count=%s",
+            LESSONS_PATH, prev_version, lessons["version"],
+            len(lessons.get("patterns", {})), len(lessons.get("experiments", [])),
+        )
+        return lessons
+    logger.info("Lessons not found; initializing empty lessons path=%s", LESSONS_PATH)
+    return _empty_lessons()
+
+
+def save_lessons(lessons: dict[str, Any]) -> None:
+    lessons["last_updated"] = datetime.now(timezone.utc).isoformat()
+    LESSONS_PATH.write_text(json.dumps(lessons, indent=2, ensure_ascii=False), encoding="utf-8")
+    logger.info("Saved lessons path=%s pattern_count=%s", LESSONS_PATH, len(lessons.get("patterns", {})))
+
+
+# --------------------------------------------------------------------------- #
+# BrainClient
+# --------------------------------------------------------------------------- #
+class BrainClient:
+    """BRAIN API client with adaptive concurrency control."""
+
+    def __init__(self, max_concurrent: int = 2, target: ResearchTarget | None = None):
+        self.max_concurrent = max_concurrent
+        self.target = target or load_target()
+        # Cap the adaptive ramp-up. Long single-process runs (e.g. depth handoff
+        # loops) otherwise climb toward 8 across rounds and trip the account rate
+        # limit (429). WQ_MAX_CONCURRENT lets a run pin a safe ceiling.
+        self.max_concurrent_ceiling = int(os.getenv("WQ_MAX_CONCURRENT", "8"))
+        self.session: requests.Session | None = None
+        self._429_count = 0
+        self._success_streak = 0
+        # #17: _adjust_concurrency runs from worker threads (each GET/POST may
+        # call it on 429/success), all mutating the shared concurrency counters.
+        # Guard every read-modify-write of max_concurrent / streak / 429 count
+        # with a lock so concurrent updates can't corrupt the counters.
+        self._concurrency_lock = threading.Lock()
+
+    def connect(self) -> None:
+        logger.info("Connecting to BRAIN API session")
+        self.session = create_session()
+        logger.info("BRAIN session ready")
+        print(f"[brain_api] Authenticated", flush=True)
+
+    def _ensure_session(self) -> requests.Session:
+        if self.session is None:
+            self.connect()
+        return self.session
+
+    def _adjust_concurrency(self, got_429: bool) -> None:
+        # #17: serialize the read-modify-write so parallel workers can't race
+        # on the shared counters. Logging/printing is kept inside the lock too
+        # (cheap) so the reported value matches the value just written.
+        with self._concurrency_lock:
+            if got_429:
+                self._429_count += 1
+                self._success_streak = 0
+                logger.info(
+                    "BRAIN rate limit observed count=%s current_concurrency=%s",
+                    self._429_count,
+                    self.max_concurrent,
+                )
+                if self.max_concurrent > 1:
+                    self.max_concurrent -= 1
+                    logger.info("Reducing BRAIN concurrency new_concurrency=%s", self.max_concurrent)
+                    print(f"[brain_api] 429 received, concurrency -> {self.max_concurrent}", flush=True)
+            else:
+                self._success_streak += 1
+                self._429_count = 0
+                if self._success_streak >= 10 and self.max_concurrent < self.max_concurrent_ceiling:
+                    self.max_concurrent += 1
+                    self._success_streak = 0
+                    logger.info("Increasing BRAIN concurrency new_concurrency=%s", self.max_concurrent)
+                    print(f"[brain_api] Success streak, concurrency -> {self.max_concurrent}", flush=True)
+
+    def get_with_retry(self, url: str, retries: int = 3, return_on_rate_limit: bool = False, **kwargs) -> requests.Response:
+        s = self._ensure_session()
+        for attempt in range(retries):
+            try:
+                logger.debug("GET request attempt=%s/%s url=%s", attempt + 1, retries, url)
+                resp = s.get(url, timeout=(10, 60), **kwargs)
+                if resp.status_code == 429:
+                    # When the caller manages its own rate-limit backoff (e.g. the
+                    # polling loop, which must keep 429 waits off its timeout
+                    # budget), hand the 429 response straight back instead of
+                    # sleeping/retrying internally or raising on exhaustion.
+                    if return_on_rate_limit:
+                        self._adjust_concurrency(True)
+                        return resp
+                    retry_after = int(resp.headers.get("Retry-After", 5))
+                    logger.info("GET rate limited url=%s retry_after=%ss", url, retry_after)
+                    time.sleep(retry_after)
+                    self._adjust_concurrency(True)
+                    continue
+                if resp.status_code in (401, 403):
+                    logger.info("GET auth expired status_code=%s url=%s; cookie-based auth detected", resp.status_code, url)
+                    print("[brain_api] Session expired, pausing for cookie update...", flush=True)
+                    
+                    # Check if using cookie auth (not password)
+                    if os.getenv("WQ_BRAIN_COOKIES") or os.getenv("WQ_BRAIN_COOKIE_HEADER") or os.getenv("WQ_BRAIN_COOKIE"):
+                        # Cookie-based auth - pause and wait for user to update
+                        wait_for_fresh_cookie()
+                    else:
+                        # Password-based auth - just reconnect
+                        logger.info("GET auth expired, re-authenticating with password")
+                    
+                    self.connect()
+                    s = self.session  # type: ignore
+                    continue
+                if resp.status_code >= 400:
+                    logger.info(
+                        "GET returned error status_code=%s url=%s body_len=%s body_hash=%s",
+                        resp.status_code,
+                        url,
+                        len(resp.text or ""),
+                        _text_fingerprint(resp.text or ""),
+                    )
+                    logger.debug("GET error body url=%s body=%s", url, resp.text[:1000])
+                return resp
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
+                logger.info("GET transient exception attempt=%s/%s url=%s error=%s", attempt + 1, retries, url, e)
+                if attempt == retries - 1:
+                    raise
+                time.sleep(2 ** attempt)
+        raise RuntimeError(f"GET {url} failed after {retries} retries")
+
+    def post_with_retry(self, url: str, json_body: dict, retries: int = 3, **kwargs) -> requests.Response:
+        s = self._ensure_session()
+        for attempt in range(retries):
+            try:
+                logger.debug("POST request attempt=%s/%s url=%s", attempt + 1, retries, url)
+                resp = s.post(url, json=json_body, timeout=(30, 300), **kwargs)
+                if resp.status_code == 429:
+                    retry_after = int(resp.headers.get("Retry-After", 5))
+                    # Aggressive backoff: start with retry_after * 2, then exponential
+                    backoff = retry_after * (2 ** min(attempt, 2))  # 10s, 20s, 40s
+                    logger.info("POST rate limited url=%s retry_after=%ss backoff=%ss attempt=%s", url, retry_after, backoff, attempt + 1)
+                    time.sleep(backoff)
+                    self._adjust_concurrency(True)
+                    continue
+                if resp.status_code in (401, 403):
+                    logger.info("POST auth expired status_code=%s url=%s; cookie-based auth detected", resp.status_code, url)
+                    print("[brain_api] Session expired, pausing for cookie update...", flush=True)
+                    
+                    # Check if using cookie auth (not password)
+                    if os.getenv("WQ_BRAIN_COOKIES") or os.getenv("WQ_BRAIN_COOKIE_HEADER") or os.getenv("WQ_BRAIN_COOKIE"):
+                        # Cookie-based auth - pause and wait for user to update
+                        wait_for_fresh_cookie()
+                    else:
+                        # Password-based auth - just reconnect
+                        logger.info("POST auth expired, re-authenticating with password")
+                    
+                    self.connect()
+                    s = self.session  # type: ignore
+                    continue
+                self._adjust_concurrency(False)
+                if resp.status_code >= 400:
+                    logger.info(
+                        "POST returned error status_code=%s url=%s body_len=%s body_hash=%s",
+                        resp.status_code,
+                        url,
+                        len(resp.text or ""),
+                        _text_fingerprint(resp.text or ""),
+                    )
+                    logger.debug("POST error body url=%s body=%s", url, resp.text[:1000])
+                return resp
+            except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:
+                logger.info("POST transient exception attempt=%s/%s url=%s error=%s", attempt + 1, retries, url, e)
+                if attempt == retries - 1:
+                    raise
+                time.sleep(2 ** attempt)
+        raise RuntimeError(f"POST {url} failed after {retries} retries")
+
+    # ----------------------------------------------------------------- #
+    # Simulation
+    # ----------------------------------------------------------------- #
+    def build_payload(self, expression: str, settings: dict) -> dict:
+        # Enforce the configured market at the final API boundary too.  This is
+        # deliberate defence in depth: old template files contain USA settings,
+        # and a stale candidate must never redirect a GLB research run.
+        merged = self.target.settings_for(settings)
+        return {
+            "type": "REGULAR",
+            "settings": merged,
+            "regular": expression,
+        }
+
+    def simulate(self, expression: str, settings: dict) -> dict[str, Any]:
+        """Submit to /simulations, poll until complete, then fetch alpha metrics from /alphas/{alphaId}."""
+        payload = self.build_payload(expression, settings)
+        expr_hash = _expr_fingerprint(expression)
+        logger.info(
+            "Simulation submit start expr_hash=%s expr_len=%s settings_keys=%s",
+            expr_hash,
+            len(expression),
+            sorted(payload["settings"].keys()),
+        )
+        resp = self.post_with_retry(f"{API_BASE}/simulations", payload)
+        if resp.status_code != 201:
+            logger.info(
+                "Simulation submit failed status_code=%s expr_hash=%s body_len=%s body_hash=%s",
+                resp.status_code,
+                expr_hash,
+                len(resp.text or ""),
+                _text_fingerprint(resp.text or ""),
+            )
+            logger.debug("Simulation submit failure body expr_hash=%s body=%s", expr_hash, resp.text[:1000])
+            return {"status": "ERROR", "error": resp.text[:500], "status_code": resp.status_code}
+
+        location = resp.headers.get("Location", "")
+        sim_id = location.rstrip("/").split("/")[-1]
+        logger.info("Simulation created sim_id=%s expr_hash=%s", sim_id, expr_hash)
+
+        sim_result = self._poll_simulation(sim_id)
+        if sim_result.get("status") != "COMPLETE":
+            logger.info(
+                "Simulation finished non-complete sim_id=%s status=%s expr_hash=%s status_code=%s error_hash=%s",
+                sim_id,
+                sim_result.get("status"),
+                expr_hash,
+                sim_result.get("status_code"),
+                _text_fingerprint(str(sim_result.get("error", ""))),
+            )
+            logger.debug("Simulation non-complete result sim_id=%s result=%s", sim_id, json.dumps(sim_result, ensure_ascii=False, default=str)[:2000])
+            return sim_result
+
+        alpha_id = sim_result.get("alpha_id", "")
+        if not alpha_id:
+            logger.info("Simulation complete without alpha_id sim_id=%s expr_hash=%s", sim_id, expr_hash)
+            return {"status": "ERROR", "error": "No alpha ID returned", "sim_data": sim_result}
+
+        # Fetch full alpha data to get sharpe/fitness/turnover from /alphas/{alphaId}
+        alpha_data = self.get_alpha(alpha_id)
+        if not alpha_data:
+            # The simulation itself COMPLETED — we just couldn't retrieve the
+            # metrics. Flag this as a distinct FETCH_ERROR so it is NOT recorded
+            # as a SIM_ERROR (which would wrongly penalize the template) and can
+            # be retried as a transient failure.
+            logger.info("Could not fetch alpha metrics alpha_id=%s sim_id=%s expr_hash=%s", alpha_id, sim_id, expr_hash)
+            return {
+                "status": "FETCH_ERROR",
+                "error": f"Could not fetch alpha {alpha_id}",
+                "alpha_id": alpha_id,
+            }
+
+        is_data = alpha_data.get("is", {}) if isinstance(alpha_data, dict) else {}
+        logger.info(
+            "Simulation complete alpha_id=%s sharpe=%s fitness=%s turnover=%s expr_hash=%s",
+            alpha_id,
+            is_data.get("sharpe"),
+            is_data.get("fitness"),
+            is_data.get("turnover"),
+            expr_hash,
+        )
+        return {"status": "COMPLETE", "alpha_id": alpha_id, "sim_data": alpha_data}
+
+    def _poll_simulation(self, sim_id: str, timeout: int = 600) -> dict[str, Any]:
+        # #25: use a MONOTONIC clock for the deadline, never the wall clock.
+        # time.time() can jump (NTP steps, manual clock changes, or a sandbox
+        # that pauses/resumes the container and resyncs CLOCK_REALTIME) and a
+        # backward/forward jump can either prematurely TIMEOUT a running sim or
+        # — worse — keep the loop alive far past its budget. time.monotonic()
+        # only ever moves forward at a steady rate, so the elapsed-time check is
+        # immune to wall-clock surprises.
+        start = time.monotonic()
+        logger.info("Polling simulation start sim_id=%s timeout=%ss", sim_id, timeout)
+        last_status = None
+        # #18: time spent waiting out 429 rate-limits must NOT eat the polling
+        # budget. We accumulate it here and push the deadline out by the same
+        # amount (capped) so a busy platform can't silently TIMEOUT a sim that
+        # was actually still running. TIMEOUT is non-retryable, so a 429 burning
+        # the budget would discard a real result and waste the fuel.
+        rate_limit_wait = 0.0
+        MAX_RATE_LIMIT_WAIT = 600.0  # safety cap on extra 429 grace time
+        # #25: iteration hard cap — a clock-independent backstop. Even if every
+        # time source is frozen or lying, the loop MUST terminate after a bounded
+        # number of polls so a sim stuck in UNKNOWN/pending can never hang the
+        # worker (and, via ThreadPoolExecutor.__exit__, the whole run) forever.
+        # Each loop iteration sleeps >=5s, so the worst-case time budget
+        # (timeout + MAX_RATE_LIMIT_WAIT) maps to ~(budget/5) iterations; we add
+        # generous headroom so this only ever fires when the clock misbehaves.
+        max_iters = int((timeout + MAX_RATE_LIMIT_WAIT) / 5) + 40
+        iters = 0
+        while time.monotonic() - start < timeout + rate_limit_wait:
+            iters += 1
+            if iters > max_iters:
+                logger.info(
+                    "Polling simulation iteration cap hit sim_id=%s iters=%s max_iters=%s elapsed=%.1fs",
+                    sim_id, iters, max_iters, time.monotonic() - start,
+                )
+                return {"status": "TIMEOUT", "simulation_id": sim_id}
+            resp = self.get_with_retry(
+                f"{API_BASE}/simulations/{sim_id}", return_on_rate_limit=True
+            )
+            if resp.status_code == 429:
+                # get_with_retry already exhausted its inner Retry-After retries
+                # and the platform is still throttling. Back off explicitly and
+                # credit the wait back to the deadline (not counted as progress).
+                retry_after = 5
+                try:
+                    retry_after = int(resp.headers.get("Retry-After", 5))
+                except (TypeError, ValueError):
+                    retry_after = 5
+                retry_after = max(1, min(retry_after, 60))
+                if rate_limit_wait < MAX_RATE_LIMIT_WAIT:
+                    rate_limit_wait += retry_after
+                logger.info(
+                    "Polling simulation rate-limited sim_id=%s retry_after=%ss rate_limit_wait=%.0fs",
+                    sim_id, retry_after, rate_limit_wait,
+                )
+                time.sleep(retry_after)
+                continue
+            if resp.status_code != 200:
+                logger.info("Polling simulation non-200 sim_id=%s status_code=%s", sim_id, resp.status_code)
+                time.sleep(8)
+                continue
+            data = resp.json()
+            status = data.get("status", "UNKNOWN")
+            if status != last_status:
+                logger.info("Polling simulation status changed sim_id=%s status=%s", sim_id, status)
+                last_status = status
+            # COMPLETE and WARNING are both terminal SUCCESS states: the
+            # simulation finished and produced an alpha record. WARNING only
+            # flags non-fatal advisories (e.g. low coverage / high turnover);
+            # the metrics are still real and the alpha is fetchable. Treating
+            # WARNING as non-terminal made the loop spin until timeout and the
+            # result was silently lost — handle it exactly like COMPLETE.
+            if status in ("COMPLETE", "WARNING"):
+                alpha_id = data.get("alpha", "")
+                logger.info(
+                    "Polling simulation terminal sim_id=%s status=%s alpha_id=%s",
+                    sim_id, status, alpha_id,
+                )
+                return {"status": "COMPLETE", "alpha_id": alpha_id, "sim_data": data}
+            if status in ("ERROR", "FAILED"):
+                logger.info(
+                    "Polling simulation failed sim_id=%s status=%s data_keys=%s",
+                    sim_id,
+                    status,
+                    sorted(data.keys()) if isinstance(data, dict) else [],
+                )
+                logger.debug("Polling simulation failed data sim_id=%s data=%s", sim_id, json.dumps(data, ensure_ascii=False, default=str)[:2000])
+                return {"status": "ERROR", "sim_data": data}
+            time.sleep(5)
+        logger.info("Polling simulation timeout sim_id=%s elapsed=%.1fs", sim_id, time.monotonic() - start)
+        return {"status": "TIMEOUT", "simulation_id": sim_id}
+
+    def _is_retryable_sim_error(self, sim_result: dict[str, Any]) -> bool:
+        """Return True for transient API/network failures worth retrying."""
+        status = sim_result.get("status")
+        status_code = sim_result.get("status_code")
+        error = str(sim_result.get("error", "")).lower()
+
+        if status == "TIMEOUT":
+            # A TIMEOUT from _poll_simulation means the simulation was already
+            # created; retrying would POST a duplicate simulation.
+            return False
+        if status == "FETCH_ERROR":
+            # Simulation already COMPLETED and get_alpha has already retried the
+            # metrics fetch internally (eventual consistency). Do NOT batch-retry
+            # — that would re-POST a duplicate simulation and waste fuel.
+            return False
+        if isinstance(status_code, int) and status_code in {429, 500, 502, 503, 504}:
+            return True
+        transient_markers = (
+            "429",
+            "timeout",
+            "timed out",
+            "connection",
+            "temporarily",
+        )
+        return any(marker in error for marker in transient_markers)
+
+    def batch_simulate(
+        self,
+        candidates: list[dict],
+        max_concurrent: int | None = None,
+        max_retries: int = 2,
+    ) -> list[dict[str, Any]]:
+        """Simulate a batch of candidates with limited concurrency.
+
+        Each candidate: {expression, settings, ...}
+        Returns list of results with candidate info merged.
+        """
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        # #17: snapshot the shared counter under the lock. The pool size is
+        # fixed for this batch; adaptive 429/success adjustments take effect on
+        # the NEXT batch (the executor can't be resized mid-flight).
+        with self._concurrency_lock:
+            concurrency = max_concurrent or self.max_concurrent
+        results: list[dict[str, Any]] = []
+        logger.info(
+            "Batch simulate start candidate_count=%s concurrency=%s max_retries=%s",
+            len(candidates),
+            concurrency,
+            max_retries,
+        )
+
+        def _run_one(idx: int, cand: dict) -> dict[str, Any]:
+            expr = cand["expression"]
+            expr_hash = _expr_fingerprint(expr)
+            settings = cand.get("settings", {})
+            for attempt in range(max_retries + 1):
+                try:
+                    sim_result = self.simulate(expr, settings)
+                except Exception as e:
+                    logger.info("Simulation raised exception batch_idx=%s attempt=%s expr_hash=%s error=%s", idx, attempt + 1, expr_hash, e)
+                    sim_result = {"status": "ERROR", "error": str(e)}
+
+                sim_result["attempts"] = attempt + 1
+                retryable = self._is_retryable_sim_error(sim_result)
+                if not retryable or attempt >= max_retries:
+                    logger.info(
+                        "Simulation candidate finished batch_idx=%s status=%s attempts=%s retryable=%s expr_hash=%s",
+                        idx,
+                        sim_result.get("status"),
+                        sim_result.get("attempts"),
+                        retryable,
+                        expr_hash,
+                    )
+                    return {**cand, "sim_result": sim_result, "batch_idx": idx}
+
+                sleep_s = min(30, 5 * (attempt + 1))
+                logger.info(
+                    "Simulation candidate retry batch_idx=%s attempt=%s/%s sleep=%ss status=%s status_code=%s error=%s expr_hash=%s",
+                    idx,
+                    attempt + 1,
+                    max_retries,
+                    sleep_s,
+                    sim_result.get("status"),
+                    sim_result.get("status_code"),
+                    sim_result.get("error"),
+                    expr_hash,
+                )
+                print(
+                    f"  [retry] transient simulation error; retrying {attempt + 1}/{max_retries} "
+                    f"after {sleep_s}s — {expr[:50]}",
+                    flush=True,
+                )
+                time.sleep(sleep_s)
+
+            return {**cand, "sim_result": sim_result, "batch_idx": idx}
+
+        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+            futures = {
+                pool.submit(_run_one, i, cand): i
+                for i, cand in enumerate(candidates)
+            }
+            for future in as_completed(futures):
+                result = future.result()
+                results.append(result)
+                # Log progress
+                status = result.get("sim_result", {}).get("status", "?")
+                expr_short = result["expression"][:50]
+                print(f"  [{len(results)}/{len(candidates)}] {status} — {expr_short}", flush=True)
+
+        # Sort by original order
+        results.sort(key=lambda r: r.get("batch_idx", 0))
+        status_counts: dict[str, int] = {}
+        for result in results:
+            status = result.get("sim_result", {}).get("status", "?")
+            status_counts[status] = status_counts.get(status, 0) + 1
+        logger.info("Batch simulate complete candidate_count=%s status_counts=%s", len(candidates), status_counts)
+        return results
+
+    def batch_simulate_stream(
+        self,
+        candidates: list[dict],
+        max_concurrent: int | None = None,
+        max_retries: int = 2,
+    ):
+        """Stream simulation results as they complete (generator).
+
+        Yields each result immediately when a simulation finishes,
+        enabling streaming submit during batch processing.
+        """
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        # #17: locked snapshot; pool size fixed per batch (see batch_simulate).
+        with self._concurrency_lock:
+            concurrency = max_concurrent or self.max_concurrent
+        logger.info(
+            "Batch simulate stream start candidate_count=%s concurrency=%s max_retries=%s",
+            len(candidates),
+            concurrency,
+            max_retries,
+        )
+
+        def _run_one(idx: int, cand: dict) -> dict[str, Any]:
+            expr = cand["expression"]
+            expr_hash = _expr_fingerprint(expr)
+            settings = cand.get("settings", {})
+            for attempt in range(max_retries + 1):
+                try:
+                    sim_result = self.simulate(expr, settings)
+                except Exception as e:
+                    logger.info(
+                        "Stream simulation raised exception batch_idx=%s attempt=%s expr_hash=%s error=%s",
+                        idx,
+                        attempt + 1,
+                        expr_hash,
+                        e,
+                    )
+                    sim_result = {"status": "ERROR", "error": str(e)}
+
+                sim_result["attempts"] = attempt + 1
+                retryable = self._is_retryable_sim_error(sim_result)
+                if not retryable or attempt >= max_retries:
+                    logger.info(
+                        "Stream simulation candidate finished batch_idx=%s status=%s attempts=%s retryable=%s expr_hash=%s",
+                        idx,
+                        sim_result.get("status"),
+                        sim_result.get("attempts"),
+                        retryable,
+                        expr_hash,
+                    )
+                    return {**cand, "sim_result": sim_result, "batch_idx": idx}
+
+                sleep_s = min(30, 5 * (attempt + 1))
+                logger.info(
+                    "Stream simulation candidate retry batch_idx=%s attempt=%s/%s sleep=%ss status=%s status_code=%s error=%s expr_hash=%s",
+                    idx,
+                    attempt + 1,
+                    max_retries,
+                    sleep_s,
+                    sim_result.get("status"),
+                    sim_result.get("status_code"),
+                    sim_result.get("error"),
+                    expr_hash,
+                )
+                print(
+                    f"  [retry] transient simulation error; retrying {attempt + 1}/{max_retries} "
+                    f"after {sleep_s}s — {expr[:50]}",
+                    flush=True,
+                )
+                time.sleep(sleep_s)
+
+            return {**cand, "sim_result": sim_result, "batch_idx": idx}
+
+        completed = 0
+        total = len(candidates)
+        # Heartbeat: a long unattended run can go silent for up to ~13min when
+        # every worker is stuck on a slow sim (600s poll + retries). That silence
+        # is indistinguishable from a real hang unless we emit a periodic "still
+        # alive + progress" line. Interval is timed on the MONOTONIC clock (immune
+        # to the sandbox freezing the container between turns, see #25) but the
+        # printed stamp uses the WALL clock so a human can compare "last heartbeat
+        # vs now" to tell "slow but alive" from "dead". WQ_HEARTBEAT_SEC=0 disables.
+        try:
+            hb_interval = float(os.getenv("WQ_HEARTBEAT_SEC", "30"))
+        except (TypeError, ValueError):
+            hb_interval = 30.0
+        hb_state = {"completed": 0, "last_status": "-"}
+        hb_stop = threading.Event()
+        hb_start = time.monotonic()
+
+        def _heartbeat() -> None:
+            last_beat = time.monotonic()
+            while not hb_stop.wait(1.0):
+                now = time.monotonic()
+                if now - last_beat < hb_interval:
+                    continue
+                last_beat = now
+                done = hb_state["completed"]
+                in_flight = max(0, min(concurrency, total - done))
+                logger.info(
+                    "Batch heartbeat ts=%s elapsed=%.0fs progress=%s/%s in_flight=%s last_status=%s",
+                    datetime.now(timezone.utc).isoformat(),
+                    now - hb_start,
+                    done,
+                    total,
+                    in_flight,
+                    hb_state["last_status"],
+                )
+                print(
+                    f"  [heartbeat] {datetime.now().strftime('%H:%M:%S')} "
+                    f"elapsed={now - hb_start:.0f}s {done}/{total} "
+                    f"in_flight={in_flight} last={hb_state['last_status']}",
+                    flush=True,
+                )
+
+        hb_thread: threading.Thread | None = None
+        if hb_interval > 0:
+            hb_thread = threading.Thread(target=_heartbeat, daemon=True)
+            hb_thread.start()
+        try:
+            with ThreadPoolExecutor(max_workers=concurrency) as pool:
+                futures = {
+                    pool.submit(_run_one, i, cand): i
+                    for i, cand in enumerate(candidates)
+                }
+                for future in as_completed(futures):
+                    result = future.result()
+                    completed += 1
+                    status = result.get("sim_result", {}).get("status", "?")
+                    hb_state["completed"] = completed
+                    hb_state["last_status"] = status
+                    expr_short = result["expression"][:50]
+                    print(f"  [{completed}/{total}] {status} — {expr_short}", flush=True)
+                    yield result
+        finally:
+            hb_stop.set()
+            if hb_thread is not None:
+                hb_thread.join(timeout=2.0)
+        logger.info("Batch simulate stream complete candidate_count=%s", len(candidates))
+
+    # ----------------------------------------------------------------- #
+    # Metrics & PnL
+    # ----------------------------------------------------------------- #
+    def list_user_alphas(self, user_id: str = "self", limit: int = 100) -> list[dict[str, Any]]:
+        """Fetch all user alphas from BRAIN with pagination."""
+        alphas: list[dict[str, Any]] = []
+        offset = 0
+        logger.info("Fetching remote alpha list user_id=%s limit=%s", user_id, limit)
+        while True:
+            resp = self.get_with_retry(
+                f"{API_BASE}/users/{user_id}/alphas",
+                params={"limit": limit, "offset": offset},
+            )
+            if resp.status_code != 200:
+                logger.info(
+                    "Fetch remote alpha list failed user_id=%s offset=%s status_code=%s body_len=%s body_hash=%s",
+                    user_id,
+                    offset,
+                    resp.status_code,
+                    len(resp.text or ""),
+                    _text_fingerprint(resp.text or ""),
+                )
+                raise RuntimeError(f"remote alpha list failed: status={resp.status_code} offset={offset}")
+            try:
+                data = resp.json()
+            except Exception as e:
+                logger.info(
+                    "Fetch remote alpha list JSON parse failed user_id=%s offset=%s error=%s body_len=%s body_hash=%s",
+                    user_id,
+                    offset,
+                    e,
+                    len(resp.text or ""),
+                    _text_fingerprint(resp.text or ""),
+                )
+                raise RuntimeError(f"remote alpha list JSON parse failed: offset={offset}") from e
+
+            batch = data.get("results", data.get("alphas", [])) if isinstance(data, dict) else []
+            if not isinstance(batch, list):
+                logger.info(
+                    "Fetch remote alpha list returned unexpected batch type user_id=%s offset=%s batch_type=%s",
+                    user_id,
+                    offset,
+                    type(batch).__name__,
+                )
+                raise RuntimeError(f"remote alpha list unexpected batch type: {type(batch).__name__}")
+            alphas.extend(a for a in batch if isinstance(a, dict))
+            logger.info("Fetched remote alpha page user_id=%s offset=%s count=%s", user_id, offset, len(batch))
+            if len(batch) < limit:
+                break
+            offset += limit
+
+        status_counts: dict[str, int] = {}
+        for alpha in alphas:
+            status = str(alpha.get("status", "UNKNOWN"))
+            status_counts[status] = status_counts.get(status, 0) + 1
+        logger.info("Remote alpha list complete total=%s status_counts=%s", len(alphas), status_counts)
+        return alphas
+
+    def refresh_alpha_db_from_remote(self, db: dict[str, Any]) -> list[dict[str, Any]]:
+        """Refresh local alpha DB statuses from the remote user alpha list.
+
+        Returns the remote ACTIVE alpha objects so callers can build correlation
+        baselines from the authoritative BRAIN state instead of stale local DB.
+        """
+        remote_alphas = self.list_user_alphas()
+        db.setdefault("alphas", {})
+        now = datetime.now(timezone.utc).isoformat()
+        updated = 0
+        created = 0
+        for alpha in remote_alphas:
+            alpha_id = alpha.get("id")
+            if not alpha_id:
+                continue
+            is_data = alpha.get("is", {}) if isinstance(alpha.get("is"), dict) else {}
+            existing = db["alphas"].setdefault(alpha_id, {})
+            if not existing:
+                created += 1
+            before = {
+                "status": existing.get("status"),
+                "sharpe": existing.get("sharpe"),
+                "fitness": existing.get("fitness"),
+                "turnover": existing.get("turnover"),
+            }
+            existing.update(
+                {
+                    "status": alpha.get("status"),
+                    "sharpe": is_data.get("sharpe", existing.get("sharpe")),
+                    "fitness": is_data.get("fitness", existing.get("fitness")),
+                    "turnover": is_data.get("turnover", existing.get("turnover")),
+                    "remote_refreshed_at": now,
+                }
+            )
+            if "expression" not in existing and alpha.get("regular"):
+                existing["expression"] = alpha.get("regular")
+            after = {
+                "status": existing.get("status"),
+                "sharpe": existing.get("sharpe"),
+                "fitness": existing.get("fitness"),
+                "turnover": existing.get("turnover"),
+            }
+            if before != after:
+                updated += 1
+
+        active = [a for a in remote_alphas if a.get("status") == "ACTIVE"]
+        logger.info(
+            "Refreshed alpha DB from remote remote_total=%s remote_active=%s created=%s updated=%s db_alpha_count=%s",
+            len(remote_alphas),
+            len(active),
+            created,
+            updated,
+            len(db.get("alphas", {})),
+        )
+        return active
+
+    def get_alpha(self, alpha_id: str, retries: int = 3, retry_sleep: float = 2.0) -> dict:
+        """Fetch full alpha metrics.
+
+        The simulation may report COMPLETE slightly before the alpha record is
+        queryable (eventual consistency), so retry on empty/non-200 before
+        giving up. Returns {} only after exhausting retries — callers treat that
+        as a *fetch* failure (FETCH_ERROR), NOT a simulation error.
+        """
+        logger.info("Fetching alpha details alpha_id=%s retries=%s", alpha_id, retries)
+        for attempt in range(retries + 1):
+            try:
+                resp = self.get_with_retry(f"{API_BASE}/alphas/{alpha_id}")
+            except Exception as e:
+                logger.info("Fetch alpha details exception alpha_id=%s attempt=%s/%s error=%s", alpha_id, attempt + 1, retries + 1, e)
+                if attempt >= retries:
+                    return {}
+                time.sleep(retry_sleep * (attempt + 1))
+                continue
+            if resp.status_code == 200:
+                data = resp.json()
+                is_data = data.get("is", {}) if isinstance(data, dict) else {}
+                logger.info(
+                    "Fetched alpha details alpha_id=%s status=%s sharpe=%s fitness=%s turnover=%s",
+                    alpha_id,
+                    data.get("status") if isinstance(data, dict) else None,
+                    is_data.get("sharpe"),
+                    is_data.get("fitness"),
+                    is_data.get("turnover"),
+                )
+                return data
+            logger.info(
+                "Fetch alpha details failed alpha_id=%s attempt=%s/%s status_code=%s body_len=%s body_hash=%s",
+                alpha_id,
+                attempt + 1,
+                retries + 1,
+                resp.status_code,
+                len(resp.text or ""),
+                _text_fingerprint(resp.text or ""),
+            )
+            logger.debug("Fetch alpha details failed body alpha_id=%s body=%s", alpha_id, resp.text[:1000])
+            if attempt >= retries:
+                return {}
+            time.sleep(retry_sleep * (attempt + 1))
+        return {}
+
+    def fetch_pnl(self, alpha_id: str, retries: int = 3, retry_sleep: float = 2.0) -> list[float]:
+        logger.info("Fetching alpha PnL alpha_id=%s retries=%s", alpha_id, retries)
+        resp: requests.Response | None = None
+        for attempt in range(retries + 1):
+            try:
+                resp = self.get_with_retry(f"{API_BASE}/alphas/{alpha_id}/recordsets/pnl")
+            except Exception as e:
+                logger.info("Fetch alpha PnL exception alpha_id=%s attempt=%s/%s error=%s", alpha_id, attempt + 1, retries + 1, e)
+                if attempt >= retries:
+                    logger.warning("Fetch alpha PnL FAILED (exhausted retries, exception) alpha_id=%s — empty result is a fetch failure, NOT empty data", alpha_id)
+                    return []
+                time.sleep(retry_sleep * (attempt + 1))
+                continue
+            if resp.status_code == 200 and resp.text.strip():
+                break
+            logger.info(
+                "Fetch alpha PnL empty/non-200 alpha_id=%s attempt=%s/%s status_code=%s text_chars=%s",
+                alpha_id,
+                attempt + 1,
+                retries + 1,
+                resp.status_code,
+                len(resp.text or ""),
+            )
+            if attempt >= retries:
+                logger.warning("Fetch alpha PnL FAILED (exhausted retries, non-200/empty body) alpha_id=%s status_code=%s — empty result is a fetch failure, NOT empty data", alpha_id, resp.status_code)
+                return []
+            time.sleep(retry_sleep * (attempt + 1))
+
+        if resp is None:
+            return []
+        try:
+            data = resp.json()
+        except Exception as e:
+            logger.info(
+                "Fetch alpha PnL JSON parse failed alpha_id=%s error=%s body_len=%s body_hash=%s",
+                alpha_id,
+                e,
+                len(resp.text or ""),
+                _text_fingerprint(resp.text or ""),
+            )
+            logger.debug("Fetch alpha PnL JSON parse failed body alpha_id=%s body=%s", alpha_id, resp.text[:1000])
+            return []
+
+        schema = data.get("schema", {})
+        props = schema.get("properties", [])
+        # #13: locate the pnl column by name; do NOT silently default to column
+        # index 1. A schema with no recognizable pnl column means we'd be
+        # reading an arbitrary numeric column as PnL (wrong correlations / wrong
+        # quality verdicts). Treat that as a parse failure and return [].
+        _PNL_NAMES = ("pnl", "cum_pnl", "returns", "ret")
+        if isinstance(props, list):
+            date_idx = next((i for i, p in enumerate(props) if p.get("name", "").lower() == "date"), 0)
+            pnl_idx = next(
+                (i for i, p in enumerate(props) if p.get("name", "").lower() in _PNL_NAMES),
+                None,
+            )
+            col_names = [p.get("name") for p in props]
+        else:
+            date_idx = next((v["index"] for k, v in props.items() if k.lower() == "date"), 0)
+            pnl_idx = next(
+                (v["index"] for k, v in props.items() if k.lower() in _PNL_NAMES),
+                None,
+            )
+            col_names = list(props.keys())
+
+        if pnl_idx is None:
+            logger.warning(
+                "Fetch alpha PnL: no recognizable pnl column in schema alpha_id=%s columns=%s — "
+                "refusing to default to column 1 (#13); returning empty",
+                alpha_id,
+                col_names,
+            )
+            return []
+
+        records = sorted(data.get("records", []), key=lambda r: r[date_idx])
+        out: list[float] = []
+        for row in records:
+            rec = row[0] if isinstance(row, list) and len(row) == 1 and isinstance(row[0], list) else row
+            try:
+                out.append(float(rec[pnl_idx]))
+            except Exception:
+                continue
+        logger.info("Fetched alpha PnL alpha_id=%s raw_records=%s parsed_records=%s", alpha_id, len(records), len(out))
+        if not out:
+            # 200 OK but no usable rows: genuinely-empty data, distinct from the
+            # fetch-failure paths above (which warn). Callers see [] either way,
+            # but the logs now disambiguate the two cases.
+            logger.info("Fetch alpha PnL returned 200 with zero usable PnL points alpha_id=%s raw_records=%s — empty DATA, not a fetch failure", alpha_id, len(records))
+        return out
+
+    def fetch_self_correlation(
+        self, alpha_id: str, retries: int = 2, retry_sleep: float = 1.0
+    ) -> float | None:
+        """Fetch the alpha's max self-correlation from BRAIN's authoritative
+        correlation endpoint (#11).
+
+        `GET /alphas/{id}/correlations/self` returns the correlation of this
+        alpha against every alpha already in the user's pool, computed by the
+        platform on full daily-return series — i.e. the same number the
+        platform's SELF_CORRELATION submission check uses. This replaces the
+        local PnL-tail `compute_correlation`, which only saw the alphas we had
+        cached PnL for and aligned on a fragile common tail.
+
+        Behaviour:
+          * The endpoint computes asynchronously: it returns 200 with an EMPTY
+            body while still crunching, so we poll (empty body -> sleep+retry).
+          * Returns the maximum absolute correlation across all records, or
+            0.0 when the pool is empty (no records -> nothing to be correlated
+            with). Returns None ONLY on a genuine fetch failure (exhausted
+            retries / parse error), so the caller can fall back to the local
+            estimate rather than mistaking a failure for "uncorrelated".
+        """
+        logger.info("Fetching self-correlation alpha_id=%s retries=%s", alpha_id, retries)
+        resp: requests.Response | None = None
+        for attempt in range(retries + 1):
+            try:
+                resp = self.get_with_retry(f"{API_BASE}/alphas/{alpha_id}/correlations/self")
+            except Exception as e:
+                logger.info("Fetch self-correlation exception alpha_id=%s attempt=%s/%s error=%s", alpha_id, attempt + 1, retries + 1, e)
+                if attempt >= retries:
+                    logger.warning("Fetch self-correlation FAILED (exhausted retries, exception) alpha_id=%s", alpha_id)
+                    return None
+                time.sleep(retry_sleep * (attempt + 1))
+                continue
+            # Platform still computing -> 200 with empty body. Keep polling.
+            if resp.status_code == 200 and resp.text.strip():
+                break
+            logger.info(
+                "Fetch self-correlation pending/non-200 alpha_id=%s attempt=%s/%s status_code=%s text_chars=%s",
+                alpha_id, attempt + 1, retries + 1, resp.status_code, len(resp.text or ""),
+            )
+            if attempt >= retries:
+                logger.warning("Fetch self-correlation FAILED (exhausted retries, non-200/empty) alpha_id=%s status_code=%s", alpha_id, resp.status_code)
+                return None
+            time.sleep(retry_sleep * (attempt + 1))
+
+        if resp is None:
+            return None
+        try:
+            data = resp.json()
+        except Exception as e:
+            logger.info("Fetch self-correlation JSON parse failed alpha_id=%s error=%s body_hash=%s", alpha_id, e, _text_fingerprint(resp.text or ""))
+            return None
+
+        records = data.get("records", [])
+        if not records:
+            # Empty pool: there is nothing to correlate against, so the alpha is
+            # trivially uncorrelated. This is a real answer, not a failure.
+            logger.info("Self-correlation: empty records alpha_id=%s — treating as uncorrelated (0.0)", alpha_id)
+            return 0.0
+
+        # Locate the correlation column by schema name; do NOT hard-code an index
+        # (same discipline as #13's pnl-column fix). Fall back to scanning every
+        # numeric field per record only if the schema is unusable.
+        schema = data.get("schema", {})
+        props = schema.get("properties", [])
+        corr_idx: int | None = None
+        _CORR_NAMES = ("correlation", "corr", "max", "value")
+        if isinstance(props, list) and props:
+            corr_idx = next((i for i, p in enumerate(props) if str(p.get("name", "")).lower() in _CORR_NAMES), None)
+        elif isinstance(props, dict) and props:
+            corr_idx = next((v.get("index") for k, v in props.items() if k.lower() in _CORR_NAMES), None)
+
+        max_abs = 0.0
+        found = False
+        for rec in records:
+            row = rec[0] if isinstance(rec, list) and len(rec) == 1 and isinstance(rec[0], list) else rec
+            if not isinstance(row, (list, tuple)):
+                continue
+            if corr_idx is not None and corr_idx < len(row):
+                vals = [row[corr_idx]]
+            else:
+                # No recognizable schema column: consider every numeric cell in
+                # [-1, 1] a correlation candidate (correlations are bounded).
+                vals = [c for c in row if isinstance(c, (int, float)) and -1.0 <= c <= 1.0]
+            for v in vals:
+                try:
+                    fv = abs(float(v))
+                except (TypeError, ValueError):
+                    continue
+                if fv <= 1.0:
+                    max_abs = max(max_abs, fv)
+                    found = True
+
+        if not found:
+            logger.warning("Self-correlation: no usable correlation value parsed alpha_id=%s schema_cols=%s", alpha_id, [p.get("name") for p in props] if isinstance(props, list) else list(props))
+            return None
+        logger.info("Self-correlation fetched alpha_id=%s max_abs_corr=%s records=%s", alpha_id, max_abs, len(records))
+        return max_abs
+
+    def submit_alpha(self, alpha_id: str) -> dict[str, Any]:
+        """Submit alpha and poll for result."""
+        logger.info("Submit alpha start alpha_id=%s", alpha_id)
+        resp = self.post_with_retry(f"{API_BASE}/alphas/{alpha_id}/submit", json_body={})
+        if resp.status_code not in (200, 201):
+            logger.info(
+                "Submit alpha failed alpha_id=%s status_code=%s body_len=%s body_hash=%s",
+                alpha_id,
+                resp.status_code,
+                len(resp.text or ""),
+                _text_fingerprint(resp.text or ""),
+            )
+            logger.debug("Submit alpha failed body alpha_id=%s body=%s", alpha_id, resp.text[:1000])
+            return {"submitted": False, "status_code": resp.status_code, "text": resp.text[:300]}
+
+        logger.info("Submit alpha accepted alpha_id=%s status_code=%s; polling status", alpha_id, resp.status_code)
+        for poll_idx in range(30):
+            time.sleep(10)
+            alpha = self.get_alpha(alpha_id)
+            status = alpha.get("status")
+            checks = alpha.get("is", {}).get("checks", [])
+            self_corr = next((c for c in checks if c.get("name") == "SELF_CORRELATION"), {})
+            logger.info(
+                "Submit alpha poll alpha_id=%s poll=%s status=%s self_corr_result=%s",
+                alpha_id,
+                poll_idx + 1,
+                status,
+                self_corr.get("result"),
+            )
+            if status == "ACTIVE":
+                logger.info("Submit alpha active alpha_id=%s poll=%s", alpha_id, poll_idx + 1)
+                return {"submitted": True, "status": "ACTIVE", "alpha": alpha}
+            if self_corr.get("result") == "FAIL":
+                logger.info("Submit alpha self-correlation failed alpha_id=%s status=%s", alpha_id, status)
+                return {"submitted": True, "status": status, "self_correlation": "FAIL", "alpha": alpha}
+        logger.info("Submit alpha still pending after polling alpha_id=%s polls=30", alpha_id)
+        return {"submitted": True, "status": "PENDING"}
+
+
+# --------------------------------------------------------------------------- #
+# Quality classification & lessons update
+# --------------------------------------------------------------------------- #
+def classify_alpha(expr: str) -> str:
+    expr_lower = expr.lower()
+    tokens = []
+    if any(f in expr_lower for f in ["operating_income/equity", "oi/equity", "operating_income/sales"]):
+        tokens.append("profitability")
+    if any(f in expr_lower for f in ["est_eps", "est_fcf", "est_revenue", "est_ebitda", "est_ptp"]):
+        tokens.append("analyst")
+    if any(f in expr_lower for f in ["free_cash_flow", "cashflow_op", "cash_flow"]):
+        tokens.append("cashflow")
+    if any(f in expr_lower for f in ["close/open", "open/close", "vwap", "returns", "volume", "high + low"]):
+        tokens.append("technical")
+    if any(f in expr_lower for f in ["scl12_buzz", "scl12_sentiment", "sentiment"]):
+        tokens.append("sentiment")
+    if any(f in expr_lower for f in ["equity/assets", "liabilities/assets", "sales/assets"]):
+        tokens.append("quality/leverage")
+    return "+".join(tokens) if tokens else "other"
+
+
+def daily_returns(cum_pnl: list[float]) -> list[float]:
+    return [cum_pnl[i + 1] - cum_pnl[i] for i in range(len(cum_pnl) - 1)]
+
+
+def _align_returns(
+    a: list[float], b: list[float]
+) -> tuple[np.ndarray, np.ndarray]:
+    """Align two daily-return series for correlation.
+
+    PnL series are cumulative and sorted ascending by date. Different alphas
+    are simulated against the same data end date but may start on different
+    dates (data availability), so the series share their most-recent tail but
+    differ in length at the head. We align on the common overlapping tail
+    rather than demanding identical lengths — the old exact-length check made
+    the correlation gate fire almost never.
+    """
+    n = min(len(a), len(b))
+    if n == 0:
+        return np.array([]), np.array([])
+    return np.array(a[-n:]), np.array(b[-n:])
+
+
+def compute_correlation(
+    new_pnl: list[float],
+    db: dict[str, Any],
+    min_records: int = 50,
+    min_overlap: int = 50,
+) -> list[dict[str, Any]]:
+    if len(new_pnl) < min_records + 1:
+        return []
+    new_ret_full = daily_returns(new_pnl)
+    results: list[dict[str, Any]] = []
+    for old_id, old in db.get("alphas", {}).items():
+        if old.get("status") != "ACTIVE" or not old.get("pnl"):
+            continue
+        old_ret_full = daily_returns(old["pnl"])
+        new_ret, old_ret = _align_returns(new_ret_full, old_ret_full)
+        # Need enough overlapping points for a meaningful correlation.
+        if len(new_ret) < min_overlap:
+            logger.info(
+                "Skipping correlation: insufficient overlap old_alpha_id=%s overlap=%s new_len=%s old_len=%s",
+                old_id, len(new_ret), len(new_ret_full), len(old_ret_full),
+            )
+            continue
+        # corrcoef is undefined when either series is constant.
+        if np.std(new_ret) == 0 or np.std(old_ret) == 0:
+            logger.info("Skipping correlation: constant series old_alpha_id=%s", old_id)
+            continue
+        corr = float(np.corrcoef(new_ret, old_ret)[0, 1])
+        if np.isnan(corr):
+            logger.info("Skipping NaN correlation old_alpha_id=%s records=%s", old_id, len(old_ret))
+            continue
+        results.append({"alpha_id": old_id, "correlation": corr, "sharpe": old.get("sharpe"), "fitness": old.get("fitness")})
+    results.sort(key=lambda x: abs(x["correlation"]), reverse=True)
+    return results
+
+
+# BRAIN returns these robustness checks inside every regular simulation's
+# `is.checks` block (no OS / extra simulation needed). A FAIL on any of them
+# means the alpha is IS-strong but fragile (overfit to the full universe /
+# concentrated in a few names) — exactly the out-of-sample-robustness signal
+# that BUGS #6 is about. We use the platform's verdict directly.
+ROBUSTNESS_CHECK_NAMES = ("LOW_SUB_UNIVERSE_SHARPE", "CONCENTRATED_WEIGHT")
+
+
+def failed_robustness_checks(checks: list | None) -> list[str]:
+    """Return the names of robustness checks the alpha FAILED.
+
+    `checks` is the BRAIN `is.checks` list: [{"name", "result", "limit", "value"}].
+    A missing/None checks list (e.g. older runtime artifacts) yields [] so the
+    caller's behavior is unchanged — robustness gating only kicks in when the
+    platform actually reported the checks.
+    """
+    if not isinstance(checks, list):
+        return []
+    failed: list[str] = []
+    for c in checks:
+        if not isinstance(c, dict):
+            continue
+        if c.get("name") in ROBUSTNESS_CHECK_NAMES and c.get("result") == "FAIL":
+            failed.append(c["name"])
+    return failed
+
+
+def quality_filter(
+    sharpe: float | None,
+    fitness: float | None,
+    turnover: float | None,
+    max_corr: float | None,
+    *,
+    sharpe_threshold: float = 1.25,
+    fitness_threshold: float = 1.0,
+    turnover_threshold: float = 0.7,
+    corr_threshold: float = 0.7,
+    checks: list | None = None,
+    trials: int | None = None,
+) -> str:
+    """Classify a simulation result into SUBMIT / OBSERVE / DISCARD.
+
+    #6 robustness gate: a candidate that clears the IS thresholds for SUBMIT is
+    demoted to OBSERVE if BRAIN's own robustness checks (sub-universe Sharpe /
+    concentrated weight) FAIL — i.e. it looks good on the full universe but is
+    not robust. This uses the platform-reported checks directly; when `checks`
+    is absent the gate is a no-op (backward compatible).
+
+    #8 multiple-testing correction: when `trials` (the number of expressions
+    tested so far this campaign) is given, the SUBMIT Sharpe bar is raised by
+    `multiple_testing_sharpe_penalty(trials)` to offset selection bias — the
+    best of many noisy backtests is inflated, so a fixed 1.5 bar lets more and
+    more false positives through as the campaign grows. A candidate that clears
+    the *base* bar but not the inflated bar is demoted to OBSERVE (kept, not
+    submitted). `trials=None` disables the correction (backward compatible).
+    """
+    if sharpe is None or fitness is None:
+        return "DISCARD"
+
+    if turnover is not None and turnover > turnover_threshold:
+        return "DISCARD"
+
+    if max_corr is not None and abs(max_corr) >= corr_threshold:
+        return "DISCARD"
+
+    effective_sharpe_threshold = sharpe_threshold
+    if trials is not None:
+        effective_sharpe_threshold += multiple_testing_sharpe_penalty(trials)
+
+    if sharpe >= effective_sharpe_threshold and fitness >= fitness_threshold:
+        # Strong in-sample — but only SUBMIT if the platform's robustness
+        # checks also pass; otherwise hold it at OBSERVE (do not auto-submit
+        # a likely-overfit / fragile alpha).
+        if failed_robustness_checks(checks):
+            return "OBSERVE"
+        return "SUBMIT"
+
+    # #8: cleared the base SUBMIT bar but not the multiple-testing-inflated one
+    # — promising enough to keep watching, not strong enough to auto-submit.
+    if sharpe >= sharpe_threshold and fitness >= fitness_threshold:
+        return "OBSERVE"
+
+    if sharpe >= 1.0 or fitness >= 0.8:
+        return "OBSERVE"
+
+    return "DISCARD"
+
+
+def _extract_params(candidate: dict) -> dict[str, str]:
+    """Extract key params from a candidate for lessons tracking."""
+    params = {}
+    settings = candidate.get("settings", {})
+    params["decay"] = str(settings.get("decay", 0))
+    params["neutralization"] = str(settings.get("neutralization", "INDUSTRY"))
+    field_pair = candidate.get("field_pair", {})
+    # field_pair is a dict in single/legacy mode ({numerator, denominator, ...})
+    # but a list of names in combined mode (skeleton with >=2 signal slots, see
+    # generate_candidates.expand_template). Handle both so lessons tracking never
+    # crashes on combined-mode candidates.
+    if isinstance(field_pair, dict):
+        params.update({k: str(v) for k, v in field_pair.items()})
+    elif isinstance(field_pair, list):
+        params["field_pair_names"] = ",".join(str(x) for x in field_pair)
+    params.update({k: str(v) for k, v in candidate.get("params", {}).items()})
+    return params
+
+
+_FIELD_VALIDATOR_CACHE: Any = None
+
+
+def _get_field_categories() -> dict[str, str]:
+    """Lazily build (once) the field-id -> data-category map used to classify
+    expression fields into field_classes. Empty dict if unavailable."""
+    global _FIELD_VALIDATOR_CACHE
+    if _FIELD_VALIDATOR_CACHE is None:
+        if FieldValidator is None or _FIELDS_PATH is None:
+            _FIELD_VALIDATOR_CACHE = {}
+        else:
+            try:
+                target = load_target()
+                _FIELD_VALIDATOR_CACHE = FieldValidator(
+                    _FIELDS_PATH, target.excluded_dataset_ids
+                ).field_categories
+            except Exception:
+                _FIELD_VALIDATOR_CACHE = {}
+    return _FIELD_VALIDATOR_CACHE
+
+
+def _fingerprint_candidate(candidate: dict) -> dict[str, Any]:
+    """Structure fingerprint for a candidate, robust to missing infra.
+
+    Falls back to a minimal shape (concept_id as ast_hash) when
+    structure_fingerprint is unavailable so the write path never crashes.
+    """
+    expr = candidate.get("expression", "")
+    if isinstance(expr, dict):  # remote alpha records store {"code": ...}
+        expr = expr.get("code") or ""
+    expr = str(expr)
+    if structure_fingerprint is not None and expr:
+        try:
+            return structure_fingerprint(expr, _get_field_categories())
+        except Exception:
+            pass
+    cid = candidate.get("concept_id") or candidate.get("template_id") or "unknown"
+    return {"ast_hash": str(cid), "ops": [], "fields": [], "field_classes": [], "depth": 0}
+
+
+def _verdict_to_failure_mode(
+    verdict: str,
+    sharpe: float | None,
+    fitness: float | None,
+    turnover: float | None,
+    max_corr: float | None,
+) -> str | None:
+    """Classify why a non-SUBMIT result fell short (None for SUBMIT)."""
+    if verdict == "SUBMIT":
+        return None
+    if sharpe is None:
+        return "SIM_ERROR"
+    if turnover is not None and turnover > 0.7:
+        return "HIGH_TURNOVER"
+    if max_corr is not None and abs(max_corr) >= 0.7:
+        return "HIGH_CORR"
+    if sharpe < 1.0:
+        return "LOW_SHARPE"
+    if fitness is not None and fitness < 1.0:
+        return "LOW_FITNESS"
+    return "OTHER"
+
+
+def _new_rollup() -> dict[str, Any]:
+    return {
+        "tested": 0, "submit": 0, "observe": 0, "discard": 0,
+        "sharpe_count": 0, "sum_sharpe": 0.0, "avg_sharpe": 0.0,
+        "best_sharpe": None, "failure_modes": {}, "action": "explore",
+        "ops": [], "field_classes": [], "examples": [],
+    }
+
+
+def _apply_to_rollup(roll: dict[str, Any], exp: dict[str, Any]) -> None:
+    """Fold a single experiment record into a rollup bucket (in place)."""
+    roll["tested"] += 1
+    verdict = exp.get("verdict")
+    if verdict == "SUBMIT":
+        roll["submit"] += 1
+    elif verdict == "OBSERVE":
+        roll["observe"] += 1
+    else:
+        roll["discard"] += 1
+    sharpe = (exp.get("is") or {}).get("sharpe")
+    if sharpe is not None:
+        roll["sharpe_count"] += 1
+        roll["sum_sharpe"] += sharpe
+        roll["avg_sharpe"] = roll["sum_sharpe"] / roll["sharpe_count"]
+        if roll["best_sharpe"] is None or sharpe > roll["best_sharpe"]:
+            roll["best_sharpe"] = sharpe
+    fm = exp.get("failure_mode")
+    if fm:
+        roll["failure_modes"][fm] = roll["failure_modes"].get(fm, 0) + 1
+    # Union of structural metadata for human readability.
+    if exp.get("ops"):
+        roll["ops"] = sorted(set(roll["ops"]) | set(exp["ops"]))
+    if exp.get("field_classes"):
+        roll["field_classes"] = sorted(set(roll["field_classes"]) | set(exp["field_classes"]))
+    # Keep a few example expressions for the LLM prompt / debugging.
+    ex = exp.get("expr")
+    if ex and ex not in roll["examples"] and len(roll["examples"]) < 3:
+        roll["examples"].append(ex)
+
+
+def _finalize_rollup_action(roll: dict[str, Any]) -> None:
+    """Derive a consume-side action once a bucket has enough evidence."""
+    tested = roll["tested"]
+    # #9: same minimum-sample gate as the pattern-level action.
+    if tested < MIN_TESTED_FOR_ACTION:
+        roll["action"] = "explore"
+        return
+    pass_rate = (roll["submit"] + roll["observe"]) / tested if tested else 0.0
+    if roll["submit"] == 0 and roll["observe"] == 0:
+        roll["action"] = "skip"
+    elif pass_rate < 0.2:
+        roll["action"] = "deprioritize"
+    else:
+        roll["action"] = "explore"
+
+
+def recompute_rollups(lessons: dict[str, Any]) -> dict[str, Any]:
+    """Rebuild the derived `rollups` cache from the append-only `experiments`.
+
+    rollups is ALWAYS exactly derived(experiments) — this is the single function
+    that establishes that invariant. Called after every append; can also be run
+    standalone to repair the cache. Buckets: by_ast (structure), by_field_class
+    (data category), by_decay (the main tunable param).
+    """
+    by_ast: dict[str, Any] = {}
+    by_fc: dict[str, Any] = {}
+    by_decay: dict[str, Any] = {}
+    for exp in lessons.get("experiments", []):
+        ast = exp.get("ast_hash")
+        if ast:
+            _apply_to_rollup(by_ast.setdefault(ast, _new_rollup()), exp)
+        for fc in exp.get("field_classes", []) or []:
+            _apply_to_rollup(by_fc.setdefault(fc, _new_rollup()), exp)
+        decay = (exp.get("settings") or {}).get("decay")
+        if decay is not None:
+            _apply_to_rollup(by_decay.setdefault(str(decay), _new_rollup()), exp)
+    for roll in by_ast.values():
+        _finalize_rollup_action(roll)
+    for roll in by_fc.values():
+        _finalize_rollup_action(roll)
+    for roll in by_decay.values():
+        _finalize_rollup_action(roll)
+    lessons["rollups"] = {"by_ast": by_ast, "by_field_class": by_fc, "by_decay": by_decay}
+    return lessons["rollups"]
+
+
+# --------------------------------------------------------------------------- #
+# T-MAG v2.0: Field Performance Tracking for Data Discovery Engine
+# --------------------------------------------------------------------------- #
+def _extract_fields_from_expression(expr: str) -> list[str]:
+    """Extract field names from an expression.
+    
+    Args:
+        expr: Alpha expression string
+    
+    Returns:
+        List of field identifiers found in expression
+    """
+    # Extract tokens that look like field names (lowercase with underscores)
+    import re
+    tokens = re.findall(r'\b[a-z][a-z0-9_]{2,}\b', expr.lower())
+    
+    # Filter out known operators and keywords
+    known_ops = {
+        "rank", "group_rank", "ts_rank", "ts_mean", "ts_delta", "ts_sum",
+        "ts_corr", "ts_std_dev", "ts_delay", "ts_count", "abs", "log", "sqrt",
+        "power", "sign", "max", "min", "if_else", "zscore", "group_zscore",
+        "normalize", "scale", "winsorize", "vec_avg", "vec_sum", "vec_std_dev",
+        "group_mean", "group_neutralize", "ts_regression", "ts_covariance",
+        "trade_when", "ts_product", "ts_arg_max", "ts_arg_min",
+        "industry", "subindustry", "sector", "market",  # Group keywords
+        "close", "open", "high", "low", "volume", "vwap", "returns",  # PV builtins
+        "and", "or", "not", "true", "false",  # Logic keywords
+    }
+    
+    # Return unique field names
+    fields = [t for t in tokens if t not in known_ops and len(t) > 2]
+    return list(set(fields))
+
+
+def _update_field_performance(
+    lessons: dict[str, Any],
+    candidate: dict[str, Any],
+    sharpe: float | None,
+    fitness: float | None,
+    verdict: str
+) -> None:
+    """Track field performance for T-MAG v2.0 Data Discovery Engine.
+    
+    Records which fields (from which discovery pools) perform well or poorly,
+    enabling lessons-driven field selection in future discoveries.
+    
+    Args:
+        lessons: Lessons dictionary
+        candidate: Candidate dict with expression and metadata
+        sharpe: Sharpe ratio (None if simulation error)
+        fitness: Fitness score (None if simulation error)
+        verdict: Quality verdict (SUBMIT/OBSERVE/DISCARD)
+    """
+    # Extract expression
+    expr_text = candidate.get("expression", "")
+    if isinstance(expr_text, dict):
+        expr_text = expr_text.get("code") or ""
+    
+    if not expr_text:
+        return  # Nothing to extract
+    
+    # Extract field names from expression
+    field_ids = _extract_fields_from_expression(str(expr_text))
+    
+    if not field_ids:
+        return  # No fields found
+    
+    # Get or create field_performance section
+    field_perf = lessons.setdefault("field_performance", {})
+    
+    # Check if this candidate came from discovery engine
+    field_pair = candidate.get("field_pair")
+    source_pool = None
+    
+    # Try to extract discovery metadata
+    if isinstance(field_pair, dict) and "_metadata" in field_pair:
+        source_pool = field_pair["_metadata"].get("source_pool")
+    elif isinstance(field_pair, list) and len(field_pair) > 0:
+        # Handle list of field pairs
+        if isinstance(field_pair[0], str):
+            # List of field names (combined mode)
+            pass
+        elif isinstance(field_pair[0], dict) and "_metadata" in field_pair[0]:
+            source_pool = field_pair[0]["_metadata"].get("source_pool")
+    
+    # Update performance for each field
+    for field_id in field_ids:
+        if field_id not in field_perf:
+            field_perf[field_id] = {
+                "tested": 0,
+                "submit_count": 0,
+                "observe_count": 0,
+                "discard_count": 0,
+                "avg_sharpe": 0.0,
+                "avg_fitness": 0.0,
+                "sharpe_count": 0,
+                "fitness_count": 0,
+                "source_pool": source_pool or "unknown",
+                "discovery_count": 0,
+                "status": "neutral"
+            }
+        
+        perf = field_perf[field_id]
+        perf["tested"] += 1
+        
+        # Track verdict
+        if verdict == "SUBMIT":
+            perf["submit_count"] += 1
+        elif verdict == "OBSERVE":
+            perf["observe_count"] += 1
+        else:
+            perf["discard_count"] += 1
+        
+        # Update source pool (track most common)
+        if source_pool:
+            perf["source_pool"] = source_pool
+            perf["discovery_count"] = perf.get("discovery_count", 0) + 1
+        
+        # Update sharpe average
+        if sharpe is not None:
+            old_count = perf["sharpe_count"]
+            perf["sharpe_count"] += 1
+            if old_count > 0:
+                perf["avg_sharpe"] = (
+                    perf["avg_sharpe"] * old_count + sharpe
+                ) / perf["sharpe_count"]
+            else:
+                perf["avg_sharpe"] = sharpe
+        
+        # Update fitness average
+        if fitness is not None:
+            old_count = perf["fitness_count"]
+            perf["fitness_count"] += 1
+            if old_count > 0:
+                perf["avg_fitness"] = (
+                    perf["avg_fitness"] * old_count + fitness
+                ) / perf["fitness_count"]
+            else:
+                perf["avg_fitness"] = fitness
+        
+        # Update status (prefer/neutral/avoid)
+        # Promote wildcard discoveries that succeed
+        if perf["tested"] >= 5:  # Minimum sample size
+            success_rate = perf["submit_count"] / perf["tested"]
+            
+            if success_rate >= 0.3 and perf["avg_sharpe"] >= 1.2:
+                perf["status"] = "prefer"
+                logger.info(
+                    "Field %s promoted to 'prefer' (success_rate=%.2f, avg_sharpe=%.2f, pool=%s)",
+                    field_id,
+                    success_rate,
+                    perf["avg_sharpe"],
+                    perf.get("source_pool", "unknown")
+                )
+            elif success_rate == 0.0 and perf["tested"] >= 10:
+                perf["status"] = "avoid"
+                logger.info(
+                    "Field %s marked as 'avoid' (no successes after %d tests)",
+                    field_id,
+                    perf["tested"]
+                )
+            else:
+                perf["status"] = "neutral"
+
+
+def update_lessons_from_result(
+    lessons: dict[str, Any],
+    candidate: dict,
+    sim_result: dict,
+    max_corr: float | None = None,
+) -> None:
+    """Update lessons.json with results from a simulation."""
+    template_id = candidate.get("template_id", "unknown")
+    # A FETCH_ERROR means the simulation COMPLETED but its metrics couldn't be
+    # retrieved (infra/eventual-consistency issue). It says nothing about the
+    # template's quality, so do not record it — counting it would wrongly inflate
+    # the template's sim_errors and bias its action toward skip/deprioritize.
+    if sim_result.get("status") == "FETCH_ERROR":
+        logger.info("Skipping lessons update for FETCH_ERROR template_id=%s alpha_id=%s", template_id, sim_result.get("alpha_id"))
+        return
+    sim_data = sim_result.get("sim_data", {})
+    is_data = sim_data.get("is", {}) if isinstance(sim_data, dict) else {}
+
+    sharpe = is_data.get("sharpe")
+    fitness = is_data.get("fitness")
+    turnover = is_data.get("turnover")
+    # #6: BRAIN's robustness checks ride along in the same is.checks block.
+    checks = is_data.get("checks") if isinstance(is_data, dict) else None
+    failed_robustness = failed_robustness_checks(checks)
+
+    # Ensure pattern exists
+    patterns = lessons.setdefault("patterns", {})
+    if template_id not in patterns:
+        patterns[template_id] = {
+            "description": f"Template: {template_id}",
+            "tested": 0, "passed": 0, "observed": 0, "pass_rate": 0.0,
+            "avg_sharpe": 0.0, "avg_fitness": 0.0,
+            "sharpe_count": 0, "fitness_count": 0, "sim_errors": 0,
+            "best": None, "failure_modes": {}, "action": "expand",
+            "notes": "",
+        }
+
+    p = patterns[template_id]
+    # Backward-compat: older lessons.json may lack the per-metric counters.
+    p.setdefault("sharpe_count", 0)
+    p.setdefault("fitness_count", 0)
+    p.setdefault("sim_errors", 0)
+    p.setdefault("observed", 0)
+    p["tested"] += 1
+
+    # Determine pass/fail. #14: OBSERVE (near-misses) are tracked separately so
+    # promising templates aren't statistically killed by counting them as plain
+    # failures. `passed` stays strict (SUBMIT only) for backward compatibility;
+    # `observed` feeds a weighted pass_rate that gives OBSERVE half credit.
+    action = quality_filter(sharpe, fitness, turnover, max_corr, checks=checks, trials=len(lessons.get("experiments", [])))
+    passed = action == "SUBMIT"
+
+    if passed:
+        p["passed"] += 1
+    elif action == "OBSERVE":
+        p["observed"] += 1
+        # #6: a SUBMIT-grade IS result demoted to OBSERVE purely because it
+        # failed robustness checks is a distinct, useful signal — record it.
+        if failed_robustness and sharpe is not None and fitness is not None \
+                and sharpe >= 1.5 and fitness >= 1.0:
+            fm = p.setdefault("failure_modes", {})
+            fm["ROBUSTNESS_FAIL"] = fm.get("ROBUSTNESS_FAIL", 0) + 1
+    else:
+        # Record failure mode
+        if sharpe is None:
+            mode = "SIM_ERROR"
+        elif sharpe < 1.0:
+            mode = "LOW_SHARPE"
+        elif fitness is not None and fitness < 1.0:
+            mode = "LOW_FITNESS"
+        elif turnover is not None and turnover > 0.7:
+            mode = "HIGH_TURNOVER"
+        elif max_corr is not None and abs(max_corr) >= 0.7:
+            mode = "HIGH_CORR"
+        else:
+            mode = "OTHER"
+        fm = p.setdefault("failure_modes", {})
+        fm[mode] = fm.get(mode, 0) + 1
+
+    # Update averages over VALID samples only. `tested` counts every result
+    # (incl. SIM_ERROR with sharpe=None); using it as the divisor would
+    # systematically bias avg_sharpe/avg_fitness downward. Track per-metric
+    # counts instead.
+    if sharpe is None:
+        p["sim_errors"] += 1
+    if sharpe is not None:
+        old_count = p["sharpe_count"]
+        p["sharpe_count"] += 1
+        if old_count > 0:
+            p["avg_sharpe"] = (p["avg_sharpe"] * old_count + sharpe) / p["sharpe_count"]
+        else:
+            p["avg_sharpe"] = sharpe
+
+    if fitness is not None:
+        old_count = p["fitness_count"]
+        p["fitness_count"] += 1
+        if old_count > 0:
+            p["avg_fitness"] = (p["avg_fitness"] * old_count + fitness) / p["fitness_count"]
+        else:
+            p["avg_fitness"] = fitness
+
+    p["pass_rate"] = p["passed"] / p["tested"] if p["tested"] > 0 else 0.0
+    # Weighted rate gives OBSERVE half credit so near-misses keep a template
+    # alive (drives the action gate below; pass_rate stays strict for reporting).
+    weighted_rate = (
+        (p["passed"] + 0.5 * p.get("observed", 0)) / p["tested"]
+        if p["tested"] > 0 else 0.0
+    )
+
+    # Update best
+    if sharpe is not None:
+        best = p.get("best")
+        if best is None or sharpe > best.get("sharpe", 0):
+            p["best"] = {
+                "alpha_id": sim_result.get("alpha_id", "?"),
+                "sharpe": sharpe,
+                "expr": candidate.get("expression", ""),
+            }
+
+    # Auto-update action based on weighted pass rate (incl. OBSERVE credit).
+    # #9: require a minimum sample before flipping action — a verdict off 2-3
+    # runs is noise. Below the gate the template stays at its default action.
+    if p["tested"] >= MIN_TESTED_FOR_ACTION:
+        if weighted_rate == 0.0:
+            p["action"] = "skip"
+        elif weighted_rate < 0.2:
+            p["action"] = "deprioritize"
+        else:
+            p["action"] = "expand"
+
+    # Update param insights
+    params = _extract_params(candidate)
+    param_insights = lessons.setdefault("param_insights", {})
+
+    for param_name, param_val in params.items():
+        pi = param_insights.setdefault(param_name, {})
+        entry = pi.setdefault(param_val, {
+            "avg_sharpe": 0.0, "verdict": "neutral", "notes": "", "count": 0,
+            "sharpe_count": 0,
+        })
+        entry.setdefault("sharpe_count", 0)
+        entry["count"] += 1
+        if sharpe is not None:
+            old_count = entry["sharpe_count"]
+            entry["sharpe_count"] += 1
+            if old_count > 0:
+                entry["avg_sharpe"] = (entry["avg_sharpe"] * old_count + sharpe) / entry["sharpe_count"]
+            else:
+                entry["avg_sharpe"] = sharpe
+            if entry["sharpe_count"] >= MIN_COUNT_FOR_VERDICT:
+                if entry["avg_sharpe"] >= 1.5:
+                    entry["verdict"] = "prefer"
+                elif entry["avg_sharpe"] < 0.8:
+                    entry["verdict"] = "deprioritize"
+
+    # --- v2: append an immutable experiment fact + recompute derived rollups ---
+    # `action` here is the quality_filter verdict (SUBMIT / OBSERVE / DISCARD).
+    fp = _fingerprint_candidate(candidate)
+    expr_text = candidate.get("expression", "")
+    if isinstance(expr_text, dict):
+        expr_text = expr_text.get("code") or ""
+    experiment = {
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "alpha_id": sim_result.get("alpha_id"),
+        "ast_hash": fp["ast_hash"],
+        "concept_id": candidate.get("concept_id") or candidate.get("template_id"),
+        "ops": fp["ops"],
+        "field_classes": fp["field_classes"],
+        "depth": fp["depth"],
+        "source": candidate.get("source", "template"),
+        "expr": str(expr_text)[:200],
+        "settings": {
+            "decay": candidate.get("settings", {}).get("decay"),
+            "neutralization": candidate.get("settings", {}).get("neutralization"),
+            "universe": candidate.get("settings", {}).get("universe"),
+        },
+        "is": {"sharpe": sharpe, "fitness": fitness, "turnover": turnover},
+        "max_corr": max_corr,
+        "robustness_failed": failed_robustness,
+        "verdict": action,
+        "failure_mode": _verdict_to_failure_mode(action, sharpe, fitness, turnover, max_corr),
+    }
+    lessons.setdefault("experiments", []).append(experiment)
+    recompute_rollups(lessons)
+    
+    # T-MAG v2.0: Track field performance for data discovery engine
+    _update_field_performance(lessons, candidate, sharpe, fitness, action)
+
+    lessons["last_updated"] = datetime.now(timezone.utc).isoformat()

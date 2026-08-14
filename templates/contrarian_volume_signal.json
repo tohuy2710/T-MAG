@@ -1,0 +1,35 @@
+{
+  "template_id": "contrarian_volume_signal",
+  "tags": ["HIGH_TURNOVER"],
+  "excluded_datasets": ["model110"],
+  "description": "量价背离反转因子：基于丁大鹏&刘千秋(2016)《个股反转策略与行业动量策略》核心发现——交易量大的股票对信息反应更充分，因而反转效应更强；交易量小的股票则容易产生动量。本模板用-ts_corr(close,adv20,N)捕捉量价背离反转信号：量价负相关(价升量缩，不可持续)做多，量价正相关(放量上涨，已过度反应)做空。",
+  "skeleton": "group_rank(-ts_corr({price_signal}, adv20, {window}), {group})",
+  "field_pairs": [
+    {"name": "price_signal", "price_signal": "close"},
+    {"name": "return_signal", "price_signal": "close / ts_delay(close, 5)"},
+    {"name": "log_price", "price_signal": "log(close)"},
+    {"name": "vol_adj_price", "price_signal": "close / ts_std_dev(close, 10)"},
+    {"name": "adv_ratio", "price_signal": "adv20 / ts_delay(adv20, 20)"}
+  ],
+  "param_ranges": {
+    "window": [10, 21, 42],
+    "group": ["subindustry", "industry"],
+    "decay": [4, 8],
+    "truncation": [0.08]
+  },
+  "default_settings": {
+    "decay": 4,
+    "neutralization": "SLOW",
+    "truncation": 0.08,
+    "nanHandling": "ON",
+    "unitHandling": "VERIFY"
+  },
+  "hypothesis": "丁大鹏&刘千秋(2016)实证：交易量大的股票对信息反应速度更快，放量上涨后更容易反转。-ts_corr(close,adv20,N)为负代表价量正相关(放量上涨)，取负后信号为正，做空；-ts_corr为正代表价量负相关(缩量下跌/量价背离)，做多。短窗口10-21日对应论文L1-L2月度反转窗口；group_rank控制行业效应。",
+  "source": "丁大鹏、刘千秋《个股反转策略与行业动量策略——基于A股市场的实证研究》(2016)",
+  "expected_correlation": "与ashare_short_reversal(累计收益反转)中等相关约0.4-0.6；与price_turnover_correlation结构相似但使用adv20而非volume；适合跨信号池",
+  "failure_risks": {
+    "LOW_SHARPE": "全球市场量价机制与A股不同；adv20是20日均量，ts_corr时间窗口需匹配",
+    "HIGH_TURNOVER": "短窗口corr变化快；decay=4-8控制换手",
+    "SIM_ERROR": "adv20在GLB TOPDIV3000存在(alphaCount=2022)；ts_corr要求window>=2"
+  }
+}

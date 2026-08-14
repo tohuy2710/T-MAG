@@ -1,0 +1,40 @@
+{
+  "template_id": "smallcap_enhanced_reversal",
+  "description": "Template kết hợp hiệu ứng đảo chiều giá ngắn hạn với yếu tố quy mô vốn hóa. Bài báo chứng minh các công ty quy mô vốn hóa nhỏ có cường độ đảo chiều giá mạnh hơn rõ rệt so với các công ty vốn hóa lớn.",
+  "hypothesis": "Cổ phiếu vốn hóa nhỏ có ít sự theo dõi từ các nhà phân tích và tỷ lệ nhà đầu tư cá nhân cao hơn, làm gia tăng mức độ phản ứng quá đà và tạo ra biên độ đảo chiều lợi nhuận lớn hơn.",
+  "skeleton": "group_rank(-ts_rank(({close} - ts_delta({close}, {window})) / ts_delta({close}, {window}), {window}) / rank({size_proxy}), {group})",
+  "field_pairs": [
+    {
+      "close": "close",
+      "size_proxy": "assets"
+    },
+    {
+      "close": "vwap",
+      "size_proxy": "equity"
+    }
+  ],
+  "param_ranges": {
+    "window": [
+      15,
+      20,
+      30
+    ],
+    "group": [
+      "subindustry",
+      "industry"
+    ]
+  },
+  "default_settings": {
+    "decay": 5,
+    "neutralization": "SUBINDUSTRY"
+  },
+  "tags": [
+    "technical",
+    "mean_reversion",
+    "fundamental"
+  ],
+  "source": "个股反转策略与行业动量策略——基于A股市场的实证研究 (Ding & Liu)",
+  "notes": "Kết quả Fama-MacBeth trong bài báo cho thấy hệ số đảo chiều L1 của nhóm vốn hóa nhỏ (-0.1452 đến -0.1541) lớn hơn nhiều so với nhóm vốn hóa lớn (-0.0086 đến -0.0148).",
+  "_ingested_at": "2026-08-13T10:21:22.830417+00:00",
+  "_source": "llm_extraction"
+}

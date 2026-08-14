@@ -1,0 +1,36 @@
+{
+  "template_id": "session_volume_composition",
+  "description": "日内成交结构占比因子(Level2成交占比的日频代理)的 GLB 版代理：直接复用原始想法，但用 GLB 中可用的成交量字段做最近一段时间成交量占比代理。",
+  "skeleton": "group_rank(ts_mean(({share_num}) / ({share_den}), {window}), {group})",
+  "field_pairs": [
+    {"name": "volume_ratio_proxy", "share_num": "avg_trade_volume_last_half", "share_den": "avg_trade_volume_last_quarter + 1"},
+    {"name": "volume_trend_proxy", "share_num": "ts_delta(avg_trade_volume_last_half, 21)", "share_den": "avg_trade_volume_last_quarter + 1"}
+  ],
+  "param_ranges": {
+    "window": [21, 63],
+    "group": ["industry", "subindustry"],
+    "decay": [4],
+    "truncation": [0.08]
+  },
+  "default_settings": {
+    "instrumentType": "EQUITY",
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "decay": 4,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "nanHandling": "ON",
+    "unitHandling": "VERIFY"
+  },
+  "hypothesis": "海通(2016)第3.1节:成交占比类因子存在明显组间收益单调性且多头效应强(多空1:1,不像反转75%来自空头)。连续竞价成交占比高→散户/中小单驱动的持续交易→后市上涨;竞价集合(开盘/收盘auction)占比高→机构/大单集中→后市走弱。用分时段成交量比例的月度均值(ts_mean over 21-63)复现该结构性信号,连续竞价占比取正、竞价集中度取负,对应论文单调性方向。",
+  "source": "海通证券《选股因子系列研究(十一)——Level2行情选股因子初探》(2016)",
+  "expected_correlation": "与市值/反转/换手率类因子中等相关(论文第4节明确指出成交占比具‘小市值、前期低涨幅、低换手’特征),SUBINDUSTRY中性化后应保留增量Alpha;与盈利质量/估值因子低相关",
+  "failure_risks": {
+    "LOW_SHARPE": "美股集合竞价机制与A股不同(A股有明确开盘/收盘集合竞价成交量),代理保真度有限;若session volume分档在部分股票缺失会稀释信号,nanHandling=ON缓解",
+    "HIGH_CORR": "论文自述成交占比与反转/换手高相关,可能与现有reversal/relative_volume模板相关,需中性化去重",
+    "DIV_ZERO": "分母current_trading_volume_count+1恒正,安全",
+    "DATA_GAP": "WQ USA无逐笔Level2:无特大/大/中/小单分档与主买主卖方向,故论文的分档成交占比与净买入比率类因子无法直接复现,本模板仅以分时段成交量代理最核心的连续竞价占比机制"
+  }
+}

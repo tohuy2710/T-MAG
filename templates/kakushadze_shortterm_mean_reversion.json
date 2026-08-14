@@ -1,0 +1,40 @@
+{
+  "template_id": "kakushadze_shortterm_mean_reversion",
+  "description": "Dựa trên công thức (2) và triết lý cốt lõi từ bài báo của Kakushadze, chiến lược này tập trung vào sự đảo chiều (mean-reversion) của giá. Khai thác thói quen giá thường bật ngược lại sau một đợt biến động ngắn hạn.",
+  "hypothesis": "Cổ phiếu có sự thay đổi giá lớn trong ngắn hạn thường có xu hướng đảo chiều trở lại mức trung bình do tâm lý phản ứng thái quá (overreaction) của thị trường, đặc biệt trong giai đoạn nắm giữ từ 1-6 ngày.",
+  "skeleton": "group_rank(-ts_delta(log({price_field}), {window}), {group})",
+  "field_pairs": [
+    {
+      "price_field": "close"
+    },
+    {
+      "price_field": "vwap"
+    },
+    {
+      "price_field": "open"
+    }
+  ],
+  "param_ranges": {
+    "window": [
+      1,
+      2,
+      3,
+      5
+    ],
+    "group": [
+      "industry",
+      "subindustry"
+    ]
+  },
+  "default_settings": {
+    "decay": 2,
+    "neutralization": "SUBINDUSTRY"
+  },
+  "tags": [
+    "technical",
+    "mean_reversion",
+    "price"
+  ],
+  "source": "101 Formulaic Alphas (Kakushadze, 2015)",
+  "notes": "Phiên bản tổng quát hóa từ công thức `-ln(today's open / yesterday's close)` trong bài báo, áp dụng cho cross-sectional rank."
+}

@@ -1,0 +1,261 @@
+{
+  "expression": "group_rank(ts_mean((returns > 0) * returns - (returns < 0) * returns, 20) / (volume + 0.000001), industry)",
+  "template_id": "amihud_illiquidity_proxy",
+  "status": "COMPLETE",
+  "alpha_id": "ZYEA9kVY",
+  "sim_data": {
+    "id": "ZYEA9kVY",
+    "type": "REGULAR",
+    "author": "TH98365",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "GLB",
+      "universe": "TOPDIV3000",
+      "delay": 1,
+      "decay": 0,
+      "neutralization": "FAST",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "ON",
+      "maxTrade": "OFF",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "startDate": "2014-01-01",
+      "endDate": "2023-12-31"
+    },
+    "regular": {
+      "code": "group_rank(ts_mean((returns > 0) * returns - (returns < 0) * returns, 20) / (volume + 0.000001), industry)",
+      "description": null,
+      "operatorCount": 9
+    },
+    "dateCreated": "2026-08-11T23:23:42-04:00",
+    "dateSubmitted": null,
+    "dateModified": "2026-08-11T23:23:43-04:00",
+    "name": null,
+    "favorite": false,
+    "hidden": false,
+    "color": null,
+    "category": null,
+    "tags": [],
+    "classifications": [
+      {
+        "id": "DATA_USAGE:SINGLE_DATA_SET",
+        "name": "Single Data Set Alpha"
+      }
+    ],
+    "grade": null,
+    "stage": "IS",
+    "status": "UNSUBMITTED",
+    "is": {
+      "pnl": -350876,
+      "bookSize": 20000000,
+      "longCount": 897,
+      "shortCount": 889,
+      "turnover": 0.3561,
+      "returns": -0.0034,
+      "drawdown": 0.124,
+      "margin": -1.9e-05,
+      "sharpe": -0.15,
+      "fitness": -0.01,
+      "startDate": "2014-01-01",
+      "glbAmer": {
+        "pnl": -564971,
+        "bookSize": 20000000,
+        "longCount": 486,
+        "shortCount": 480,
+        "turnover": 0.1962,
+        "returns": -0.0055,
+        "drawdown": 0.0983,
+        "margin": -5.6e-05,
+        "fitness": -0.05,
+        "sharpe": -0.28
+      },
+      "glbApac": {
+        "pnl": -118221,
+        "bookSize": 20000000,
+        "longCount": 211,
+        "shortCount": 221,
+        "turnover": 0.0871,
+        "returns": -0.0011,
+        "drawdown": 0.0309,
+        "margin": -2.6e-05,
+        "fitness": -0.01,
+        "sharpe": -0.12
+      },
+      "glbEmea": {
+        "pnl": 332315,
+        "bookSize": 20000000,
+        "longCount": 199,
+        "shortCount": 186,
+        "turnover": 0.0728,
+        "returns": 0.0032,
+        "drawdown": 0.0149,
+        "margin": 8.8e-05,
+        "fitness": 0.08,
+        "sharpe": 0.52
+      },
+      "investabilityConstrained": {
+        "pnl": -843330,
+        "bookSize": 20000000,
+        "longCount": 896,
+        "shortCount": 890,
+        "turnover": 0.3224,
+        "returns": -0.0082,
+        "drawdown": 0.1976,
+        "margin": -5.1e-05,
+        "fitness": -0.04,
+        "sharpe": -0.22
+      },
+      "checks": [
+        {
+          "name": "LOW_SHARPE",
+          "result": "FAIL",
+          "limit": 1.58,
+          "value": -0.15
+        },
+        {
+          "name": "CLUSTER_TEST",
+          "result": "WARNING",
+          "limit": 1.58,
+          "value": 0.14
+        },
+        {
+          "name": "LOW_FITNESS",
+          "result": "FAIL",
+          "limit": 1.0,
+          "value": -0.01
+        },
+        {
+          "name": "LOW_GLB_AMER_SHARPE",
+          "result": "FAIL",
+          "limit": 1,
+          "value": -0.28
+        },
+        {
+          "name": "LOW_GLB_EMEA_SHARPE",
+          "result": "FAIL",
+          "limit": 1,
+          "value": 0.52
+        },
+        {
+          "name": "LOW_GLB_APAC_SHARPE",
+          "result": "FAIL",
+          "limit": 1,
+          "value": -0.12
+        },
+        {
+          "name": "LOW_TURNOVER",
+          "result": "PASS",
+          "limit": 0.01,
+          "value": 0.3561
+        },
+        {
+          "name": "HIGH_TURNOVER",
+          "result": "PASS",
+          "limit": 0.7,
+          "value": 0.3561
+        },
+        {
+          "name": "CONCENTRATED_WEIGHT",
+          "result": "PASS"
+        },
+        {
+          "name": "LOW_SUB_UNIVERSE_SHARPE",
+          "result": "PASS",
+          "limit": -0.09,
+          "value": -0.01
+        },
+        {
+          "name": "UNITS",
+          "result": "WARNING",
+          "message": "Incompatible unit for input of \"add\" at index 1, expected \"Unit[CSPrice:1,CSShare:1]\", found \"Unit[]\""
+        },
+        {
+          "name": "SELF_CORRELATION",
+          "result": "PENDING"
+        },
+        {
+          "name": "DATA_DIVERSITY",
+          "result": "PENDING"
+        },
+        {
+          "name": "PROD_CORRELATION",
+          "result": "PENDING"
+        },
+        {
+          "name": "REGULAR_SUBMISSION",
+          "result": "PENDING"
+        },
+        {
+          "name": "HT_TURNOVER",
+          "result": "PASS",
+          "limit": 0.2,
+          "value": 0.3561
+        },
+        {
+          "name": "HT_HIGH_TURNOVER_RETURNS_RATIO",
+          "result": "WARNING",
+          "limit": 0.75,
+          "value": 0.4118
+        },
+        {
+          "name": "LOW_2Y_SHARPE",
+          "result": "FAIL",
+          "value": -1.04,
+          "limit": 1.58
+        },
+        {
+          "name": "MATCHES_COMPETITION",
+          "result": "PASS",
+          "competitions": [
+            {
+              "id": "GAC2026",
+              "name": "Global Alpha Competition 2026"
+            }
+          ]
+        },
+        {
+          "result": "PASS",
+          "name": "MATCHES_PYRAMID",
+          "effective": 1,
+          "multiplier": 1.0,
+          "pyramids": [
+            {
+              "name": "GLB/D1/PV",
+              "multiplier": 1.0
+            }
+          ]
+        },
+        {
+          "result": "WARNING",
+          "name": "MATCHES_THEMES",
+          "themes": [
+            {
+              "id": "9BKPE8D",
+              "multiplier": 1.0,
+              "name": "GLB/D1 Power Pool Aug`26 2"
+            }
+          ]
+        },
+        {
+          "name": "OSMOSIS_ALLOCATION",
+          "result": "WARNING"
+        }
+      ]
+    },
+    "os": null,
+    "train": null,
+    "test": null,
+    "prod": null,
+    "competitions": null,
+    "themes": null,
+    "pyramids": null,
+    "pyramidThemes": null,
+    "team": null,
+    "osmosisPoints": null,
+    "origin": "PLATFORM"
+  },
+  "simulated_at": "2026-08-13T15:14:09.170983+00:00"
+}

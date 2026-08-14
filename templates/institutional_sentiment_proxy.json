@@ -1,0 +1,44 @@
+{
+  "template_id": "institutional_sentiment_proxy",
+  "tags": ["HIGH_TURNOVER"],
+  "excluded_datasets": ["model110"],
+  "description": "基于分析师推荐的情绪代理：把原始机构情绪想法迁移到 GLB 的分析师修正数据上，使用净上调/下调分析师数量占比作为情绪强度代理。",
+  "skeleton": "group_rank(ts_rank({numerator} / {denominator}, {window}), {group})",
+  "field_pairs": [
+    {
+      "numerator": "analyst_recommendation_upgrades_30d_short_4",
+      "denominator": "(analyst_recommendation_upgrades_30d_short_4 + analyst_recommendation_downgrades_30d_short_4 + 1)",
+      "description": "短期上调/下调推荐净比率 - 情绪代理"
+    },
+    {
+      "numerator": "analyst_recommendation_upgrades_14d_medium_4",
+      "denominator": "(analyst_recommendation_upgrades_14d_medium_4 + analyst_recommendation_downgrades_14d_medium_4 + 1)",
+      "description": "中期上调/下调推荐净比率 - 机构情绪分歧"
+    }
+  ],
+  "param_ranges": {
+    "window": [
+      63,
+      126,
+      252
+    ],
+    "group": [
+      "subindustry",
+      "industry",
+      "sector"
+    ]
+  },
+  "default_settings": {
+    "decay": 5,
+    "neutralization": "SUBINDUSTRY",
+    "pasteurization": "ON",
+    "unit_handling": "VERIFY",
+    "nan_handling": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false
+  },
+  "hypothesis": "机构投资者通过分析师推荐表达观点。买入推荐比例的时序排名变化反映机构情绪趋势。控制市值后，高机构关注度股票表现优于低关注度股票。ts_rank捕捉情绪变化趋势，group_rank在同行业内横截面对比。",
+  "source": "paper_010",
+  "source_title": "基于机构持股信息的Portable_Alpha策略增强",
+  "proven_examples": []
+}
