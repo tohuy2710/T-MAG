@@ -520,6 +520,11 @@ class BrainClient:
                         len(resp.text or ""),
                         _text_fingerprint(resp.text or ""),
                     )
+                    # ALWAYS print error for debugging
+                    print(f"\n!!! BRAIN API ERROR {resp.status_code} !!!")
+                    print(f"URL: {url}")
+                    print(f"Response: {resp.text[:500]}")
+                    print("!!!\n")
                     logger.debug("POST error body url=%s body=%s", url, resp.text[:1000])
                 return resp
             except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as e:

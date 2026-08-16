@@ -1,0 +1,39 @@
+{
+  "template_id": "quarterly_return_reversal",
+  "tags": ["reversal", "price_action", "conditional"],
+  "excluded_datasets": ["model110"],
+  "description": "Conditional price reversal with multiple lookback periods and neutralization groups. Tests reversal effects across different timeframes (3-20 days) and group structures to find optimal mean-reversion parameters for GLB/TOPDIV3000.",
+  "skeleton": "group_rank(-ts_delta({field}, {lookback}), {group})",
+  "field_pairs": [
+    {"name": "close_reversal", "field": "close"},
+    {"name": "returns_reversal", "field": "returns"},
+    {"name": "vwap_reversal", "field": "vwap"},
+    {"name": "open_reversal", "field": "open"}
+  ],
+  "param_ranges": {
+    "lookback": [3, 5, 10, 20],
+    "group": ["industry", "subindustry", "sector"],
+    "decay": [0, 4, 8],
+    "truncation": [0.08, 0.10]
+  },
+  "default_settings": {
+    "instrumentType": "EQUITY",
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "decay": 0,
+    "neutralization": "SUBINDUSTRY",
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "nanHandling": "ON",
+    "unitHandling": "VERIFY"
+  },
+  "hypothesis": "Short-term price reversals (3-20 days) exhibit mean-reversion behavior across GLB equities. Recent losers outperform recent winners over the next period. Different lookback windows and neutralization groups may capture different reversal regimes - faster reversals (3-5 days) vs slower corrections (10-20 days).",
+  "source": "Custom template - multi-parameter reversal strategy based on public BRAIN reversal patterns (similar to ashare_short_reversal but parameterized for GLB)",
+  "expected_correlation": "Negative correlation with momentum strategies; low correlation with value factors",
+  "failure_risks": {
+    "LOW_SHARPE": "GLB markets may have weaker reversal effects than A-shares",
+    "HIGH_TURNOVER": "Short lookback periods create high turnover; decay and truncation help mitigate",
+    "MOMENTUM_REGIME": "In strong momentum regimes, reversals may underperform"
+  }
+}

@@ -1,0 +1,618 @@
+# Param: CMF_window=3, Reversal_window=5
+ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 5))
+
+# Param: CMF_window=3, Reversal_window=10
+ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10))
+
+# Param: CMF_window=3, Reversal_window=20
+ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20))
+
+# Param: CMF_window=3, Reversal_window=60
+ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60))
+
+# Param: CMF_window=5, Reversal_window=5
+ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 5))
+
+# Param: CMF_window=5, Reversal_window=10
+ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10))
+
+# Param: CMF_window=5, Reversal_window=20
+ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20))
+
+# Param: CMF_window=5, Reversal_window=60
+ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60))
+
+# Param: CMF_window=10, Reversal_window=5
+ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 5))
+
+# Param: CMF_window=10, Reversal_window=10
+ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10))
+
+# Param: CMF_window=10, Reversal_window=20
+ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20))
+
+# Param: CMF_window=10, Reversal_window=60
+ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60))
+
+# Param: CMF_window=22, Reversal_window=5
+ts_rank(short_term_price_change_2, 22) * (1 - ts_rank(returns, 5))
+
+# Param: CMF_window=22, Reversal_window=10
+ts_rank(short_term_price_change_2, 22) * (1 - ts_rank(returns, 10))
+
+# Param: CMF_window=22, Reversal_window=20
+ts_rank(short_term_price_change_2, 22) * (1 - ts_rank(returns, 20))
+
+# Param: CMF_window=22, Reversal_window=60
+ts_rank(short_term_price_change_2, 22) * (1 - ts_rank(returns, 60))
+
+# Step3.1: rank() normalization | CMF=3, Rev=10
+rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)))
+
+# Step3.2: group_rank(industry) | CMF=3, Rev=10
+group_rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=3, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=3, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=3, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=3, Rev=10
+group_neutralize(rank(ts_rank(short_term_price_change_2, 3)) * rank(1 - ts_rank(returns, 10)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=3, Rev=10
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=3, Rev=10
+rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)))
+
+# Step3.2: group_rank(subindustry) | CMF=3, Rev=10
+group_rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=3, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=3, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=3, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=3, Rev=10
+group_neutralize(rank(ts_rank(short_term_price_change_2, 3)) * rank(1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=3, Rev=10
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=3, Rev=20
+rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)))
+
+# Step3.2: group_rank(industry) | CMF=3, Rev=20
+group_rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=3, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=3, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=3, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=3, Rev=20
+group_neutralize(rank(ts_rank(short_term_price_change_2, 3)) * rank(1 - ts_rank(returns, 20)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=3, Rev=20
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=3, Rev=20
+rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)))
+
+# Step3.2: group_rank(subindustry) | CMF=3, Rev=20
+group_rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=3, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=3, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=3, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=3, Rev=20
+group_neutralize(rank(ts_rank(short_term_price_change_2, 3)) * rank(1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=3, Rev=20
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=3, Rev=60
+rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)))
+
+# Step3.2: group_rank(industry) | CMF=3, Rev=60
+group_rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=3, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=3, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=3, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=3, Rev=60
+group_neutralize(rank(ts_rank(short_term_price_change_2, 3)) * rank(1 - ts_rank(returns, 60)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=3, Rev=60
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=3, Rev=60
+rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)))
+
+# Step3.2: group_rank(subindustry) | CMF=3, Rev=60
+group_rank(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=3, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=3, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=3, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=3, Rev=60
+group_neutralize(rank(ts_rank(short_term_price_change_2, 3)) * rank(1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=3, Rev=60
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 60)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=5, Rev=10
+rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)))
+
+# Step3.2: group_rank(industry) | CMF=5, Rev=10
+group_rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=5, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=5, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=5, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=5, Rev=10
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) * rank(1 - ts_rank(returns, 10)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=5, Rev=10
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=5, Rev=10
+rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)))
+
+# Step3.2: group_rank(subindustry) | CMF=5, Rev=10
+group_rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=5, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=5, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=5, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=5, Rev=10
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) * rank(1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=5, Rev=10
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=5, Rev=20
+rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)))
+
+# Step3.2: group_rank(industry) | CMF=5, Rev=20
+group_rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=5, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=5, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=5, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=5, Rev=20
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) * rank(1 - ts_rank(returns, 20)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=5, Rev=20
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=5, Rev=20
+rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)))
+
+# Step3.2: group_rank(subindustry) | CMF=5, Rev=20
+group_rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=5, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=5, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=5, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=5, Rev=20
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) * rank(1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=5, Rev=20
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=5, Rev=60
+rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)))
+
+# Step3.2: group_rank(industry) | CMF=5, Rev=60
+group_rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=5, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=5, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=5, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=5, Rev=60
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) * rank(1 - ts_rank(returns, 60)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=5, Rev=60
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=5, Rev=60
+rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)))
+
+# Step3.2: group_rank(subindustry) | CMF=5, Rev=60
+group_rank(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=5, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=5, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=5, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=5, Rev=60
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) * rank(1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=5, Rev=60
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=10, Rev=10
+rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)))
+
+# Step3.2: group_rank(industry) | CMF=10, Rev=10
+group_rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=10, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=10, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=10, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=10, Rev=10
+group_neutralize(rank(ts_rank(short_term_price_change_2, 10)) * rank(1 - ts_rank(returns, 10)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=10, Rev=10
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=10, Rev=10
+rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)))
+
+# Step3.2: group_rank(subindustry) | CMF=10, Rev=10
+group_rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=10, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=10, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=10, Rev=10
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=10, Rev=10
+group_neutralize(rank(ts_rank(short_term_price_change_2, 10)) * rank(1 - ts_rank(returns, 10)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=10, Rev=10
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 10)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=10, Rev=20
+rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)))
+
+# Step3.2: group_rank(industry) | CMF=10, Rev=20
+group_rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=10, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=10, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=10, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=10, Rev=20
+group_neutralize(rank(ts_rank(short_term_price_change_2, 10)) * rank(1 - ts_rank(returns, 20)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=10, Rev=20
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=10, Rev=20
+rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)))
+
+# Step3.2: group_rank(subindustry) | CMF=10, Rev=20
+group_rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=10, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=10, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=10, Rev=20
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=10, Rev=20
+group_neutralize(rank(ts_rank(short_term_price_change_2, 10)) * rank(1 - ts_rank(returns, 20)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=10, Rev=20
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), 5), subindustry)
+
+# Step3.1: rank() normalization | CMF=10, Rev=60
+rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)))
+
+# Step3.2: group_rank(industry) | CMF=10, Rev=60
+group_rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), industry)
+
+# Step3.3: group_neutralize(industry) | CMF=10, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), industry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(industry) | CMF=10, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 20) + 1e-6), industry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(industry) | CMF=10, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 60) + 1e-6), industry)
+
+# Step3.5: Dual rank + neutralize(industry) | CMF=10, Rev=60
+group_neutralize(rank(ts_rank(short_term_price_change_2, 10)) * rank(1 - ts_rank(returns, 60)), industry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(industry) | CMF=10, Rev=60
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), 5), industry)
+
+# Step3.1: rank() normalization | CMF=10, Rev=60
+rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)))
+
+# Step3.2: group_rank(subindustry) | CMF=10, Rev=60
+group_rank(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.3: group_neutralize(subindustry) | CMF=10, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.4: Risk-adjusted (vol=20) + neutralize(subindustry) | CMF=10, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 20) + 1e-6), subindustry)
+
+# Step3.4: Risk-adjusted (vol=60) + neutralize(subindustry) | CMF=10, Rev=60
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)) / (ts_stddev(returns, 60) + 1e-6), subindustry)
+
+# Step3.5: Dual rank + neutralize(subindustry) | CMF=10, Rev=60
+group_neutralize(rank(ts_rank(short_term_price_change_2, 10)) * rank(1 - ts_rank(returns, 60)), subindustry)
+
+# Step3.6: ts_decay_linear smoothing + neutralize(subindustry) | CMF=10, Rev=60
+group_neutralize(ts_decay_linear(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), 5), subindustry)
+
+# Step4.1a: Price-CMF Divergence | field=close, window=10, group=industry
+group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10), industry)
+
+# Step4.1b: Weighted Divergence | field=close, window=10, group=industry
+group_neutralize((ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10)) * ts_mean(short_term_price_change_2, 10), industry)
+
+# Step4.1a: Price-CMF Divergence | field=close, window=10, group=subindustry
+group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10), subindustry)
+
+# Step4.1b: Weighted Divergence | field=close, window=10, group=subindustry
+group_neutralize((ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10)) * ts_mean(short_term_price_change_2, 10), subindustry)
+
+# Step4.1a: Price-CMF Divergence | field=close, window=20, group=industry
+group_neutralize(ts_rank(close, 20) - ts_rank(short_term_price_change_2, 20), industry)
+
+# Step4.1b: Weighted Divergence | field=close, window=20, group=industry
+group_neutralize((ts_rank(close, 20) - ts_rank(short_term_price_change_2, 20)) * ts_mean(short_term_price_change_2, 10), industry)
+
+# Step4.1a: Price-CMF Divergence | field=close, window=20, group=subindustry
+group_neutralize(ts_rank(close, 20) - ts_rank(short_term_price_change_2, 20), subindustry)
+
+# Step4.1b: Weighted Divergence | field=close, window=20, group=subindustry
+group_neutralize((ts_rank(close, 20) - ts_rank(short_term_price_change_2, 20)) * ts_mean(short_term_price_change_2, 10), subindustry)
+
+# Step4.1a: Price-CMF Divergence | field=close, window=60, group=industry
+group_neutralize(ts_rank(close, 60) - ts_rank(short_term_price_change_2, 60), industry)
+
+# Step4.1b: Weighted Divergence | field=close, window=60, group=industry
+group_neutralize((ts_rank(close, 60) - ts_rank(short_term_price_change_2, 60)) * ts_mean(short_term_price_change_2, 10), industry)
+
+# Step4.1a: Price-CMF Divergence | field=close, window=60, group=subindustry
+group_neutralize(ts_rank(close, 60) - ts_rank(short_term_price_change_2, 60), subindustry)
+
+# Step4.1b: Weighted Divergence | field=close, window=60, group=subindustry
+group_neutralize((ts_rank(close, 60) - ts_rank(short_term_price_change_2, 60)) * ts_mean(short_term_price_change_2, 10), subindustry)
+
+# Step4.1a: Price-CMF Divergence | field=vwap, window=10, group=industry
+group_neutralize(ts_rank(vwap, 10) - ts_rank(short_term_price_change_2, 10), industry)
+
+# Step4.1b: Weighted Divergence | field=vwap, window=10, group=industry
+group_neutralize((ts_rank(vwap, 10) - ts_rank(short_term_price_change_2, 10)) * ts_mean(short_term_price_change_2, 10), industry)
+
+# Step4.1a: Price-CMF Divergence | field=vwap, window=10, group=subindustry
+group_neutralize(ts_rank(vwap, 10) - ts_rank(short_term_price_change_2, 10), subindustry)
+
+# Step4.1b: Weighted Divergence | field=vwap, window=10, group=subindustry
+group_neutralize((ts_rank(vwap, 10) - ts_rank(short_term_price_change_2, 10)) * ts_mean(short_term_price_change_2, 10), subindustry)
+
+# Step4.1a: Price-CMF Divergence | field=vwap, window=20, group=industry
+group_neutralize(ts_rank(vwap, 20) - ts_rank(short_term_price_change_2, 20), industry)
+
+# Step4.1b: Weighted Divergence | field=vwap, window=20, group=industry
+group_neutralize((ts_rank(vwap, 20) - ts_rank(short_term_price_change_2, 20)) * ts_mean(short_term_price_change_2, 10), industry)
+
+# Step4.1a: Price-CMF Divergence | field=vwap, window=20, group=subindustry
+group_neutralize(ts_rank(vwap, 20) - ts_rank(short_term_price_change_2, 20), subindustry)
+
+# Step4.1b: Weighted Divergence | field=vwap, window=20, group=subindustry
+group_neutralize((ts_rank(vwap, 20) - ts_rank(short_term_price_change_2, 20)) * ts_mean(short_term_price_change_2, 10), subindustry)
+
+# Step4.1a: Price-CMF Divergence | field=vwap, window=60, group=industry
+group_neutralize(ts_rank(vwap, 60) - ts_rank(short_term_price_change_2, 60), industry)
+
+# Step4.1b: Weighted Divergence | field=vwap, window=60, group=industry
+group_neutralize((ts_rank(vwap, 60) - ts_rank(short_term_price_change_2, 60)) * ts_mean(short_term_price_change_2, 10), industry)
+
+# Step4.1a: Price-CMF Divergence | field=vwap, window=60, group=subindustry
+group_neutralize(ts_rank(vwap, 60) - ts_rank(short_term_price_change_2, 60), subindustry)
+
+# Step4.1b: Weighted Divergence | field=vwap, window=60, group=subindustry
+group_neutralize((ts_rank(vwap, 60) - ts_rank(short_term_price_change_2, 60)) * ts_mean(short_term_price_change_2, 10), subindustry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=5, Rev=20, group=industry
+group_neutralize(ts_mean(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), industry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=5, Rev=20, group=subindustry
+group_neutralize(ts_mean(short_term_price_change_2, 5) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=5, Rev=60, group=industry
+group_neutralize(ts_mean(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), industry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=5, Rev=60, group=subindustry
+group_neutralize(ts_mean(short_term_price_change_2, 5) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=10, Rev=20, group=industry
+group_neutralize(ts_mean(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), industry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=10, Rev=20, group=subindustry
+group_neutralize(ts_mean(short_term_price_change_2, 10) * (1 - ts_rank(returns, 20)), subindustry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=10, Rev=60, group=industry
+group_neutralize(ts_mean(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), industry)
+
+# Step4.2: CMF Momentum + Reversal | CMF_avg=10, Rev=60, group=subindustry
+group_neutralize(ts_mean(short_term_price_change_2, 10) * (1 - ts_rank(returns, 60)), subindustry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=20, vol=volume, group=industry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 20)) / (ts_stddev(short_term_price_change_2, 20) + 1e-6)) * (volume / (adv20 + 1e-6)), industry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=20, vol=volume, group=subindustry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 20)) / (ts_stddev(short_term_price_change_2, 20) + 1e-6)) * (volume / (adv20 + 1e-6)), subindustry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=20, vol=adv20, group=industry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 20)) / (ts_stddev(short_term_price_change_2, 20) + 1e-6)) * (adv20 / (adv20 + 1e-6)), industry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=20, vol=adv20, group=subindustry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 20)) / (ts_stddev(short_term_price_change_2, 20) + 1e-6)) * (adv20 / (adv20 + 1e-6)), subindustry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=60, vol=volume, group=industry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 60)) / (ts_stddev(short_term_price_change_2, 60) + 1e-6)) * (volume / (adv20 + 1e-6)), industry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=60, vol=volume, group=subindustry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 60)) / (ts_stddev(short_term_price_change_2, 60) + 1e-6)) * (volume / (adv20 + 1e-6)), subindustry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=60, vol=adv20, group=industry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 60)) / (ts_stddev(short_term_price_change_2, 60) + 1e-6)) * (adv20 / (adv20 + 1e-6)), industry)
+
+# Step4.3: CMF Spike × Volume Anomaly | spike_window=60, vol=adv20, group=subindustry
+group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 60)) / (ts_stddev(short_term_price_change_2, 60) + 1e-6)) * (adv20 / (adv20 + 1e-6)), subindustry)
+
+# Step4.4a: CMF × Quality(accruals_percentage_earnings) | window=126, group=industry
+group_neutralize(short_term_price_change_2 * (1 - ts_rank(accruals_percentage_earnings, 126)), industry)
+
+# Step4.4a: CMF × Quality(accruals_percentage_earnings) | window=126, group=subindustry
+group_neutralize(short_term_price_change_2 * (1 - ts_rank(accruals_percentage_earnings, 126)), subindustry)
+
+# Step4.4a: CMF × Quality(accruals_percentage_earnings) | window=252, group=industry
+group_neutralize(short_term_price_change_2 * (1 - ts_rank(accruals_percentage_earnings, 252)), industry)
+
+# Step4.4a: CMF × Quality(accruals_percentage_earnings) | window=252, group=subindustry
+group_neutralize(short_term_price_change_2 * (1 - ts_rank(accruals_percentage_earnings, 252)), subindustry)
+
+# Step4.4b: CMF × Δasset_turnover_ratio_2 | window=126, group=industry
+group_neutralize(short_term_price_change_2 * ts_delta(asset_turnover_ratio_2, 4), industry)
+
+# Step4.4b: CMF × Δasset_turnover_ratio_2 | window=126, group=subindustry
+group_neutralize(short_term_price_change_2 * ts_delta(asset_turnover_ratio_2, 4), subindustry)
+
+# Step4.4b: CMF × Δasset_turnover_ratio_2 | window=252, group=industry
+group_neutralize(short_term_price_change_2 * ts_delta(asset_turnover_ratio_2, 4), industry)
+
+# Step4.4b: CMF × Δasset_turnover_ratio_2 | window=252, group=subindustry
+group_neutralize(short_term_price_change_2 * ts_delta(asset_turnover_ratio_2, 4), subindustry)
+
+# Step4.5: CMF × Analyst(analyst_revisions_score_2) | group=industry
+group_neutralize(short_term_price_change_2 * analyst_revisions_score_2, industry)
+
+# Step4.5: CMF × Analyst(analyst_revisions_score_2) | group=subindustry
+group_neutralize(short_term_price_change_2 * analyst_revisions_score_2, subindustry)
+
+# Step4.5: CMF × Analyst(avg_estimate_change_pct_current_year_eps_14d_long) | group=industry
+group_neutralize(short_term_price_change_2 * avg_estimate_change_pct_current_year_eps_14d_long, industry)
+
+# Step4.5: CMF × Analyst(avg_estimate_change_pct_current_year_eps_14d_long) | group=subindustry
+group_neutralize(short_term_price_change_2 * avg_estimate_change_pct_current_year_eps_14d_long, subindustry)
+
+# Step4.6: CMF Cross-sectional Momentum | window=5, group=industry
+group_neutralize(rank(ts_delta(short_term_price_change_2, 5)) * rank(ts_rank(short_term_price_change_2, 5)), industry)
+
+# Step4.6: CMF Cross-sectional Momentum | window=5, group=subindustry
+group_neutralize(rank(ts_delta(short_term_price_change_2, 5)) * rank(ts_rank(short_term_price_change_2, 5)), subindustry)
+
+# Step4.6: CMF Cross-sectional Momentum | window=10, group=industry
+group_neutralize(rank(ts_delta(short_term_price_change_2, 10)) * rank(ts_rank(short_term_price_change_2, 10)), industry)
+
+# Step4.6: CMF Cross-sectional Momentum | window=10, group=subindustry
+group_neutralize(rank(ts_delta(short_term_price_change_2, 10)) * rank(ts_rank(short_term_price_change_2, 10)), subindustry)
+
+# Step4.6: CMF Cross-sectional Momentum | window=20, group=industry
+group_neutralize(rank(ts_delta(short_term_price_change_2, 20)) * rank(ts_rank(short_term_price_change_2, 20)), industry)
+
+# Step4.6: CMF Cross-sectional Momentum | window=20, group=subindustry
+group_neutralize(rank(ts_delta(short_term_price_change_2, 20)) * rank(ts_rank(short_term_price_change_2, 20)), subindustry)
+
+# Step4.7: CMF Mean Reversion (oversold) | window=20, group=industry
+group_neutralize(-ts_rank(short_term_price_change_2, 20), industry)
+
+# Step4.7: CMF Mean Reversion (oversold) | window=20, group=subindustry
+group_neutralize(-ts_rank(short_term_price_change_2, 20), subindustry)
+
+# Step4.7: CMF Mean Reversion (oversold) | window=60, group=industry
+group_neutralize(-ts_rank(short_term_price_change_2, 60), industry)
+
+# Step4.7: CMF Mean Reversion (oversold) | window=60, group=subindustry
+group_neutralize(-ts_rank(short_term_price_change_2, 60), subindustry)
+
+# Step4.8: Multi-timeframe CMF Consensus | group=industry
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) + rank(ts_rank(short_term_price_change_2, 10)) + rank(ts_rank(short_term_price_change_2, 20)), industry)
+
+# Step4.8: Multi-timeframe CMF Consensus | group=subindustry
+group_neutralize(rank(ts_rank(short_term_price_change_2, 5)) + rank(ts_rank(short_term_price_change_2, 10)) + rank(ts_rank(short_term_price_change_2, 20)), subindustry)
+

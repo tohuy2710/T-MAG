@@ -1,0 +1,48 @@
+nohup: ignoring input
+2026-08-16 11:49:52,171 INFO [brain_api] Connecting to BRAIN API session
+2026-08-16 11:49:52,172 INFO [brain_api] BRAIN authentication: using cookie header; password login skipped
+2026-08-16 11:49:52,172 INFO [brain_api] BRAIN session ready
+
+================================================================================
+  Phase 1 Plus — 4-Step Alpha Optimization Simulation
+================================================================================
+
+  Environment: GLB / TOPDIV3000 / Delay 1
+  File: alphas_4steps_cmf.txt
+
+[load] Đọc file: /home/tohuy2710/T-MAG/phase_1_plus/alphas_4steps_cmf.txt
+[load] Đã load 206 candidates
+
+Sample candidates:
+  1. [Step 2] Param: CMF_window=3, Reversal_window=5
+     ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 5))
+  2. [Step 2] Param: CMF_window=3, Reversal_window=10
+     ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 10))
+  3. [Step 2] Param: CMF_window=3, Reversal_window=20
+     ts_rank(short_term_price_change_2, 3) * (1 - ts_rank(returns, 20))
+  ... và 203 candidates khác
+
+
+[sim] Bắt đầu mô phỏng: 206 candidates
+      Batch size: 1
+      Max concurrent: 1
+
+[brain_api] Authenticated
+2026-08-16 11:49:52,174 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-16 11:49:52,175 INFO [brain_api] Simulation submit start expr_hash=879520897eb1 expr_len=65 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 11:49:53,639 INFO [brain_api] Simulation created sim_id=33eP7xbwQ4nHaBR17T2oSCL7 expr_hash=879520897eb1
+2026-08-16 11:49:53,639 INFO [brain_api] Polling simulation start sim_id=33eP7xbwQ4nHaBR17T2oSCL7 timeout=600s
+2026-08-16 11:49:53,958 INFO [brain_api] Polling simulation status changed sim_id=33eP7xbwQ4nHaBR17T2oSCL7 status=UNKNOWN
+2026-08-16 11:50:22,180 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:50:22.180231+00:00 elapsed=30s progress=0/1 in_flight=1 last_status=-
+✓ Đã kết nối BRAIN API
+
+[batch 1/206] Mô phỏng 1 candidates...
+  [heartbeat] 11:50:22 elapsed=30s 0/1 in_flight=1 last=-
+2026-08-16 11:50:52,185 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:50:52.185481+00:00 elapsed=60s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 11:50:52 elapsed=60s 0/1 in_flight=1 last=-
+2026-08-16 11:51:22,190 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:51:22.190241+00:00 elapsed=90s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 11:51:22 elapsed=90s 0/1 in_flight=1 last=-
+2026-08-16 11:51:52,195 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:51:52.195440+00:00 elapsed=120s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 11:51:52 elapsed=120s 0/1 in_flight=1 last=-
+2026-08-16 11:52:22,202 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:52:22.202504+00:00 elapsed=150s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 11:52:22 elapsed=150s 0/1 in_flight=1 last=-

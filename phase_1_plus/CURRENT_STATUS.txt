@@ -1,0 +1,74 @@
+================================================================================
+  PHASE 1 PLUS - HIỆN TRẠNG
+================================================================================
+
+✅ ĐANG CHẠY: 3 ALPHAS SONG SONG (3X NHANH HƠN!)
+
+Tổng số: 206 alphas
+Batch size: 3 (chạy 3 cùng lúc)
+Max concurrent: 3
+Thời gian ước tính: ~1-2 giờ
+
+Log file: full_simulation_3x.log
+
+================================================================================
+  COMMANDS NHANH
+================================================================================
+
+# Check tiến độ
+cd /home/tohuy2710/T-MAG/phase_1_plus && ./check_progress.sh
+
+# Xem log realtime
+tail -f full_simulation_3x.log
+
+# Dừng simulation
+pkill -f phase_1_plus_sim.py
+
+# Xem số alphas đã xong
+grep -c "Batch simulate stream complete" full_simulation_3x.log
+
+# Đếm thành công
+grep -c "✓" full_simulation_3x.log
+
+================================================================================
+  SAU KHI HOÀN THÀNH
+================================================================================
+
+1. Xem kết quả:
+   cat output/simulation_results.json
+
+2. Xem TOP 20:
+   cd /home/tohuy2710/T-MAG/phase_1_plus
+   cat output/simulation_results.json | jq '.results[] | select(.status=="COMPLETE")' | jq -s 'sort_by(-.sim_data.is.fitness) | .[0:20]'
+
+3. Filter theo fitness > 1.0:
+   cat output/simulation_results.json | jq '.results[] | select(.status=="COMPLETE") | select(.sim_data.is.fitness > 1.0)'
+
+4. Phân tích theo bước:
+   # Bước 2
+   cat output/simulation_results.json | jq '.results[] | select(.step==2 and .status=="COMPLETE")' | jq -s 'sort_by(-.sim_data.is.fitness)'
+   
+   # Bước 3
+   cat output/simulation_results.json | jq '.results[] | select(.step==3 and .status=="COMPLETE")' | jq -s 'sort_by(-.sim_data.is.fitness)'
+   
+   # Bước 4
+   cat output/simulation_results.json | jq '.results[] | select(.step==4 and .status=="COMPLETE")' | jq -s 'sort_by(-.sim_data.is.fitness)'
+
+================================================================================
+  TẠI SAO CHẠY 3 SONG SONG?
+================================================================================
+
+- BRAIN giới hạn: Chỉ cho phép 3 simulations đồng thời
+- Tối ưu: Dùng hết quota → Nhanh gấp 3 lần
+- An toàn: Vẫn trong giới hạn, không bị rate limit
+
+Trước: 1 alpha/lần → ~3-6 giờ
+Sau:  3 alpha/lần → ~1-2 giờ ✓
+
+================================================================================
+
+Created: 2026-08-16 11:52
+Status: RUNNING
+PID: check with `pgrep -f phase_1_plus_sim.py`
+
+================================================================================

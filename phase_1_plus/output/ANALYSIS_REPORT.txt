@@ -1,0 +1,234 @@
+====================================================================================================
+BÁO CÁO PHÂN TÍCH KẾT QUẢ SIMULATION - PHASE 1 PLUS
+====================================================================================================
+
+Thời gian simulation: 2026-08-16T07:06:10.793060+00:00
+Tổng số alpha đã chạy: 206
+Số alpha hoàn thành: 105
+Tỷ lệ thành công: 51.0%
+
+====================================================================================================
+PHẦN 1: TỔNG QUAN HIỆU SUẤT
+====================================================================================================
+
+1.1 Sharpe Ratio:
+   - Trung bình: 1.554
+   - Median: 1.540
+   - Cao nhất: 1.960
+   - Thấp nhất: 1.170
+   - Std Dev: 0.198
+   - Alpha có Sharpe > 1.8: 10
+   - Alpha có Sharpe > 1.7: 24
+   - Alpha có Sharpe > 1.6: 43
+   - Alpha có Sharpe > 1.5: 63
+
+1.2 Fitness:
+   - Trung bình: 0.615
+   - Median: 0.570
+   - Cao nhất: 0.860
+   - Thấp nhất: 0.470
+   - Alpha có Fitness > 0.7: 29
+   - Alpha có Fitness > 0.6: 48
+   - Alpha có Fitness > 0.5: 91
+
+1.3 Returns:
+   - Trung bình: 0.0555 (5.55%)
+   - Median: 0.0523 (5.23%)
+   - Cao nhất: 0.0904 (9.04%)
+   - Thấp nhất: 0.0377 (3.77%)
+
+1.4 Turnover:
+   - Trung bình: 0.3590
+   - Median: 0.3749
+   - Cao nhất: 0.4731
+   - Thấp nhất: 0.2251
+
+====================================================================================================
+PHẦN 2: HIỆU SUẤT THEO VÙNG ĐỊA LÝ
+====================================================================================================
+
+2.1 Americas (AMER):
+   - Sharpe TB: 0.928
+   - Sharpe Max: 1.100
+   - Returns TB: 0.0285 (2.85%)
+   - Alpha có Sharpe > 1.0: 20
+
+2.2 Asia Pacific (APAC):
+   - Sharpe TB: 1.110
+   - Sharpe Max: 1.640
+   - Returns TB: 0.0205 (2.05%)
+   - Alpha có Sharpe > 1.0: 69
+
+2.3 Europe/Middle East/Africa (EMEA):
+   - Sharpe TB: 0.424
+   - Sharpe Max: 0.690
+   - Returns TB: 0.0065 (0.65%)
+   - Alpha có Sharpe > 1.0: 0
+
+====================================================================================================
+PHẦN 3: TOP 20 ALPHA THEO SHARPE RATIO
+====================================================================================================
+
+#    Alpha ID      Sharpe   Fitness   Returns    Turnover   Description
+----------------------------------------------------------------------------------------------------
+1    RRmwvAa1      1.960    0.850     8.52     % 0.4581     Step3.5: Dual rank + neutralize(industry...
+2    gJ8V5Lxe      1.950    0.840     8.48     % 0.4577     Step3.5: Dual rank + neutralize(subindus...
+3    88pxxpdW      1.930    0.860     9.04     % 0.4528     Step3.5: Dual rank + neutralize(industry...
+4    vRNX79Aw      1.930    0.860     9.01     % 0.4525     Step3.5: Dual rank + neutralize(subindus...
+5    A1G8oQ1Q      1.870    0.810     7.57     % 0.4063     Step3.5: Dual rank + neutralize(industry...
+6    88pWm3Pl      1.870    0.810     7.54     % 0.4060     Step3.5: Dual rank + neutralize(subindus...
+7    d5ZJ50ex      1.870    0.840     8.07     % 0.4019     Step3.5: Dual rank + neutralize(industry...
+8    KPGMZed1      1.860    0.750     7.70     % 0.4731     Step3.5: Dual rank + neutralize(industry...
+9    0mpZOQzk      1.860    0.830     8.04     % 0.4016     Step3.5: Dual rank + neutralize(subindus...
+10   blQ1Klxq      1.850    0.750     7.68     % 0.4728     Step3.5: Dual rank + neutralize(subindus...
+11   omN0k9Jk      1.800    0.700     6.52     % 0.4292     Step3.3: group_neutralize(industry) | CM...
+12   3qpvkA6P      1.790    0.700     6.48     % 0.4257     Param: CMF_window=3, Reversal_window=20
+13   blQ1gdll      1.790    0.700     6.48     % 0.4289     Step3.3: group_neutralize(subindustry) |...
+14   58pdPVv5      1.780    0.730     6.41     % 0.3805     Step3.3: group_neutralize(industry) | CM...
+15   ak19zZOW      1.770    0.730     6.36     % 0.3774     Param: CMF_window=5, Reversal_window=20
+16   E5GPPaRR      1.770    0.700     6.63     % 0.4248     Step3.3: group_neutralize(industry) | CM...
+17   rK2a1QQm      1.770    0.720     6.37     % 0.3802     Step3.3: group_neutralize(subindustry) |...
+18   qMNJYObv      1.760    0.700     6.61     % 0.4212     Param: CMF_window=3, Reversal_window=60
+19   YPv3Pd9v      1.760    0.740     6.57     % 0.3753     Step3.3: group_neutralize(industry) | CM...
+20   N1blzmoL      1.750    0.730     6.54     % 0.3722     Param: CMF_window=5, Reversal_window=60
+
+====================================================================================================
+PHẦN 4: TOP 20 ALPHA THEO FITNESS
+====================================================================================================
+
+#    Alpha ID      Fitness   Sharpe   Returns    Turnover   Description
+----------------------------------------------------------------------------------------------------
+1    88pxxpdW      0.860     1.930    9.04     % 0.4528     Step3.5: Dual rank + neutralize(industry...
+2    vRNX79Aw      0.860     1.930    9.01     % 0.4525     Step3.5: Dual rank + neutralize(subindus...
+3    RRmwvAa1      0.850     1.960    8.52     % 0.4581     Step3.5: Dual rank + neutralize(industry...
+4    gJ8V5Lxe      0.840     1.950    8.48     % 0.4577     Step3.5: Dual rank + neutralize(subindus...
+5    d5ZJ50ex      0.840     1.870    8.07     % 0.4019     Step3.5: Dual rank + neutralize(industry...
+6    0mpZOQzk      0.830     1.860    8.04     % 0.4016     Step3.5: Dual rank + neutralize(subindus...
+7    A1G8oQ1Q      0.810     1.870    7.57     % 0.4063     Step3.5: Dual rank + neutralize(industry...
+8    88pWm3Pl      0.810     1.870    7.54     % 0.4060     Step3.5: Dual rank + neutralize(subindus...
+9    88pxYQ1o      0.780     1.620    5.59     % 0.2409     Param: CMF_window=22, Reversal_window=60
+10   leWwX2aO      0.760     1.690    6.65     % 0.3303     Step3.5: Dual rank + neutralize(industry...
+11   9qp50eLd      0.760     1.690    6.63     % 0.3300     Step3.5: Dual rank + neutralize(subindus...
+12   KPGMZed1      0.750     1.860    7.70     % 0.4731     Step3.5: Dual rank + neutralize(industry...
+13   blQ1Klxq      0.750     1.850    7.68     % 0.4728     Step3.5: Dual rank + neutralize(subindus...
+14   YPv3Pd9v      0.740     1.760    6.57     % 0.3753     Step3.3: group_neutralize(industry) | CM...
+15   N1blzmoL      0.730     1.750    6.54     % 0.3722     Param: CMF_window=5, Reversal_window=60
+16   ak19zZOW      0.730     1.770    6.36     % 0.3774     Param: CMF_window=5, Reversal_window=20
+17   leWPG00e      0.730     1.660    5.90     % 0.3033     Param: CMF_window=10, Reversal_window=60
+18   d5Zrzzng      0.730     1.580    5.33     % 0.2475     Param: CMF_window=22, Reversal_window=20
+19   58pdPVv5      0.730     1.780    6.41     % 0.3805     Step3.3: group_neutralize(industry) | CM...
+20   wpa7p7Z5      0.730     1.750    6.53     % 0.3749     Step3.3: group_neutralize(subindustry) |...
+
+====================================================================================================
+PHẦN 5: TOP 20 ALPHA CÂN BẰNG (SHARPE + FITNESS)
+====================================================================================================
+
+#    Alpha ID      Combined    Sharpe   Fitness   Returns    Description
+----------------------------------------------------------------------------------------------------
+1    RRmwvAa1      2.810       1.960    0.850     8.52     % Step3.5: Dual rank + neutralize(industry...
+2    gJ8V5Lxe      2.790       1.950    0.840     8.48     % Step3.5: Dual rank + neutralize(subindus...
+3    88pxxpdW      2.790       1.930    0.860     9.04     % Step3.5: Dual rank + neutralize(industry...
+4    vRNX79Aw      2.790       1.930    0.860     9.01     % Step3.5: Dual rank + neutralize(subindus...
+5    d5ZJ50ex      2.710       1.870    0.840     8.07     % Step3.5: Dual rank + neutralize(industry...
+6    0mpZOQzk      2.690       1.860    0.830     8.04     % Step3.5: Dual rank + neutralize(subindus...
+7    A1G8oQ1Q      2.680       1.870    0.810     7.57     % Step3.5: Dual rank + neutralize(industry...
+8    88pWm3Pl      2.680       1.870    0.810     7.54     % Step3.5: Dual rank + neutralize(subindus...
+9    KPGMZed1      2.610       1.860    0.750     7.70     % Step3.5: Dual rank + neutralize(industry...
+10   blQ1Klxq      2.600       1.850    0.750     7.68     % Step3.5: Dual rank + neutralize(subindus...
+11   58pdPVv5      2.510       1.780    0.730     6.41     % Step3.3: group_neutralize(industry) | CM...
+12   ak19zZOW      2.500       1.770    0.730     6.36     % Param: CMF_window=5, Reversal_window=20
+13   omN0k9Jk      2.500       1.800    0.700     6.52     % Step3.3: group_neutralize(industry) | CM...
+14   YPv3Pd9v      2.500       1.760    0.740     6.57     % Step3.3: group_neutralize(industry) | CM...
+15   3qpvkA6P      2.490       1.790    0.700     6.48     % Param: CMF_window=3, Reversal_window=20
+16   blQ1gdll      2.490       1.790    0.700     6.48     % Step3.3: group_neutralize(subindustry) |...
+17   rK2a1QQm      2.490       1.770    0.720     6.37     % Step3.3: group_neutralize(subindustry) |...
+18   N1blzmoL      2.480       1.750    0.730     6.54     % Param: CMF_window=5, Reversal_window=60
+19   wpa7p7Z5      2.480       1.750    0.730     6.53     % Step3.3: group_neutralize(subindustry) |...
+20   E5GPPaRR      2.470       1.770    0.700     6.63     % Step3.3: group_neutralize(industry) | CM...
+
+====================================================================================================
+PHẦN 6: INVESTABILITY & RISK NEUTRALIZATION
+====================================================================================================
+
+6.1 Investability Constrained:
+   - Sharpe TB: 1.384
+   - Returns TB: 0.0481 (4.81%)
+   - Turnover TB: 0.3433
+   - Degradation từ baseline: 0.170
+
+6.2 Risk Neutralized:
+   - Sharpe TB: 0.753
+   - Returns TB: 0.0108 (1.08%)
+   - Degradation từ baseline: 0.801
+
+====================================================================================================
+PHẦN 7: PHÂN LOẠI VÀ ĐÁNH GIÁ
+====================================================================================================
+
+7.1 Alpha XUẤT SẮC (Sharpe > 1.7 và Fitness > 0.6):
+   - Số lượng: 24 (22.9%)
+   - Sharpe TB: 1.820
+   - Fitness TB: 0.758
+   - Returns TB: 7.22%
+
+   Danh sách Alpha Xuất Sắc:
+    1. RRmwvAa1     - Sharpe: 1.960, Fitness: 0.850, Returns: 8.52%
+    2. gJ8V5Lxe     - Sharpe: 1.950, Fitness: 0.840, Returns: 8.48%
+    3. 88pxxpdW     - Sharpe: 1.930, Fitness: 0.860, Returns: 9.04%
+    4. vRNX79Aw     - Sharpe: 1.930, Fitness: 0.860, Returns: 9.01%
+    5. A1G8oQ1Q     - Sharpe: 1.870, Fitness: 0.810, Returns: 7.57%
+    6. 88pWm3Pl     - Sharpe: 1.870, Fitness: 0.810, Returns: 7.54%
+    7. d5ZJ50ex     - Sharpe: 1.870, Fitness: 0.840, Returns: 8.07%
+    8. KPGMZed1     - Sharpe: 1.860, Fitness: 0.750, Returns: 7.70%
+    9. 0mpZOQzk     - Sharpe: 1.860, Fitness: 0.830, Returns: 8.04%
+   10. blQ1Klxq     - Sharpe: 1.850, Fitness: 0.750, Returns: 7.68%
+
+7.2 Alpha RẤT TỐT (Sharpe > 1.6 và Fitness > 0.5):
+   - Số lượng: 43 (41.0%)
+   - Sharpe TB: 1.750
+   - Fitness TB: 0.726
+
+7.3 Alpha TỐT (Sharpe > 1.5 và Fitness > 0.4):
+   - Số lượng: 63 (60.0%)
+
+7.4 Alpha cân bằng vùng địa lý:
+   - Số lượng: 10 (9.5%)
+   (Tiêu chí: AMER > 1.0, APAC > 1.0, EMEA > 0.5)
+
+====================================================================================================
+PHẦN 8: ĐÁNH GIÁ TỔNG THỂ VÀ KHUYẾN NGHỊ
+====================================================================================================
+
+8.1 Đánh giá tổng thể:
+   - Xếp hạng: TỐT ⭐⭐⭐⭐
+   - Sharpe trung bình: 1.554
+   - Fitness trung bình: 0.615
+   - Returns trung bình: 5.55%
+   - Tỷ lệ thành công: 51.0%
+
+8.2 Điểm nổi bật:
+   ✓ Có 24 alpha xuất sắc (Sharpe > 1.7, Fitness > 0.6)
+   ✓ Có 43 alpha rất tốt (Sharpe > 1.6, Fitness > 0.5)
+   ✓ Sharpe cao nhất: 1.960
+   ✓ Fitness cao nhất: 0.860
+   ✓ 10 alpha cân bằng trên các vùng địa lý
+
+8.3 Điểm cần cải thiện:
+   • Hiệu suất vùng EMEA còn yếu (Sharpe TB: 0.424)
+   • Sharpe trung bình chưa đạt ngưỡng xuất sắc (< 1.6)
+
+8.4 Khuyến nghị tiếp theo:
+   1. ⭐ Ưu tiên 24 alpha xuất sắc cho production
+   2. 🔍 Phân tích correlation giữa các top alpha để tránh overlap
+   3. 🌍 Cải thiện hiệu suất vùng EMEA (hiện tại yếu nhất)
+   4. 🧪 Thử nghiệm các biến thể của top 10 performers
+   5. 🎯 Xem xét ensemble các alpha có low correlation
+   6. 📊 Backtest chi tiết trên các thời kỳ khác nhau
+   7. ⚡ Optimize turnover cho các alpha có turnover > 0.45
+
+====================================================================================================
+KẾT THÚC BÁO CÁO
+====================================================================================================
+
+Báo cáo được tạo tự động từ 105 alpha
+Timestamp: 2026-08-16T07:06:10.793060+00:00

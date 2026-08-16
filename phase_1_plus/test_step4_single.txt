@@ -1,0 +1,2 @@
+# Step4.1a: Price-CMF Divergence | field=close, window=10, group=industry
+group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10), industry)

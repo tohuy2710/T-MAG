@@ -1,0 +1,43 @@
+nohup: ignoring input
+2026-08-16 11:48:28,414 INFO [brain_api] Connecting to BRAIN API session
+2026-08-16 11:48:28,415 INFO [brain_api] BRAIN authentication: using cookie header; password login skipped
+2026-08-16 11:48:28,415 INFO [brain_api] BRAIN session ready
+
+================================================================================
+  Phase 1 Plus — 4-Step Alpha Optimization Simulation
+================================================================================
+
+  Environment: GLB / TOPDIV3000 / Delay 1
+  File: alphas_4steps_cmf.txt
+  Filter: Chỉ mô phỏng Bước 4
+
+[load] Đọc file: /home/tohuy2710/T-MAG/phase_1_plus/alphas_4steps_cmf.txt
+[load] Đã load 64 candidates
+
+Sample candidates:
+  1. [Step 4] Step4.1a: Price-CMF Divergence | field=close, window=10, group=industry
+     group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10),...
+  2. [Step 4] Step4.1b: Weighted Divergence | field=close, window=10, group=industry
+     group_neutralize((ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10)...
+  3. [Step 4] Step4.1a: Price-CMF Divergence | field=close, window=10, group=subindustry
+     group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10),...
+  ... và 61 candidates khác
+
+
+[sim] Bắt đầu mô phỏng: 64 candidates
+      Batch size: 1
+      Max concurrent: 1
+
+[brain_api] Authenticated
+2026-08-16 11:48:28,416 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-16 11:48:28,416 INFO [brain_api] Simulation submit start expr_hash=e0d55b4b24f5 expr_len=87 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 11:48:29,876 INFO [brain_api] Simulation created sim_id=1K3UD1ecE5cXcebHweSyqAm expr_hash=e0d55b4b24f5
+2026-08-16 11:48:29,876 INFO [brain_api] Polling simulation start sim_id=1K3UD1ecE5cXcebHweSyqAm timeout=600s
+2026-08-16 11:48:30,187 INFO [brain_api] Polling simulation status changed sim_id=1K3UD1ecE5cXcebHweSyqAm status=UNKNOWN
+2026-08-16 11:48:58,421 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:48:58.421814+00:00 elapsed=30s progress=0/1 in_flight=1 last_status=-
+✓ Đã kết nối BRAIN API
+
+[batch 1/64] Mô phỏng 1 candidates...
+  [heartbeat] 11:48:58 elapsed=30s 0/1 in_flight=1 last=-
+2026-08-16 11:49:28,428 INFO [brain_api] Batch heartbeat ts=2026-08-16T04:49:28.428027+00:00 elapsed=60s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 11:49:28 elapsed=60s 0/1 in_flight=1 last=-

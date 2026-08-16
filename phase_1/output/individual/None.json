@@ -1,0 +1,8 @@
+{
+  "expression": "group_rank(-ts_delta(close, 3), industry)",
+  "template_id": "quarterly_return_reversal",
+  "status": "ERROR",
+  "alpha_id": null,
+  "sim_data": null,
+  "simulated_at": "2026-08-15T15:42:45.437856+00:00"
+}

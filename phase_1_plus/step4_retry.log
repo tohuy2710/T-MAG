@@ -1,0 +1,1912 @@
+nohup: ignoring input
+2026-08-16 15:22:40,113 INFO [brain_api] Connecting to BRAIN API session
+2026-08-16 15:22:40,113 INFO [brain_api] BRAIN authentication: using cookie header; password login skipped
+2026-08-16 15:22:40,114 INFO [brain_api] BRAIN session ready
+
+================================================================================
+  Phase 1 Plus — 4-Step Alpha Optimization Simulation
+================================================================================
+
+  Environment: GLB / TOPDIV3000 / Delay 1
+  File: alphas_4steps_cmf.txt
+  Filter: Chỉ mô phỏng Bước 4
+
+[load] Đọc file: /home/tohuy2710/T-MAG/phase_1_plus/alphas_4steps_cmf.txt
+[load] Đã load 64 candidates
+
+Sample candidates:
+  1. [Step 4] Step4.1a: Price-CMF Divergence | field=close, window=10, group=industry
+     group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10),...
+  2. [Step 4] Step4.1b: Weighted Divergence | field=close, window=10, group=industry
+     group_neutralize((ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10)...
+  3. [Step 4] Step4.1a: Price-CMF Divergence | field=close, window=10, group=subindustry
+     group_neutralize(ts_rank(close, 10) - ts_rank(short_term_price_change_2, 10),...
+  ... và 61 candidates khác
+
+
+[sim] Bắt đầu mô phỏng: 64 candidates
+      Batch size: 3
+      Max concurrent: 3
+
+[brain_api] Authenticated
+2026-08-16 15:22:40,115 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:40,116 INFO [brain_api] Simulation submit start expr_hash=e0d55b4b24f5 expr_len=87 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:40,116 INFO [brain_api] Simulation submit start expr_hash=4bff2db5a03e expr_len=130 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:40,117 INFO [brain_api] Simulation submit start expr_hash=c9dc68672eac expr_len=90 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:41,410 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+✓ Đã kết nối BRAIN API
+
+[batch 1/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:41,412 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:41,413 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:41,413 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=c9dc68672eac error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:41,414 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=c9dc68672eac
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:41,414 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=e0d55b4b24f5 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:41,414 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=e0d55b4b24f5
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+  [1/3] ERROR — group_neutralize(ts_rank(close, 10) - ts_rank(shor
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:41,415 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=4bff2db5a03e error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:41,415 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=4bff2db5a03e
+  ✗ ERROR: unknown error
+  [2/3] ERROR — group_neutralize(ts_rank(close, 10) - ts_rank(shor
+  ✗ ERROR: unknown error
+  [3/3] ERROR — group_neutralize((ts_rank(close, 10) - ts_rank(sho
+2026-08-16 15:22:41,422 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:41,422 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:41,423 INFO [brain_api] Simulation submit start expr_hash=f12b694825a3 expr_len=133 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:41,424 INFO [brain_api] Simulation submit start expr_hash=27633a3f57f8 expr_len=87 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:41,424 INFO [brain_api] Simulation submit start expr_hash=9bb1e2ddb2f2 expr_len=130 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:41,695 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 2/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:41,697 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+[brain_api] Session expired, pausing for cookie update...
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:41,698 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=f12b694825a3 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:41,698 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=27633a3f57f8 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:41,699 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=27633a3f57f8
+2026-08-16 15:22:41,698 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=f12b694825a3
+  [1/3] ERROR — group_neutralize(ts_rank(close, 20) - ts_rank(shor
+  ✗ ERROR: unknown error
+  [2/3] ERROR — group_neutralize((ts_rank(close, 10) - ts_rank(sho
+2026-08-16 15:22:41,742 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:41,742 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=9bb1e2ddb2f2 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:41,743 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=9bb1e2ddb2f2
+  [3/3] ERROR — group_neutralize((ts_rank(close, 20) - ts_rank(sho
+2026-08-16 15:22:41,744 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:41,744 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:41,745 INFO [brain_api] Simulation submit start expr_hash=2cce55506c18 expr_len=90 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:41,745 INFO [brain_api] Simulation submit start expr_hash=9f04bb57d90c expr_len=133 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:41,746 INFO [brain_api] Simulation submit start expr_hash=69c079172195 expr_len=87 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,010 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 3/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,010 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=69c079172195 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,010 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=69c079172195
+  [1/3] ERROR — group_neutralize(ts_rank(close, 60) - ts_rank(shor
+2026-08-16 15:22:42,013 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,013 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=2cce55506c18 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,013 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=2cce55506c18
+  [2/3] ERROR — group_neutralize(ts_rank(close, 20) - ts_rank(shor
+2026-08-16 15:22:42,068 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,068 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=9f04bb57d90c error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,068 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=9f04bb57d90c
+  [3/3] ERROR — group_neutralize((ts_rank(close, 20) - ts_rank(sho
+2026-08-16 15:22:42,069 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:42,069 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:42,069 INFO [brain_api] Simulation submit start expr_hash=b3498e8f07e5 expr_len=130 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,069 INFO [brain_api] Simulation submit start expr_hash=b0d364631f1c expr_len=90 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,070 INFO [brain_api] Simulation submit start expr_hash=ec3b1b7fecee expr_len=133 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,329 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 4/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,330 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=b3498e8f07e5 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,331 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=b3498e8f07e5
+2026-08-16 15:22:42,331 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  [1/3] ERROR — group_neutralize((ts_rank(close, 60) - ts_rank(sho
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,331 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=b0d364631f1c error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,331 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=b0d364631f1c
+  ✗ ERROR: unknown error
+  [2/3] ERROR — group_neutralize(ts_rank(close, 60) - ts_rank(shor
+2026-08-16 15:22:42,332 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,333 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=ec3b1b7fecee error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,333 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=ec3b1b7fecee
+  ✗ ERROR: unknown error
+  [3/3] ERROR — group_neutralize((ts_rank(close, 60) - ts_rank(sho
+2026-08-16 15:22:42,337 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:42,337 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:42,337 INFO [brain_api] Simulation submit start expr_hash=cb7bc5b07f00 expr_len=86 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,338 INFO [brain_api] Simulation submit start expr_hash=dd678f6e389b expr_len=129 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,338 INFO [brain_api] Simulation submit start expr_hash=da783896d5a5 expr_len=89 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,598 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 5/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,598 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=cb7bc5b07f00 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,598 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=cb7bc5b07f00
+  [1/3] ERROR — group_neutralize(ts_rank(vwap, 10) - ts_rank(short
+2026-08-16 15:22:42,601 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,601 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=dd678f6e389b error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,601 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=dd678f6e389b
+  [2/3] ERROR — group_neutralize((ts_rank(vwap, 10) - ts_rank(shor
+2026-08-16 15:22:42,604 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,605 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=da783896d5a5 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,605 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=da783896d5a5
+  [3/3] ERROR — group_neutralize(ts_rank(vwap, 10) - ts_rank(short
+2026-08-16 15:22:42,605 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:42,605 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:42,606 INFO [brain_api] Simulation submit start expr_hash=439ed4e5f5aa expr_len=132 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,607 INFO [brain_api] Simulation submit start expr_hash=cc071c6d9941 expr_len=86 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,607 INFO [brain_api] Simulation submit start expr_hash=6f885dd857df expr_len=129 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:42,863 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 6/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,863 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=439ed4e5f5aa error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,863 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=439ed4e5f5aa
+  [1/3] ERROR — group_neutralize((ts_rank(vwap, 10) - ts_rank(shor
+2026-08-16 15:22:42,872 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:42,872 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=cc071c6d9941 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:42,872 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=cc071c6d9941
+  [2/3] ERROR — group_neutralize(ts_rank(vwap, 20) - ts_rank(short
+2026-08-16 15:22:43,055 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,056 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=6f885dd857df error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,056 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=6f885dd857df
+  [3/3] ERROR — group_neutralize((ts_rank(vwap, 20) - ts_rank(shor
+2026-08-16 15:22:43,056 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:43,057 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:43,057 INFO [brain_api] Simulation submit start expr_hash=c790c545f1e9 expr_len=89 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,058 INFO [brain_api] Simulation submit start expr_hash=7c7edea560b5 expr_len=132 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,058 INFO [brain_api] Simulation submit start expr_hash=667b5fd3cec0 expr_len=86 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,317 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 7/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,317 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=c790c545f1e9 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,317 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=c790c545f1e9
+  [1/3] ERROR — group_neutralize(ts_rank(vwap, 20) - ts_rank(short
+2026-08-16 15:22:43,320 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,320 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=7c7edea560b5 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,320 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=7c7edea560b5
+  [2/3] ERROR — group_neutralize((ts_rank(vwap, 20) - ts_rank(shor
+2026-08-16 15:22:43,323 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,323 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=667b5fd3cec0 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,323 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=667b5fd3cec0
+  ✗ ERROR: unknown error
+  [3/3] ERROR — group_neutralize(ts_rank(vwap, 60) - ts_rank(short
+2026-08-16 15:22:43,324 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:43,325 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:43,325 INFO [brain_api] Simulation submit start expr_hash=2a01e1cf1b54 expr_len=129 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,325 INFO [brain_api] Simulation submit start expr_hash=b7eef750cfe8 expr_len=89 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,326 INFO [brain_api] Simulation submit start expr_hash=86891a3f80a7 expr_len=132 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,585 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 8/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,586 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=2a01e1cf1b54 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,586 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=2a01e1cf1b54
+  [1/3] ERROR — group_neutralize((ts_rank(vwap, 60) - ts_rank(shor
+2026-08-16 15:22:43,590 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,591 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=86891a3f80a7 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,591 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=86891a3f80a7
+  [2/3] ERROR — group_neutralize((ts_rank(vwap, 60) - ts_rank(shor
+2026-08-16 15:22:43,612 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,613 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=b7eef750cfe8 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,613 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=b7eef750cfe8
+  [3/3] ERROR — group_neutralize(ts_rank(vwap, 60) - ts_rank(short
+2026-08-16 15:22:43,614 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:43,614 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:43,615 INFO [brain_api] Simulation submit start expr_hash=a58a3944a842 expr_len=94 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,617 INFO [brain_api] Simulation submit start expr_hash=2f2b9add33df expr_len=97 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,617 INFO [brain_api] Simulation submit start expr_hash=c8148c91a2f9 expr_len=94 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,873 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 9/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,873 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=a58a3944a842 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,874 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=a58a3944a842
+  [1/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:43,878 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,878 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=2f2b9add33df error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,878 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=2f2b9add33df
+  [2/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:43,881 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:43,881 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=c8148c91a2f9 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:43,881 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=c8148c91a2f9
+  [3/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:43,882 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:43,882 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:43,882 INFO [brain_api] Simulation submit start expr_hash=3f1d57f3a295 expr_len=97 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,883 INFO [brain_api] Simulation submit start expr_hash=ca83de22f8b8 expr_len=95 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:43,884 INFO [brain_api] Simulation submit start expr_hash=ec9df6fd069e expr_len=98 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,140 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 10/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,141 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=3f1d57f3a295 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,141 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=3f1d57f3a295
+  [1/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:44,148 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,148 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=ec9df6fd069e error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,148 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=ec9df6fd069e
+  [2/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:44,159 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,160 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=ca83de22f8b8 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,160 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=ca83de22f8b8
+  [3/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:44,160 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:44,160 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:44,161 INFO [brain_api] Simulation submit start expr_hash=f78d3a3afb4f expr_len=95 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,161 INFO [brain_api] Simulation submit start expr_hash=20766966f43a expr_len=98 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,163 INFO [brain_api] Simulation submit start expr_hash=85f8bc00c6fb expr_len=178 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,422 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 11/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,422 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=85f8bc00c6fb error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,422 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=85f8bc00c6fb
+  [1/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:44,425 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,426 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=20766966f43a error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,426 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=20766966f43a
+  [2/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:44,432 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,433 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=f78d3a3afb4f error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,433 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=f78d3a3afb4f
+  [3/3] ERROR — group_neutralize(ts_mean(short_term_price_change_2
+2026-08-16 15:22:44,434 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:44,434 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:44,434 INFO [brain_api] Simulation submit start expr_hash=514e39088690 expr_len=181 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,434 INFO [brain_api] Simulation submit start expr_hash=efb640ff8981 expr_len=177 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,436 INFO [brain_api] Simulation submit start expr_hash=401fa25bbca2 expr_len=180 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,695 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 12/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,695 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=efb640ff8981 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,695 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=efb640ff8981
+  [1/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:44,698 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,698 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=401fa25bbca2 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,698 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=401fa25bbca2
+  [2/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:44,827 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:44,827 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=514e39088690 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:44,827 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=514e39088690
+  [3/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:44,828 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:44,828 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:44,828 INFO [brain_api] Simulation submit start expr_hash=b1ba82a20ff3 expr_len=178 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,829 INFO [brain_api] Simulation submit start expr_hash=2b11d704f9dc expr_len=181 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:44,830 INFO [brain_api] Simulation submit start expr_hash=89dcdd073ef7 expr_len=177 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,091 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 13/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,095 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=b1ba82a20ff3 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,095 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=b1ba82a20ff3
+  [1/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:45,098 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,098 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=89dcdd073ef7 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,098 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=89dcdd073ef7
+2026-08-16 15:22:45,101 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  [2/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+[brain_api] Session expired, pausing for cookie update...
+  ✗ ERROR: unknown error
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,102 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=2b11d704f9dc error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,102 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=2b11d704f9dc
+  [3/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:45,105 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:45,106 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:45,106 INFO [brain_api] Simulation submit start expr_hash=cae1720d62ea expr_len=180 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,112 INFO [brain_api] Simulation submit start expr_hash=7b2302cd728d expr_len=104 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,118 INFO [brain_api] Simulation submit start expr_hash=e649496af205 expr_len=107 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,365 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 14/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,365 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=cae1720d62ea error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,365 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=cae1720d62ea
+  [1/3] ERROR — group_neutralize(((short_term_price_change_2 - ts_
+2026-08-16 15:22:45,371 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,371 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=7b2302cd728d error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,372 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=7b2302cd728d
+  [2/3] ERROR — group_neutralize(short_term_price_change_2 * (1 - 
+2026-08-16 15:22:45,403 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,403 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=e649496af205 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,403 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=e649496af205
+  [3/3] ERROR — group_neutralize(short_term_price_change_2 * (1 - 
+2026-08-16 15:22:45,404 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:45,404 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:45,404 INFO [brain_api] Simulation submit start expr_hash=8c99c16a02df expr_len=104 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,404 INFO [brain_api] Simulation submit start expr_hash=b648413a3299 expr_len=107 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,405 INFO [brain_api] Simulation submit start expr_hash=2bf58e00dbcd expr_len=91 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,668 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 15/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,668 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=2bf58e00dbcd error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,668 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=2bf58e00dbcd
+  [1/3] ERROR — group_neutralize(short_term_price_change_2 * ts_de
+2026-08-16 15:22:45,671 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,671 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=8c99c16a02df error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,671 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=8c99c16a02df
+  [2/3] ERROR — group_neutralize(short_term_price_change_2 * (1 - 
+2026-08-16 15:22:45,725 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,726 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=b648413a3299 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,726 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=b648413a3299
+  [3/3] ERROR — group_neutralize(short_term_price_change_2 * (1 - 
+2026-08-16 15:22:45,727 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:45,727 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:45,728 INFO [brain_api] Simulation submit start expr_hash=c7ed8b69c637 expr_len=94 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,730 INFO [brain_api] Simulation submit start expr_hash=2bf58e00dbcd expr_len=91 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,731 INFO [brain_api] Simulation submit start expr_hash=c7ed8b69c637 expr_len=94 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,989 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 16/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,989 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=2bf58e00dbcd error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:45,989 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=2bf58e00dbcd
+  [1/3] ERROR — group_neutralize(short_term_price_change_2 * ts_de
+2026-08-16 15:22:45,992 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:45,993 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,993 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=c7ed8b69c637 error=[Errno 9] Bad file descriptor
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:45,993 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=c7ed8b69c637
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:45,993 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=c7ed8b69c637 error=[Errno 9] Bad file descriptor
+  [2/3] ERROR — group_neutralize(short_term_price_change_2 * ts_de
+2026-08-16 15:22:45,993 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=c7ed8b69c637
+  ✗ ERROR: unknown error
+  [3/3] ERROR — group_neutralize(short_term_price_change_2 * ts_de
+2026-08-16 15:22:45,996 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:45,996 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:45,996 INFO [brain_api] Simulation submit start expr_hash=fb9acbf03910 expr_len=81 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:45,998 INFO [brain_api] Simulation submit start expr_hash=e311a713d5b0 expr_len=84 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,000 INFO [brain_api] Simulation submit start expr_hash=5db56c3152cc expr_len=105 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,254 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 17/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:46,255 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=e311a713d5b0 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:46,255 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=e311a713d5b0
+2026-08-16 15:22:46,255 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  [1/3] ERROR — group_neutralize(short_term_price_change_2 * analy
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:46,256 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=fb9acbf03910 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:46,256 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=fb9acbf03910
+  ✗ ERROR: unknown error
+  [2/3] ERROR — group_neutralize(short_term_price_change_2 * analy
+2026-08-16 15:22:46,457 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:46,457 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=5db56c3152cc error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:46,457 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=5db56c3152cc
+  [3/3] ERROR — group_neutralize(short_term_price_change_2 * avg_e
+2026-08-16 15:22:46,458 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:46,458 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:46,458 INFO [brain_api] Simulation submit start expr_hash=076af6b46ba9 expr_len=108 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,458 INFO [brain_api] Simulation submit start expr_hash=e066c8084b43 expr_len=118 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,459 INFO [brain_api] Simulation submit start expr_hash=fa63084d9a19 expr_len=121 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,721 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 18/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:46,725 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:46,727 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=e066c8084b43 error=[Errno 9] Bad file descriptor
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:46,727 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=e066c8084b43
+2026-08-16 15:22:46,728 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=fa63084d9a19 error=[Errno 9] Bad file descriptor
+  [1/3] ERROR — group_neutralize(rank(ts_delta(short_term_price_ch
+2026-08-16 15:22:46,728 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=fa63084d9a19
+  ✗ ERROR: unknown error
+  [2/3] ERROR — group_neutralize(rank(ts_delta(short_term_price_ch
+2026-08-16 15:22:46,763 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:46,764 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=076af6b46ba9 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:46,764 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=076af6b46ba9
+  [3/3] ERROR — group_neutralize(short_term_price_change_2 * avg_e
+2026-08-16 15:22:46,765 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:46,765 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:46,766 INFO [brain_api] Simulation submit start expr_hash=a1c3ec1b78df expr_len=120 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,768 INFO [brain_api] Simulation submit start expr_hash=e4a8c214bfa1 expr_len=123 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:46,769 INFO [brain_api] Simulation submit start expr_hash=d0eff38a46c3 expr_len=120 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,029 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 19/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,029 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=e4a8c214bfa1 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,029 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=e4a8c214bfa1
+  [1/3] ERROR — group_neutralize(rank(ts_delta(short_term_price_ch
+2026-08-16 15:22:47,091 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,091 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=a1c3ec1b78df error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,091 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=a1c3ec1b78df
+  [2/3] ERROR — group_neutralize(rank(ts_delta(short_term_price_ch
+2026-08-16 15:22:47,126 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,127 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=d0eff38a46c3 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,127 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=d0eff38a46c3
+  [3/3] ERROR — group_neutralize(rank(ts_delta(short_term_price_ch
+2026-08-16 15:22:47,128 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:47,128 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:47,128 INFO [brain_api] Simulation submit start expr_hash=60f896959ee4 expr_len=123 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,130 INFO [brain_api] Simulation submit start expr_hash=043528bbd8cf expr_len=67 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,132 INFO [brain_api] Simulation submit start expr_hash=b1845ee1c3c6 expr_len=70 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,391 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 20/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,391 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=60f896959ee4 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,391 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=60f896959ee4
+  [1/3] ERROR — group_neutralize(rank(ts_delta(short_term_price_ch
+2026-08-16 15:22:47,393 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:47,394 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+[brain_api] Session expired, pausing for cookie update...
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,395 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=043528bbd8cf error=[Errno 9] Bad file descriptor
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,395 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=043528bbd8cf
+2026-08-16 15:22:47,396 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=b1845ee1c3c6 error=[Errno 9] Bad file descriptor
+  [2/3] ERROR — group_neutralize(-ts_rank(short_term_price_change_
+2026-08-16 15:22:47,396 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=b1845ee1c3c6
+  ✗ ERROR: unknown error
+  [3/3] ERROR — group_neutralize(-ts_rank(short_term_price_change_
+2026-08-16 15:22:47,398 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:47,398 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-16 15:22:47,399 INFO [brain_api] Simulation submit start expr_hash=2324b49089fe expr_len=67 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,399 INFO [brain_api] Simulation submit start expr_hash=540c7002292f expr_len=70 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,403 INFO [brain_api] Simulation submit start expr_hash=63ef967058f7 expr_len=165 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,659 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 21/22] Mô phỏng 3 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,660 INFO [brain_api] Stream simulation raised exception batch_idx=1 attempt=1 expr_hash=540c7002292f error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,660 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=ERROR attempts=1 retryable=False expr_hash=540c7002292f
+  [1/3] ERROR — group_neutralize(-ts_rank(short_term_price_change_
+2026-08-16 15:22:47,663 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:47,664 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,664 INFO [brain_api] Stream simulation raised exception batch_idx=2 attempt=1 expr_hash=63ef967058f7 error=[Errno 9] Bad file descriptor
+[brain_api] Session expired, pausing for cookie update...
+2026-08-16 15:22:47,665 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=ERROR attempts=1 retryable=False expr_hash=63ef967058f7
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)...   [2/3] ERROR — group_neutralize(rank(ts_rank(short_term_price_cha
+2026-08-16 15:22:47,665 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=2324b49089fe error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,666 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=2324b49089fe
+  ✗ ERROR: unknown error
+  [3/3] ERROR — group_neutralize(-ts_rank(short_term_price_change_
+2026-08-16 15:22:47,667 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-16 15:22:47,667 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=3 max_retries=2
+2026-08-16 15:22:47,668 INFO [brain_api] Simulation submit start expr_hash=f0420b2d37e5 expr_len=168 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-16 15:22:47,927 INFO [brain_api] POST auth expired status_code=401 url=https://api.worldquantbrain.com/simulations; cookie-based auth detected
+  ✗ ERROR: unknown error
+[batch 22/22] Mô phỏng 1 candidates...
+[brain_api] Session expired, pausing for cookie update...
+
+======================================================================
+  ⚠️  SESSION EXPIRED - COOKIE UPDATE REQUIRED
+======================================================================
+
+Your WorldQuant BRAIN session cookie has expired.
+
+TO CONTINUE:
+  1. Open https://platform.worldquantbrain.com in your browser
+  2. Log in (if needed)
+  3. Open Developer Tools (F12)
+  4. Go to Application → Cookies → platform.worldquantbrain.com
+  5. Find the 't' cookie
+  6. Copy its Value (JWT token starting with eyJ...)
+  7. Update the 't=' value in: /home/tohuy2710/T-MAG/.env
+  8. Save the file
+  9. Return here and press ENTER to continue
+
+The mining loop will resume from where it left off.
+======================================================================
+
+Press ENTER after updating .env cookie (or Ctrl+C to abort)... 2026-08-16 15:22:47,928 INFO [brain_api] Stream simulation raised exception batch_idx=0 attempt=1 expr_hash=f0420b2d37e5 error=[Errno 9] Bad file descriptor
+2026-08-16 15:22:47,928 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=f0420b2d37e5
+  [1/1] ERROR — group_neutralize(rank(ts_rank(short_term_price_cha
+2026-08-16 15:22:47,929 INFO [brain_api] Batch simulate stream complete candidate_count=1
+  ✗ ERROR: unknown error
+
+[save] Đã lưu 64 kết quả vào /home/tohuy2710/T-MAG/phase_1_plus/output/simulation_results.json
+
+================================================================================
+  KẾT QUẢ MÔ PHỎNG
+================================================================================
+
+Tổng số: 64
+  ✓ Thành công: 0
+  ✗ Lỗi: 64
+
+Không có kết quả thành công để hiển thị.
+
+[save] Kết quả đã lưu tại:
+       Tổng hợp: /home/tohuy2710/T-MAG/phase_1_plus/output/simulation_results.json
+       Chi tiết: /home/tohuy2710/T-MAG/phase_1_plus/output/individual/
+
+================================================================================
+  ✓ Hoàn thành mô phỏng!
+================================================================================
+

@@ -1,0 +1,44 @@
+================================================================================
+  STEP 4 - ĐANG CHẠY VỚI COOKIE MỚI
+================================================================================
+
+✅ STATUS: HOẠT ĐỘNG!
+
+- Batch 1/22: ✓ COMPLETE (3/3 alphas)
+- First result: sharpe=-1.18, fitness=-0.56 (negative but no error!)
+- Cookie: WORKING ✓
+
+Đang chạy batch 2/22...
+
+================================================================================
+  TIẾN ĐỘ
+================================================================================
+
+Tổng: 64 alphas
+Batches: 22 (3 alphas/batch)
+ETA: ~20-30 minutes
+Log: step4_new.log
+
+Commands:
+  ./monitor_step4.sh              # Check tiến độ
+  tail -f step4_new.log          # Xem realtime
+  ./check_step4_results.sh       # Xem kết quả (sau khi xong)
+
+================================================================================
+  LƯU Ý
+================================================================================
+
+- Alphas đầu có fitness NEGATIVE là BÌ
+
+NH THƯỜNG
+- Không phải tất cả alphas đều tốt
+- Chỉ cần 5-10 alphas tốt trong 64 alphas là OK
+- Target: fitness > 0.5, sharpe > 1.0
+
+================================================================================
+
+Started: 15:24
+Current: Running batch 2/22
+Expected finish: ~15:45-15:55
+
+================================================================================

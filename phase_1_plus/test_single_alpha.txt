@@ -1,0 +1,2 @@
+# Test single expression
+rank(close)

@@ -1,0 +1,34 @@
+{
+  "expression": "group_neutralize(((short_term_price_change_2 - ts_mean(short_term_price_change_2, 60)) / (ts_stddev(short_term_price_change_2, 60) + 1e-6)) * (adv20 / (adv20 + 1e-6)), subindustry)",
+  "description": "Step4.3: CMF Spike × Volume Anomaly | spike_window=60, vol=adv20, group=subindustry",
+  "step": 4,
+  "status": "ERROR",
+  "alpha_id": null,
+  "sim_data": {
+    "id": "kansl3of4Bx9RHSZQ1qhp0",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Unexpected character 'e' near \"2, 60) + 1e-6)) * (a\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+      "line": 1,
+      "start": 134,
+      "end": 135,
+      "property": "regular"
+    },
+    "links": {
+      "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+  },
+  "settings": {
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "subindustry",
+    "decay": 10,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unit_handling": "VERIFY",
+    "nan_handling": "OFF"
+  },
+  "simulated_at": "2026-08-16T08:56:54.669686+00:00"
+}
