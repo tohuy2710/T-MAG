@@ -1,0 +1,77 @@
+{
+  "name": "cmf_williams_absolute_gap_parameter_mining",
+  "anchor": "group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 9) * (1 - ts_rank(returns, 15)), industry)",
+  "parameter_grid": {
+    "field_window": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "return_window": [
+      10,
+      15,
+      20,
+      25,
+      30
+    ]
+  },
+  "variants": [
+    {
+      "variant": "base_ts_rank",
+      "description": "Anchor structure; only ts_rank windows change",
+      "signal": "ts_rank({gap}, {field_window}) * (1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "ranked_gap_dual_rank",
+      "description": "Rank both the gap signal and reversal leg",
+      "signal": "rank(ts_rank({gap}, {field_window})) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "zscore_gap",
+      "description": "Replace inner ts_rank(gap) with rolling ts_zscore(gap)",
+      "signal": "ts_zscore({gap}, {field_window}) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "rolling_zscore_gap",
+      "description": "Rolling demean/std normalization of the gap",
+      "signal": "(({gap} - ts_mean({gap}, {field_window})) / (ts_std_dev({gap}, {field_window}) + {epsilon})) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "mean_gap",
+      "description": "Mean gap inside the same reversal interaction",
+      "signal": "ts_mean({gap}, {field_window}) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "delayed_gap",
+      "description": "One additional signal delay; platform delay remains 1",
+      "signal": "ts_rank(ts_delay({gap}, 1), {field_window}) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "delta_gap",
+      "description": "One-day change in the absolute gap",
+      "signal": "ts_rank(ts_delta({gap}, 1), {field_window}) * rank(1 - ts_rank(returns, {return_window}))"
+    }
+  ],
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "MARKET",
+    "decay": 20,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name": "wjav9leg_focused_parameter_mining",
+  "source_alpha": "WjAv9LeG",
+  "anchor": "group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7) * (1 - ts_rank(returns, 10)), industry)",
+  "parameter_grid": {
+    "field_window": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "return_window": [
+      10,
+      15,
+      20,
+      25,
+      30
+    ]
+  },
+  "variants": [
+    {
+      "variant": "base_ts_rank",
+      "description": "Direct parameter replacement around WjAv9LeG",
+      "signal": "ts_rank({gap}, {field_window}) * (1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "rank_signal",
+      "description": "Rank the signal after ts_rank; reversal leg unchanged",
+      "signal": "rank(ts_rank({gap}, {field_window})) * (1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "dual_rank",
+      "description": "Rank both signal and reversal legs",
+      "signal": "rank(ts_rank({gap}, {field_window})) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "one_day_delayed_signal",
+      "description": "One additional delay on the price-derived gap",
+      "signal": "ts_rank(ts_delay({gap}, 1), {field_window}) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "delta_signal",
+      "description": "One-day delta of the price-derived gap",
+      "signal": "rank(ts_rank(ts_delta({gap}, 1), {field_window})) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "zscore_signal",
+      "description": "Rolling z-score of the price-derived gap",
+      "signal": "ts_zscore({gap}, {field_window}) * rank(1 - ts_rank(returns, {return_window}))"
+    },
+    {
+      "variant": "rolling_zscore_signal",
+      "description": "Rolling demean/std normalization of the price-derived gap",
+      "signal": "(({gap} - ts_mean({gap}, {field_window})) / (ts_std_dev({gap}, {field_window}) + {epsilon})) * rank(1 - ts_rank(returns, {return_window}))"
+    }
+  ],
+  "settings": {
+    "instrumentType": "EQUITY",
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "MARKET",
+    "decay": 20,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unitHandling": "VERIFY",
+    "nanHandling": "ON",
+    "maxTrade": "OFF",
+    "maxPosition": "OFF",
+    "language": "FASTEXPR",
+    "visualization": false
+  }
+}

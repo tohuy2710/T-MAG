@@ -1,0 +1,431 @@
+[ef1bfe927c76] stage1_parameter_sweep | A_div_B_safe | field_window=2 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 2) * (1 - ts_rank(returns, 10)), industry)
+
+[77f6a73e6cb7] stage1_parameter_sweep | A_minus_B | field_window=2 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 2) * (1 - ts_rank(returns, 15)), industry)
+
+[8ded5673348f] stage1_parameter_sweep | A_only | field_window=2 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 2) * (1 - ts_rank(returns, 20)), industry)
+
+[e64545ad9345] stage1_parameter_sweep | A_plus_B | field_window=2 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 2) * (1 - ts_rank(returns, 25)), industry)
+
+[ab820ffa4929] stage1_parameter_sweep | A_times_B | field_window=2 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 2) * (1 - ts_rank(returns, 30)), industry)
+
+[aac104188327] stage1_parameter_sweep | B_div_A_safe | field_window=3 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 3) * (1 - ts_rank(returns, 10)), industry)
+
+[1bf90bfd3199] stage1_parameter_sweep | B_minus_A | field_window=3 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 3) * (1 - ts_rank(returns, 15)), industry)
+
+[24a79c90dcd1] stage1_parameter_sweep | B_only | field_window=3 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 3) * (1 - ts_rank(returns, 20)), industry)
+
+[75b3e94abfe6] stage1_parameter_sweep | absolute_gap | field_window=3 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 3) * (1 - ts_rank(returns, 25)), industry)
+
+[04707cc90292] stage1_parameter_sweep | max_A_B | field_window=3 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(max(short_term_price_change_2, short_term_price_change), 3) * (1 - ts_rank(returns, 30)), industry)
+
+[23e1a30c69a7] stage1_parameter_sweep | mean_A_B | field_window=4 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 + short_term_price_change) / 2), 4) * (1 - ts_rank(returns, 10)), industry)
+
+[47de452f70ae] stage1_parameter_sweep | min_A_B | field_window=4 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(min(short_term_price_change_2, short_term_price_change), 4) * (1 - ts_rank(returns, 15)), industry)
+
+[cdd02d076369] stage1_parameter_sweep | signed_gap | field_window=4 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 4) * (1 - ts_rank(returns, 20)), industry)
+
+[116861c463e4] stage1_parameter_sweep | symmetric_gap | field_window=4 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 - short_term_price_change) / (abs(short_term_price_change_2) + abs(short_term_price_change) + 0.000001)), 4) * (1 - ts_rank(returns, 25)), industry)
+
+[e29922a06212] stage1_parameter_sweep | A_div_B_safe | field_window=4 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 4) * (1 - ts_rank(returns, 30)), industry)
+
+[585230782a50] stage1_parameter_sweep | A_minus_B | field_window=5 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 5) * (1 - ts_rank(returns, 10)), industry)
+
+[bf5e41eae42e] stage1_parameter_sweep | A_only | field_window=5 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 15)), industry)
+
+[63f14e580177] stage1_parameter_sweep | A_plus_B | field_window=5 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 5) * (1 - ts_rank(returns, 20)), industry)
+
+[45986c611313] stage1_parameter_sweep | A_times_B | field_window=5 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 5) * (1 - ts_rank(returns, 25)), industry)
+
+[09d81616220c] stage1_parameter_sweep | B_div_A_safe | field_window=5 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 5) * (1 - ts_rank(returns, 30)), industry)
+
+[0d55297d8bcd] stage1_parameter_sweep | B_minus_A | field_window=6 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 6) * (1 - ts_rank(returns, 10)), industry)
+
+[2d1545ba1c94] stage1_parameter_sweep | B_only | field_window=6 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 6) * (1 - ts_rank(returns, 15)), industry)
+
+[3774493c0fb0] stage1_parameter_sweep | absolute_gap | field_window=6 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 6) * (1 - ts_rank(returns, 20)), industry)
+
+[0bd30d8ed12b] stage1_parameter_sweep | max_A_B | field_window=6 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(max(short_term_price_change_2, short_term_price_change), 6) * (1 - ts_rank(returns, 25)), industry)
+
+[9228d815cffd] stage1_parameter_sweep | mean_A_B | field_window=6 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 + short_term_price_change) / 2), 6) * (1 - ts_rank(returns, 30)), industry)
+
+[0822724d0aa1] stage1_parameter_sweep | min_A_B | field_window=7 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(min(short_term_price_change_2, short_term_price_change), 7) * (1 - ts_rank(returns, 10)), industry)
+
+[7d4c9dc389eb] stage1_parameter_sweep | signed_gap | field_window=7 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7) * (1 - ts_rank(returns, 15)), industry)
+
+[e4d1c641cb48] stage1_parameter_sweep | symmetric_gap | field_window=7 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 - short_term_price_change) / (abs(short_term_price_change_2) + abs(short_term_price_change) + 0.000001)), 7) * (1 - ts_rank(returns, 20)), industry)
+
+[a44f4ac8cdec] stage1_parameter_sweep | A_div_B_safe | field_window=7 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 7) * (1 - ts_rank(returns, 25)), industry)
+
+[74d43ae9d69b] stage1_parameter_sweep | A_minus_B | field_window=7 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 7) * (1 - ts_rank(returns, 30)), industry)
+
+[16c2e49d2863] stage1_parameter_sweep | A_only | field_window=8 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 8) * (1 - ts_rank(returns, 10)), industry)
+
+[db209866f935] stage1_parameter_sweep | A_plus_B | field_window=8 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 8) * (1 - ts_rank(returns, 15)), industry)
+
+[f1b77d9b0ac1] stage1_parameter_sweep | A_times_B | field_window=8 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 8) * (1 - ts_rank(returns, 20)), industry)
+
+[a09440a88c1d] stage1_parameter_sweep | B_div_A_safe | field_window=8 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 8) * (1 - ts_rank(returns, 25)), industry)
+
+[83bc97b41ed5] stage1_parameter_sweep | B_minus_A | field_window=8 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 8) * (1 - ts_rank(returns, 30)), industry)
+
+[54475d728b42] stage1_parameter_sweep | B_only | field_window=9 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 9) * (1 - ts_rank(returns, 10)), industry)
+
+[817b8cb8e83f] stage1_parameter_sweep | absolute_gap | field_window=9 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 9) * (1 - ts_rank(returns, 15)), industry)
+
+[90f7b63c3277] stage1_parameter_sweep | max_A_B | field_window=9 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(max(short_term_price_change_2, short_term_price_change), 9) * (1 - ts_rank(returns, 20)), industry)
+
+[cb7223ab7dde] stage1_parameter_sweep | mean_A_B | field_window=9 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 + short_term_price_change) / 2), 9) * (1 - ts_rank(returns, 25)), industry)
+
+[52d4c420ffc7] stage1_parameter_sweep | min_A_B | field_window=9 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(min(short_term_price_change_2, short_term_price_change), 9) * (1 - ts_rank(returns, 30)), industry)
+
+[35cbbdccdbb5] stage1_parameter_sweep | signed_gap | field_window=10 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 10) * (1 - ts_rank(returns, 10)), industry)
+
+[5de21b68fb3a] stage1_parameter_sweep | symmetric_gap | field_window=10 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 - short_term_price_change) / (abs(short_term_price_change_2) + abs(short_term_price_change) + 0.000001)), 10) * (1 - ts_rank(returns, 15)), industry)
+
+[808d55cb35dd] stage1_parameter_sweep | A_div_B_safe | field_window=10 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 10) * (1 - ts_rank(returns, 20)), industry)
+
+[40a2a4e1c5c8] stage1_parameter_sweep | A_minus_B | field_window=10 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 10) * (1 - ts_rank(returns, 25)), industry)
+
+[c1ea4be1546f] stage1_parameter_sweep | A_only | field_window=10 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 30)), industry)
+
+[5fb02bd6d02a] stage1_parameter_sweep | A_minus_B | field_window=2 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 2) * (1 - ts_rank(returns, 10)), industry)
+
+[d925651c98e5] stage1_parameter_sweep | A_only | field_window=2 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 2) * (1 - ts_rank(returns, 15)), industry)
+
+[353873df84bd] stage1_parameter_sweep | A_plus_B | field_window=2 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 2) * (1 - ts_rank(returns, 20)), industry)
+
+[552785428dd7] stage1_parameter_sweep | A_times_B | field_window=2 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 2) * (1 - ts_rank(returns, 25)), industry)
+
+[969c00fb943d] stage1_parameter_sweep | B_div_A_safe | field_window=2 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 2) * (1 - ts_rank(returns, 30)), industry)
+
+[7df72c477765] stage1_parameter_sweep | B_minus_A | field_window=3 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 3) * (1 - ts_rank(returns, 10)), industry)
+
+[ea5dd49c87b9] stage1_parameter_sweep | B_only | field_window=3 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 3) * (1 - ts_rank(returns, 15)), industry)
+
+[c55cfbf1e77f] stage1_parameter_sweep | absolute_gap | field_window=3 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 3) * (1 - ts_rank(returns, 20)), industry)
+
+[91cb7b04142f] stage1_parameter_sweep | max_A_B | field_window=3 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(max(short_term_price_change_2, short_term_price_change), 3) * (1 - ts_rank(returns, 25)), industry)
+
+[449c305f2a22] stage1_parameter_sweep | mean_A_B | field_window=3 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 + short_term_price_change) / 2), 3) * (1 - ts_rank(returns, 30)), industry)
+
+[b21ece324014] stage1_parameter_sweep | min_A_B | field_window=4 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(min(short_term_price_change_2, short_term_price_change), 4) * (1 - ts_rank(returns, 10)), industry)
+
+[fc1aa2d826a3] stage1_parameter_sweep | signed_gap | field_window=4 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 4) * (1 - ts_rank(returns, 15)), industry)
+
+[f39d8ae45015] stage1_parameter_sweep | symmetric_gap | field_window=4 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 - short_term_price_change) / (abs(short_term_price_change_2) + abs(short_term_price_change) + 0.000001)), 4) * (1 - ts_rank(returns, 20)), industry)
+
+[6713fcde2d27] stage1_parameter_sweep | A_div_B_safe | field_window=4 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 4) * (1 - ts_rank(returns, 25)), industry)
+
+[5afcac9a8642] stage1_parameter_sweep | A_minus_B | field_window=4 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 4) * (1 - ts_rank(returns, 30)), industry)
+
+[2821256395e6] stage1_parameter_sweep | A_only | field_window=5 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 5) * (1 - ts_rank(returns, 10)), industry)
+
+[77413504ee62] stage1_parameter_sweep | A_plus_B | field_window=5 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 5) * (1 - ts_rank(returns, 15)), industry)
+
+[8f90776f7dc0] stage1_parameter_sweep | A_times_B | field_window=5 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 5) * (1 - ts_rank(returns, 20)), industry)
+
+[d2c6f9f79471] stage1_parameter_sweep | B_div_A_safe | field_window=5 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 5) * (1 - ts_rank(returns, 25)), industry)
+
+[f5560227afdc] stage1_parameter_sweep | B_minus_A | field_window=5 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 5) * (1 - ts_rank(returns, 30)), industry)
+
+[84c3fac8d8ff] stage1_parameter_sweep | B_only | field_window=6 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 6) * (1 - ts_rank(returns, 10)), industry)
+
+[621f62c02b1b] stage1_parameter_sweep | absolute_gap | field_window=6 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 6) * (1 - ts_rank(returns, 15)), industry)
+
+[f003eef48a99] stage1_parameter_sweep | max_A_B | field_window=6 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(max(short_term_price_change_2, short_term_price_change), 6) * (1 - ts_rank(returns, 20)), industry)
+
+[483e57bd4870] stage1_parameter_sweep | mean_A_B | field_window=6 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 + short_term_price_change) / 2), 6) * (1 - ts_rank(returns, 25)), industry)
+
+[cdc8fbd5aa7f] stage1_parameter_sweep | min_A_B | field_window=6 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(min(short_term_price_change_2, short_term_price_change), 6) * (1 - ts_rank(returns, 30)), industry)
+
+[b4498ca3053a] stage1_parameter_sweep | signed_gap | field_window=7 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7) * (1 - ts_rank(returns, 10)), industry)
+
+[c876a9c8f364] stage1_parameter_sweep | symmetric_gap | field_window=7 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 - short_term_price_change) / (abs(short_term_price_change_2) + abs(short_term_price_change) + 0.000001)), 7) * (1 - ts_rank(returns, 15)), industry)
+
+[9eb00b988805] stage1_parameter_sweep | A_div_B_safe | field_window=7 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 7) * (1 - ts_rank(returns, 20)), industry)
+
+[d519e038a64a] stage1_parameter_sweep | A_minus_B | field_window=7 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 7) * (1 - ts_rank(returns, 25)), industry)
+
+[c6c15f5dd151] stage1_parameter_sweep | A_only | field_window=7 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 7) * (1 - ts_rank(returns, 30)), industry)
+
+[cab60642e8d5] stage1_parameter_sweep | A_plus_B | field_window=8 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 8) * (1 - ts_rank(returns, 10)), industry)
+
+[2e595c05f94d] stage1_parameter_sweep | A_times_B | field_window=8 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 8) * (1 - ts_rank(returns, 15)), industry)
+
+[56fac9e393cc] stage1_parameter_sweep | B_div_A_safe | field_window=8 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 8) * (1 - ts_rank(returns, 20)), industry)
+
+[9d4c2e91fb5f] stage1_parameter_sweep | B_minus_A | field_window=8 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 8) * (1 - ts_rank(returns, 25)), industry)
+
+[b4ffcb4966d8] stage1_parameter_sweep | B_only | field_window=8 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 8) * (1 - ts_rank(returns, 30)), industry)
+
+[6d36de16c99b] stage1_parameter_sweep | absolute_gap | field_window=9 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(abs(short_term_price_change_2 - short_term_price_change), 9) * (1 - ts_rank(returns, 10)), industry)
+
+[3361a5f2b36e] stage1_parameter_sweep | max_A_B | field_window=9 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank(max(short_term_price_change_2, short_term_price_change), 9) * (1 - ts_rank(returns, 15)), industry)
+
+[08db92f9e91c] stage1_parameter_sweep | mean_A_B | field_window=9 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 + short_term_price_change) / 2), 9) * (1 - ts_rank(returns, 20)), industry)
+
+[5eed01c5071b] stage1_parameter_sweep | min_A_B | field_window=9 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(min(short_term_price_change_2, short_term_price_change), 9) * (1 - ts_rank(returns, 25)), industry)
+
+[2e13a76ffbef] stage1_parameter_sweep | signed_gap | field_window=9 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 9) * (1 - ts_rank(returns, 30)), industry)
+
+[98a36bd4548d] stage1_parameter_sweep | symmetric_gap | field_window=10 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(((short_term_price_change_2 - short_term_price_change) / (abs(short_term_price_change_2) + abs(short_term_price_change) + 0.000001)), 10) * (1 - ts_rank(returns, 10)), industry)
+
+[f39ad21c0bec] stage1_parameter_sweep | A_div_B_safe | field_window=10 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 / (short_term_price_change + 0.000001)), 10) * (1 - ts_rank(returns, 15)), industry)
+
+[df242453fc51] stage1_parameter_sweep | A_minus_B | field_window=10 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 - short_term_price_change), 10) * (1 - ts_rank(returns, 20)), industry)
+
+[3abc4a18e993] stage1_parameter_sweep | A_only | field_window=10 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 10) * (1 - ts_rank(returns, 25)), industry)
+
+[68f9e30ef323] stage1_parameter_sweep | A_plus_B | field_window=10 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 10) * (1 - ts_rank(returns, 30)), industry)
+
+[9daa13c17bfc] stage1_parameter_sweep | A_only | field_window=2 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change_2, 2) * (1 - ts_rank(returns, 10)), industry)
+
+[4963bc0af822] stage1_parameter_sweep | A_plus_B | field_window=2 | return_window=15 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 + short_term_price_change), 2) * (1 - ts_rank(returns, 15)), industry)
+
+[eeee91d6bd85] stage1_parameter_sweep | A_times_B | field_window=2 | return_window=20 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change_2 * short_term_price_change), 2) * (1 - ts_rank(returns, 20)), industry)
+
+[36ea224ca303] stage1_parameter_sweep | B_div_A_safe | field_window=2 | return_window=25 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change / (short_term_price_change_2 + 0.000001)), 2) * (1 - ts_rank(returns, 25)), industry)
+
+[8785766e8df0] stage1_parameter_sweep | B_minus_A | field_window=2 | return_window=30 | base_ts_rank
+group_neutralize(ts_rank((short_term_price_change - short_term_price_change_2), 2) * (1 - ts_rank(returns, 30)), industry)
+
+[766407a53815] stage1_parameter_sweep | B_only | field_window=3 | return_window=10 | base_ts_rank
+group_neutralize(ts_rank(short_term_price_change, 3) * (1 - ts_rank(returns, 10)), industry)
+
+[167106754d60] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=15 | delta_signal
+group_neutralize(rank(ts_delta((short_term_price_change_2 + short_term_price_change), 1)) * rank(1 - ts_rank(returns, 15)), industry)
+
+[aa7f32e4e74d] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=20 | dual_rank
+group_neutralize(rank(ts_rank((short_term_price_change_2 + short_term_price_change), 2)) * rank(1 - ts_rank(returns, 20)), industry)
+
+[c22ac0544f82] stage2_operator_nesting | max_A_B | field_window=3 | return_window=25 | mean_reversion_interaction
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 3)) * rank(ts_rank(returns, 25)), industry)
+
+[57ba0ced3b2d] stage2_operator_nesting | max_A_B | field_window=3 | return_window=30 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay(max(short_term_price_change_2, short_term_price_change), 1), 3) * rank(1 - ts_rank(returns, 30)), industry)
+
+[39cdeac8397e] stage2_operator_nesting | signed_gap | field_window=4 | return_window=15 | rank_signal
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 4)) * (1 - ts_rank(returns, 15)), industry)
+
+[9bdd3d8e8445] stage2_operator_nesting | signed_gap | field_window=4 | return_window=20 | rolling_zscore_signal
+group_neutralize(((sign(short_term_price_change_2 - short_term_price_change) - ts_mean(sign(short_term_price_change_2 - short_term_price_change), 4)) / (ts_std_dev(sign(short_term_price_change_2 - short_term_price_change), 4) + 0.000001)) * rank(1 - ts_rank(returns, 20)), industry)
+
+[e5fe4b09250d] stage2_operator_nesting | max_A_B | field_window=6 | return_window=20 | zscore_signal
+group_neutralize(ts_zscore(max(short_term_price_change_2, short_term_price_change), 6) * rank(1 - ts_rank(returns, 20)), industry)
+
+[b8f0677357bd] stage2_operator_nesting | max_A_B | field_window=6 | return_window=25 | mean_reversion_interaction
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 6)) * rank(ts_rank(returns, 25)), industry)
+
+[1c7e60bdcafc] stage2_operator_nesting | signed_gap | field_window=7 | return_window=10 | dual_rank
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7)) * rank(1 - ts_rank(returns, 10)), industry)
+
+[70a1b48909b4] stage2_operator_nesting | signed_gap | field_window=7 | return_window=15 | rank_signal
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7)) * (1 - ts_rank(returns, 15)), industry)
+
+[1cdf4598b3ce] stage2_operator_nesting | signed_gap | field_window=9 | return_window=30 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay(sign(short_term_price_change_2 - short_term_price_change), 1), 9) * rank(1 - ts_rank(returns, 30)), industry)
+
+[4deef8f45bca] stage2_operator_nesting | signed_gap | field_window=10 | return_window=10 | zscore_signal
+group_neutralize(ts_zscore(sign(short_term_price_change_2 - short_term_price_change), 10) * rank(1 - ts_rank(returns, 10)), industry)
+
+[62a9ac15f78e] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=15 | dual_rank
+group_neutralize(rank(ts_rank((short_term_price_change_2 + short_term_price_change), 2)) * rank(1 - ts_rank(returns, 15)), industry)
+
+[82ebf8322d57] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=20 | mean_reversion_interaction
+group_neutralize(rank(ts_rank((short_term_price_change_2 + short_term_price_change), 2)) * rank(ts_rank(returns, 20)), industry)
+
+[2d5ae17826f4] stage2_operator_nesting | max_A_B | field_window=3 | return_window=25 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay(max(short_term_price_change_2, short_term_price_change), 1), 3) * rank(1 - ts_rank(returns, 25)), industry)
+
+[74dd2615064a] stage2_operator_nesting | max_A_B | field_window=3 | return_window=30 | rank_signal
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 3)) * (1 - ts_rank(returns, 30)), industry)
+
+[7fbd6f911919] stage2_operator_nesting | signed_gap | field_window=4 | return_window=15 | rolling_zscore_signal
+group_neutralize(((sign(short_term_price_change_2 - short_term_price_change) - ts_mean(sign(short_term_price_change_2 - short_term_price_change), 4)) / (ts_std_dev(sign(short_term_price_change_2 - short_term_price_change), 4) + 0.000001)) * rank(1 - ts_rank(returns, 15)), industry)
+
+[00eeb4e88015] stage2_operator_nesting | signed_gap | field_window=4 | return_window=20 | zscore_signal
+group_neutralize(ts_zscore(sign(short_term_price_change_2 - short_term_price_change), 4) * rank(1 - ts_rank(returns, 20)), industry)
+
+[8124e25bbe36] stage2_operator_nesting | max_A_B | field_window=6 | return_window=20 | delta_signal
+group_neutralize(rank(ts_delta(max(short_term_price_change_2, short_term_price_change), 1)) * rank(1 - ts_rank(returns, 20)), industry)
+
+[900ddbe76798] stage2_operator_nesting | max_A_B | field_window=6 | return_window=25 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay(max(short_term_price_change_2, short_term_price_change), 1), 6) * rank(1 - ts_rank(returns, 25)), industry)
+
+[7c87617ce7b2] stage2_operator_nesting | signed_gap | field_window=7 | return_window=10 | mean_reversion_interaction
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7)) * rank(ts_rank(returns, 10)), industry)
+
+[674396cb95bd] stage2_operator_nesting | signed_gap | field_window=7 | return_window=15 | rolling_zscore_signal
+group_neutralize(((sign(short_term_price_change_2 - short_term_price_change) - ts_mean(sign(short_term_price_change_2 - short_term_price_change), 7)) / (ts_std_dev(sign(short_term_price_change_2 - short_term_price_change), 7) + 0.000001)) * rank(1 - ts_rank(returns, 15)), industry)
+
+[904ae014b7a2] stage2_operator_nesting | signed_gap | field_window=9 | return_window=30 | rank_signal
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 9)) * (1 - ts_rank(returns, 30)), industry)
+
+[9b6d224bc6c5] stage2_operator_nesting | signed_gap | field_window=10 | return_window=10 | dual_rank
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 10)) * rank(1 - ts_rank(returns, 10)), industry)
+
+[c3b377141b18] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=15 | mean_reversion_interaction
+group_neutralize(rank(ts_rank((short_term_price_change_2 + short_term_price_change), 2)) * rank(ts_rank(returns, 15)), industry)
+
+[66cd5a09c25f] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=20 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay((short_term_price_change_2 + short_term_price_change), 1), 2) * rank(1 - ts_rank(returns, 20)), industry)
+
+[e38c88085341] stage2_operator_nesting | max_A_B | field_window=3 | return_window=25 | rank_signal
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 3)) * (1 - ts_rank(returns, 25)), industry)
+
+[377a036514c5] stage2_operator_nesting | max_A_B | field_window=3 | return_window=30 | rolling_zscore_signal
+group_neutralize(((max(short_term_price_change_2, short_term_price_change) - ts_mean(max(short_term_price_change_2, short_term_price_change), 3)) / (ts_std_dev(max(short_term_price_change_2, short_term_price_change), 3) + 0.000001)) * rank(1 - ts_rank(returns, 30)), industry)
+
+[3f077e0cbeec] stage2_operator_nesting | signed_gap | field_window=4 | return_window=15 | zscore_signal
+group_neutralize(ts_zscore(sign(short_term_price_change_2 - short_term_price_change), 4) * rank(1 - ts_rank(returns, 15)), industry)
+
+[95a46f8c076d] stage2_operator_nesting | signed_gap | field_window=4 | return_window=20 | delta_signal
+group_neutralize(rank(ts_delta(sign(short_term_price_change_2 - short_term_price_change), 1)) * rank(1 - ts_rank(returns, 20)), industry)
+
+[d7eccfe70f5d] stage2_operator_nesting | max_A_B | field_window=6 | return_window=20 | dual_rank
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 6)) * rank(1 - ts_rank(returns, 20)), industry)
+
+[a064b6639f0a] stage2_operator_nesting | max_A_B | field_window=6 | return_window=25 | rank_signal
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 6)) * (1 - ts_rank(returns, 25)), industry)
+
+[9f388625c312] stage2_operator_nesting | signed_gap | field_window=7 | return_window=10 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay(sign(short_term_price_change_2 - short_term_price_change), 1), 7) * rank(1 - ts_rank(returns, 10)), industry)
+
+[43e4588240ca] stage2_operator_nesting | signed_gap | field_window=7 | return_window=15 | zscore_signal
+group_neutralize(ts_zscore(sign(short_term_price_change_2 - short_term_price_change), 7) * rank(1 - ts_rank(returns, 15)), industry)
+
+[d553ac5048e1] stage2_operator_nesting | signed_gap | field_window=9 | return_window=30 | rolling_zscore_signal
+group_neutralize(((sign(short_term_price_change_2 - short_term_price_change) - ts_mean(sign(short_term_price_change_2 - short_term_price_change), 9)) / (ts_std_dev(sign(short_term_price_change_2 - short_term_price_change), 9) + 0.000001)) * rank(1 - ts_rank(returns, 30)), industry)
+
+[8e5122d83df0] stage2_operator_nesting | signed_gap | field_window=10 | return_window=10 | mean_reversion_interaction
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 10)) * rank(ts_rank(returns, 10)), industry)
+
+[08c605312dc1] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=15 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay((short_term_price_change_2 + short_term_price_change), 1), 2) * rank(1 - ts_rank(returns, 15)), industry)
+
+[36747e247a34] stage2_operator_nesting | A_plus_B | field_window=2 | return_window=20 | rank_signal
+group_neutralize(rank(ts_rank((short_term_price_change_2 + short_term_price_change), 2)) * (1 - ts_rank(returns, 20)), industry)
+
+[9f96fe19deea] stage2_operator_nesting | max_A_B | field_window=3 | return_window=25 | rolling_zscore_signal
+group_neutralize(((max(short_term_price_change_2, short_term_price_change) - ts_mean(max(short_term_price_change_2, short_term_price_change), 3)) / (ts_std_dev(max(short_term_price_change_2, short_term_price_change), 3) + 0.000001)) * rank(1 - ts_rank(returns, 25)), industry)
+
+[fc05d02143e8] stage2_operator_nesting | max_A_B | field_window=3 | return_window=30 | zscore_signal
+group_neutralize(ts_zscore(max(short_term_price_change_2, short_term_price_change), 3) * rank(1 - ts_rank(returns, 30)), industry)
+
+[21db5ca12134] stage2_operator_nesting | signed_gap | field_window=4 | return_window=15 | delta_signal
+group_neutralize(rank(ts_delta(sign(short_term_price_change_2 - short_term_price_change), 1)) * rank(1 - ts_rank(returns, 15)), industry)
+
+[9503c7e90697] stage2_operator_nesting | signed_gap | field_window=4 | return_window=20 | dual_rank
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 4)) * rank(1 - ts_rank(returns, 20)), industry)
+
+[4297ecf0fc98] stage2_operator_nesting | max_A_B | field_window=6 | return_window=20 | mean_reversion_interaction
+group_neutralize(rank(ts_rank(max(short_term_price_change_2, short_term_price_change), 6)) * rank(ts_rank(returns, 20)), industry)
+
+[0a249397785a] stage2_operator_nesting | max_A_B | field_window=6 | return_window=25 | rolling_zscore_signal
+group_neutralize(((max(short_term_price_change_2, short_term_price_change) - ts_mean(max(short_term_price_change_2, short_term_price_change), 6)) / (ts_std_dev(max(short_term_price_change_2, short_term_price_change), 6) + 0.000001)) * rank(1 - ts_rank(returns, 25)), industry)
+
+[8e1dcf523416] stage2_operator_nesting | signed_gap | field_window=7 | return_window=10 | rank_signal
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7)) * (1 - ts_rank(returns, 10)), industry)
+
+[b66b73b03736] stage2_operator_nesting | signed_gap | field_window=7 | return_window=15 | dual_rank
+group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 7)) * rank(1 - ts_rank(returns, 15)), industry)
+
+[ea4f9530bec1] stage2_operator_nesting | signed_gap | field_window=9 | return_window=30 | zscore_signal
+group_neutralize(ts_zscore(sign(short_term_price_change_2 - short_term_price_change), 9) * rank(1 - ts_rank(returns, 30)), industry)
+
+[6179d93e7e81] stage2_operator_nesting | signed_gap | field_window=10 | return_window=10 | one_day_delayed_signal
+group_neutralize(ts_rank(ts_delay(sign(short_term_price_change_2 - short_term_price_change), 1), 10) * rank(1 - ts_rank(returns, 10)), industry)
