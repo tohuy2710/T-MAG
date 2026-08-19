@@ -1,0 +1,386 @@
+# ============================================================================
+# TOP 5 ALPHA EVOLUTION — Generated Candidates
+# ============================================================================
+#
+# Step 1: Parameter Mining (window sizes, thresholds)
+# Step 2: Operator Nesting (ts_rank, group_rank, decay, etc.)
+#
+# Settings (Fixed):
+#   Region: GLB
+#   Universe: TOPDIV3000
+#   Delay: 1
+#   Neutralization: SUBINDUSTRY
+#   Truncation: 0.08
+#   Decay: 10
+#
+# ============================================================================
+
+# ==== SPRING DETECTION (NEGATIVE PRICE + POSITIVE CMF) ====
+# Base: L15 — Wyckoff spring pattern
+
+# alpha1_spring_w110 — L15 — Wyckoff spring pattern | Params: {'w1': 10}
+rank(-ts_delta(close, 10)) * sign(short_term_price_change_2)
+
+# alpha1_spring_w115 — L15 — Wyckoff spring pattern | Params: {'w1': 15}
+rank(-ts_delta(close, 15)) * sign(short_term_price_change_2)
+
+# alpha1_spring_w120 — L15 — Wyckoff spring pattern | Params: {'w1': 20}
+rank(-ts_delta(close, 20)) * sign(short_term_price_change_2)
+
+# alpha1_spring_w125 — L15 — Wyckoff spring pattern | Params: {'w1': 25}
+rank(-ts_delta(close, 25)) * sign(short_term_price_change_2)
+
+# alpha1_spring_w130 — L15 — Wyckoff spring pattern | Params: {'w1': 30}
+rank(-ts_delta(close, 30)) * sign(short_term_price_change_2)
+
+# alpha1_spring_nest_ts_rank_w5 — Base wrapped with ts_rank(window=5)
+ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 5)
+
+# alpha1_spring_nest_ts_rank_w10 — Base wrapped with ts_rank(window=10)
+ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10)
+
+# alpha1_spring_nest_ts_rank_w20 — Base wrapped with ts_rank(window=20)
+ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20)
+
+# alpha1_spring_nest_ts_decay_linear_w5 — Base wrapped with ts_decay_linear(window=5)
+ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 5)
+
+# alpha1_spring_nest_ts_decay_linear_w10 — Base wrapped with ts_decay_linear(window=10)
+ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10)
+
+# alpha1_spring_nest_ts_decay_linear_w20 — Base wrapped with ts_decay_linear(window=20)
+ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20)
+
+# alpha1_spring_nest_ts_mean_w5 — Base wrapped with ts_mean(window=5)
+ts_mean(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 5)
+
+# alpha1_spring_nest_ts_mean_w10 — Base wrapped with ts_mean(window=10)
+ts_mean(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10)
+
+# alpha1_spring_nest_ts_mean_w20 — Base wrapped with ts_mean(window=20)
+ts_mean(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20)
+
+# alpha1_spring_nest_group_rank_sector — Base wrapped with group_rank_sector
+group_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), subindustry)
+
+# alpha1_spring_nest_group_rank_country — Base wrapped with group_rank_country
+group_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), country)
+
+# alpha1_spring_nest_sign_filter — Base wrapped with sign_filter
+sign(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2)) * rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2))
+
+# alpha1_spring_nest_abs_normalize — Base wrapped with abs_normalize
+rank(abs(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2)))
+
+# alpha1_spring_nest2_ts_rank_w10_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=10), w=5)
+ts_decay_linear(ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10), 5)
+
+# alpha1_spring_nest2_ts_rank_w10_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=10), w=10)
+ts_decay_linear(ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10), 10)
+
+# alpha1_spring_nest2_ts_rank_w20_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=20), w=5)
+ts_decay_linear(ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20), 5)
+
+# alpha1_spring_nest2_ts_rank_w20_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=20), w=10)
+ts_decay_linear(ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20), 10)
+
+# alpha1_spring_nest2_ts_decay_linear_w10_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=10), w=5)
+ts_rank(ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10), 5)
+
+# alpha1_spring_nest2_ts_decay_linear_w10_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=10), w=10)
+ts_rank(ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 10), 10)
+
+# alpha1_spring_nest2_ts_decay_linear_w20_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=20), w=5)
+ts_rank(ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20), 5)
+
+# alpha1_spring_nest2_ts_decay_linear_w20_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=20), w=10)
+ts_rank(ts_decay_linear(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20), 10)
+
+# alpha2_country_cmf_base — L7 — Best performer (Sharpe 1.21)
+group_rank(short_term_price_change_2, country)
+
+# alpha2_country_cmf_nest_ts_rank_w5 — Base wrapped with ts_rank(window=5)
+ts_rank(group_rank(short_term_price_change_2, country), 5)
+
+# alpha2_country_cmf_nest_ts_rank_w10 — Base wrapped with ts_rank(window=10)
+ts_rank(group_rank(short_term_price_change_2, country), 10)
+
+# alpha2_country_cmf_nest_ts_rank_w20 — Base wrapped with ts_rank(window=20)
+ts_rank(group_rank(short_term_price_change_2, country), 20)
+
+# alpha2_country_cmf_nest_ts_decay_linear_w5 — Base wrapped with ts_decay_linear(window=5)
+ts_decay_linear(group_rank(short_term_price_change_2, country), 5)
+
+# alpha2_country_cmf_nest_ts_decay_linear_w10 — Base wrapped with ts_decay_linear(window=10)
+ts_decay_linear(group_rank(short_term_price_change_2, country), 10)
+
+# alpha2_country_cmf_nest_ts_decay_linear_w20 — Base wrapped with ts_decay_linear(window=20)
+ts_decay_linear(group_rank(short_term_price_change_2, country), 20)
+
+# alpha2_country_cmf_nest_ts_mean_w5 — Base wrapped with ts_mean(window=5)
+ts_mean(group_rank(short_term_price_change_2, country), 5)
+
+# alpha2_country_cmf_nest_ts_mean_w10 — Base wrapped with ts_mean(window=10)
+ts_mean(group_rank(short_term_price_change_2, country), 10)
+
+# alpha2_country_cmf_nest_ts_mean_w20 — Base wrapped with ts_mean(window=20)
+ts_mean(group_rank(short_term_price_change_2, country), 20)
+
+# alpha2_country_cmf_nest_group_rank_sector — Base wrapped with group_rank_sector
+group_rank(group_rank(short_term_price_change_2, country), subindustry)
+
+# alpha2_country_cmf_nest_group_rank_country — Base wrapped with group_rank_country
+group_rank(group_rank(short_term_price_change_2, country), country)
+
+# alpha2_country_cmf_nest_sign_filter — Base wrapped with sign_filter
+sign(group_rank(short_term_price_change_2, country)) * rank(group_rank(short_term_price_change_2, country))
+
+# alpha2_country_cmf_nest_abs_normalize — Base wrapped with abs_normalize
+rank(abs(group_rank(short_term_price_change_2, country)))
+
+# alpha2_country_cmf_nest2_ts_rank_w10_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=10), w=5)
+ts_decay_linear(ts_rank(group_rank(short_term_price_change_2, country), 10), 5)
+
+# alpha2_country_cmf_nest2_ts_rank_w10_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=10), w=10)
+ts_decay_linear(ts_rank(group_rank(short_term_price_change_2, country), 10), 10)
+
+# alpha2_country_cmf_nest2_ts_rank_w20_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=20), w=5)
+ts_decay_linear(ts_rank(group_rank(short_term_price_change_2, country), 20), 5)
+
+# alpha2_country_cmf_nest2_ts_rank_w20_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=20), w=10)
+ts_decay_linear(ts_rank(group_rank(short_term_price_change_2, country), 20), 10)
+
+# alpha2_country_cmf_nest2_ts_decay_linear_w10_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=10), w=5)
+ts_rank(ts_decay_linear(group_rank(short_term_price_change_2, country), 10), 5)
+
+# alpha2_country_cmf_nest2_ts_decay_linear_w10_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=10), w=10)
+ts_rank(ts_decay_linear(group_rank(short_term_price_change_2, country), 10), 10)
+
+# alpha2_country_cmf_nest2_ts_decay_linear_w20_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=20), w=5)
+ts_rank(ts_decay_linear(group_rank(short_term_price_change_2, country), 20), 5)
+
+# alpha2_country_cmf_nest2_ts_decay_linear_w20_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=20), w=10)
+ts_rank(ts_decay_linear(group_rank(short_term_price_change_2, country), 20), 10)
+
+# alpha3_raw_cmf_base — L1 — Simple baseline
+rank(short_term_price_change_2)
+
+# alpha3_raw_cmf_nest_ts_rank_w5 — Base wrapped with ts_rank(window=5)
+ts_rank(rank(short_term_price_change_2), 5)
+
+# alpha3_raw_cmf_nest_ts_rank_w10 — Base wrapped with ts_rank(window=10)
+ts_rank(rank(short_term_price_change_2), 10)
+
+# alpha3_raw_cmf_nest_ts_rank_w20 — Base wrapped with ts_rank(window=20)
+ts_rank(rank(short_term_price_change_2), 20)
+
+# alpha3_raw_cmf_nest_ts_decay_linear_w5 — Base wrapped with ts_decay_linear(window=5)
+ts_decay_linear(rank(short_term_price_change_2), 5)
+
+# alpha3_raw_cmf_nest_ts_decay_linear_w10 — Base wrapped with ts_decay_linear(window=10)
+ts_decay_linear(rank(short_term_price_change_2), 10)
+
+# alpha3_raw_cmf_nest_ts_decay_linear_w20 — Base wrapped with ts_decay_linear(window=20)
+ts_decay_linear(rank(short_term_price_change_2), 20)
+
+# alpha3_raw_cmf_nest_ts_mean_w5 — Base wrapped with ts_mean(window=5)
+ts_mean(rank(short_term_price_change_2), 5)
+
+# alpha3_raw_cmf_nest_ts_mean_w10 — Base wrapped with ts_mean(window=10)
+ts_mean(rank(short_term_price_change_2), 10)
+
+# alpha3_raw_cmf_nest_ts_mean_w20 — Base wrapped with ts_mean(window=20)
+ts_mean(rank(short_term_price_change_2), 20)
+
+# alpha3_raw_cmf_nest_group_rank_sector — Base wrapped with group_rank_sector
+group_rank(rank(short_term_price_change_2), subindustry)
+
+# alpha3_raw_cmf_nest_group_rank_country — Base wrapped with group_rank_country
+group_rank(rank(short_term_price_change_2), country)
+
+# alpha3_raw_cmf_nest_sign_filter — Base wrapped with sign_filter
+sign(rank(short_term_price_change_2)) * rank(rank(short_term_price_change_2))
+
+# alpha3_raw_cmf_nest_abs_normalize — Base wrapped with abs_normalize
+rank(abs(rank(short_term_price_change_2)))
+
+# alpha3_raw_cmf_nest2_ts_rank_w10_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=10), w=5)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2), 10), 5)
+
+# alpha3_raw_cmf_nest2_ts_rank_w10_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=10), w=10)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2), 10), 10)
+
+# alpha3_raw_cmf_nest2_ts_rank_w20_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=20), w=5)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2), 20), 5)
+
+# alpha3_raw_cmf_nest2_ts_rank_w20_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=20), w=10)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2), 20), 10)
+
+# alpha3_raw_cmf_nest2_ts_decay_linear_w10_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=10), w=5)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2), 10), 5)
+
+# alpha3_raw_cmf_nest2_ts_decay_linear_w10_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=10), w=10)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2), 10), 10)
+
+# alpha3_raw_cmf_nest2_ts_decay_linear_w20_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=20), w=5)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2), 20), 5)
+
+# alpha3_raw_cmf_nest2_ts_decay_linear_w20_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=20), w=10)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2), 20), 10)
+
+# alpha4_cmf_additive_w110 — L11 — Combo signal | Params: {'w1': 10}
+rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10))
+
+# alpha4_cmf_additive_w115 — L11 — Combo signal | Params: {'w1': 15}
+rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 15))
+
+# alpha4_cmf_additive_w120 — L11 — Combo signal | Params: {'w1': 20}
+rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 20))
+
+# alpha4_cmf_additive_w125 — L11 — Combo signal | Params: {'w1': 25}
+rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 25))
+
+# alpha4_cmf_additive_w130 — L11 — Combo signal | Params: {'w1': 30}
+rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 30))
+
+# alpha4_cmf_additive_nest_ts_rank_w5 — Base wrapped with ts_rank(window=5)
+ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 5)
+
+# alpha4_cmf_additive_nest_ts_rank_w10 — Base wrapped with ts_rank(window=10)
+ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10)
+
+# alpha4_cmf_additive_nest_ts_rank_w20 — Base wrapped with ts_rank(window=20)
+ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20)
+
+# alpha4_cmf_additive_nest_ts_decay_linear_w5 — Base wrapped with ts_decay_linear(window=5)
+ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 5)
+
+# alpha4_cmf_additive_nest_ts_decay_linear_w10 — Base wrapped with ts_decay_linear(window=10)
+ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10)
+
+# alpha4_cmf_additive_nest_ts_decay_linear_w20 — Base wrapped with ts_decay_linear(window=20)
+ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20)
+
+# alpha4_cmf_additive_nest_ts_mean_w5 — Base wrapped with ts_mean(window=5)
+ts_mean(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 5)
+
+# alpha4_cmf_additive_nest_ts_mean_w10 — Base wrapped with ts_mean(window=10)
+ts_mean(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10)
+
+# alpha4_cmf_additive_nest_ts_mean_w20 — Base wrapped with ts_mean(window=20)
+ts_mean(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20)
+
+# alpha4_cmf_additive_nest_group_rank_sector — Base wrapped with group_rank_sector
+group_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), subindustry)
+
+# alpha4_cmf_additive_nest_group_rank_country — Base wrapped with group_rank_country
+group_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), country)
+
+# alpha4_cmf_additive_nest_sign_filter — Base wrapped with sign_filter
+sign(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10))) * rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)))
+
+# alpha4_cmf_additive_nest_abs_normalize — Base wrapped with abs_normalize
+rank(abs(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10))))
+
+# alpha4_cmf_additive_nest2_ts_rank_w10_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=10), w=5)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10), 5)
+
+# alpha4_cmf_additive_nest2_ts_rank_w10_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=10), w=10)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10), 10)
+
+# alpha4_cmf_additive_nest2_ts_rank_w20_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=20), w=5)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20), 5)
+
+# alpha4_cmf_additive_nest2_ts_rank_w20_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=20), w=10)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20), 10)
+
+# alpha4_cmf_additive_nest2_ts_decay_linear_w10_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=10), w=5)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10), 5)
+
+# alpha4_cmf_additive_nest2_ts_decay_linear_w10_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=10), w=10)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 10), 10)
+
+# alpha4_cmf_additive_nest2_ts_decay_linear_w20_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=20), w=5)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20), 5)
+
+# alpha4_cmf_additive_nest2_ts_decay_linear_w20_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=20), w=10)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 10)), 20), 10)
+
+# alpha5_cmf_multiplicative_w110 — L11 — Multiplicative combo | Params: {'w1': 10}
+rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10))
+
+# alpha5_cmf_multiplicative_w115 — L11 — Multiplicative combo | Params: {'w1': 15}
+rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 15))
+
+# alpha5_cmf_multiplicative_w120 — L11 — Multiplicative combo | Params: {'w1': 20}
+rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 20))
+
+# alpha5_cmf_multiplicative_w125 — L11 — Multiplicative combo | Params: {'w1': 25}
+rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 25))
+
+# alpha5_cmf_multiplicative_w130 — L11 — Multiplicative combo | Params: {'w1': 30}
+rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 30))
+
+# alpha5_cmf_multiplicative_nest_ts_rank_w5 — Base wrapped with ts_rank(window=5)
+ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 5)
+
+# alpha5_cmf_multiplicative_nest_ts_rank_w10 — Base wrapped with ts_rank(window=10)
+ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10)
+
+# alpha5_cmf_multiplicative_nest_ts_rank_w20 — Base wrapped with ts_rank(window=20)
+ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20)
+
+# alpha5_cmf_multiplicative_nest_ts_decay_linear_w5 — Base wrapped with ts_decay_linear(window=5)
+ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 5)
+
+# alpha5_cmf_multiplicative_nest_ts_decay_linear_w10 — Base wrapped with ts_decay_linear(window=10)
+ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10)
+
+# alpha5_cmf_multiplicative_nest_ts_decay_linear_w20 — Base wrapped with ts_decay_linear(window=20)
+ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20)
+
+# alpha5_cmf_multiplicative_nest_ts_mean_w5 — Base wrapped with ts_mean(window=5)
+ts_mean(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 5)
+
+# alpha5_cmf_multiplicative_nest_ts_mean_w10 — Base wrapped with ts_mean(window=10)
+ts_mean(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10)
+
+# alpha5_cmf_multiplicative_nest_ts_mean_w20 — Base wrapped with ts_mean(window=20)
+ts_mean(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20)
+
+# alpha5_cmf_multiplicative_nest_group_rank_sector — Base wrapped with group_rank_sector
+group_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), subindustry)
+
+# alpha5_cmf_multiplicative_nest_group_rank_country — Base wrapped with group_rank_country
+group_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), country)
+
+# alpha5_cmf_multiplicative_nest_sign_filter — Base wrapped with sign_filter
+sign(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10))) * rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)))
+
+# alpha5_cmf_multiplicative_nest_abs_normalize — Base wrapped with abs_normalize
+rank(abs(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10))))
+
+# alpha5_cmf_multiplicative_nest2_ts_rank_w10_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=10), w=5)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10), 5)
+
+# alpha5_cmf_multiplicative_nest2_ts_rank_w10_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=10), w=10)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10), 10)
+
+# alpha5_cmf_multiplicative_nest2_ts_rank_w20_ts_decay_linear_w5 — ts_decay_linear(ts_rank(base, w=20), w=5)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20), 5)
+
+# alpha5_cmf_multiplicative_nest2_ts_rank_w20_ts_decay_linear_w10 — ts_decay_linear(ts_rank(base, w=20), w=10)
+ts_decay_linear(ts_rank(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20), 10)
+
+# alpha5_cmf_multiplicative_nest2_ts_decay_linear_w10_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=10), w=5)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10), 5)
+
+# alpha5_cmf_multiplicative_nest2_ts_decay_linear_w10_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=10), w=10)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 10), 10)
+
+# alpha5_cmf_multiplicative_nest2_ts_decay_linear_w20_ts_rank_w5 — ts_rank(ts_decay_linear(base, w=20), w=5)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20), 5)
+
+# alpha5_cmf_multiplicative_nest2_ts_decay_linear_w20_ts_rank_w10 — ts_rank(ts_decay_linear(base, w=20), w=10)
+ts_rank(ts_decay_linear(rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 10)), 20), 10)
+

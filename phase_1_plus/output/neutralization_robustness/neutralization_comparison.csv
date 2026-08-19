@@ -1,0 +1,6 @@
+Neutralization,Status,Alpha_ID,Overall_Sharpe,Overall_Returns,Overall_Turnover,Overall_Fitness,APAC_Sharpe,APAC_Returns,APAC_Turnover,EMEA_Sharpe,EMEA_Returns,EMEA_Turnover,AMER_Sharpe,AMER_Returns,AMER_Turnover
+SLOW,ERROR,,,,,,,,,,,,,,
+FAST,ERROR,,,,,,,,,,,,,,
+SLOW_AND_FAST,ERROR,,,,,,,,,,,,,,
+SUBINDUSTRY,COMPLETE,78jkJXbx,1.85,0.1113,0.6849,0.75,2.02,0.0659,0.1859,0.08,0.0021,0.1518,0.9,0.0433,0.3472
+CROWDING,ERROR,,,,,,,,,,,,,,

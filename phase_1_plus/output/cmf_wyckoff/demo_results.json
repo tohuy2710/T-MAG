@@ -1,0 +1,341 @@
+{
+  "timestamp": "2026-08-18T10:00:00.000000+00:00",
+  "settings": {
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 10,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unit_handling": "VERIFY",
+    "nan_handling": "OFF"
+  },
+  "total_alphas": 20,
+  "results": [
+    {
+      "alpha_id": "L1.01",
+      "expression": "rank(short_term_price_change_2)",
+      "description": "CMF Level (Raw)",
+      "level": 1,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.456,
+          "fitness": 0.328,
+          "turnover": 0.00234,
+          "returns": 4.23
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:05:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L1.02",
+      "expression": "rank(ts_mean(short_term_price_change_2, 20))",
+      "description": "CMF Level (20-day MA)",
+      "level": 1,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.612,
+          "fitness": 0.445,
+          "turnover": 0.00156,
+          "returns": 5.34
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:06:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L4.01",
+      "expression": "rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20))",
+      "description": "CMF momentum vs Price momentum (divergence)",
+      "level": 4,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.892,
+          "fitness": 0.756,
+          "turnover": 0.00312,
+          "returns": 7.84
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:07:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L4.02",
+      "expression": "rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 10))",
+      "description": "CMF momentum vs Price momentum (scaled)",
+      "level": 4,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.734,
+          "fitness": 0.598,
+          "turnover": 0.00289,
+          "returns": 6.45
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:08:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L5.01",
+      "expression": "rank(ts_delta(short_term_price_change_2, 20)) + rank(-ts_delta(close, 20))",
+      "description": "Accumulation: Strong CMF + weak price (negative turnover)",
+      "level": 5,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 1.156,
+          "fitness": 1.024,
+          "turnover": 0.00198,
+          "returns": 9.23
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:09:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L6.01",
+      "expression": "rank(short_term_price_change_2) * rank(close / ts_max(close, 60))",
+      "description": "CMF level + close to 60-day high",
+      "level": 6,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.678,
+          "fitness": 0.512,
+          "turnover": 0.00401,
+          "returns": 6.12
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:10:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L7.01",
+      "expression": "group_rank(ts_delta(short_term_price_change_2, 20), country) - group_rank(ts_delta(close, 20), country)",
+      "description": "Country-relative CMF momentum",
+      "level": 7,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 1.234,
+          "fitness": 1.156,
+          "turnover": 0.00145,
+          "returns": 10.45
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:11:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L9.01",
+      "expression": "group_neutralize(rank(group_rank(ts_delta(short_term_price_change_2, 20), country) - group_rank(ts_delta(close, 20), country)), region)",
+      "description": "Double neutralize: country-relative divergence, then region-neutralize",
+      "level": 9,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 1.378,
+          "fitness": 1.289,
+          "turnover": 0.00167,
+          "returns": 11.23
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:12:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L11.01",
+      "expression": "rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 20))",
+      "description": "CMF level * CMF momentum",
+      "level": 11,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.834,
+          "fitness": 0.678,
+          "turnover": 0.00267,
+          "returns": 7.56
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:13:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L15.01",
+      "expression": "rank(-ts_delta(close, 20)) * sign(short_term_price_change_2)",
+      "description": "Spring detection: negative price momentum + positive CMF",
+      "level": 15,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.567,
+          "fitness": 0.412,
+          "turnover": 0.00356,
+          "returns": 5.01
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:14:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L19.01",
+      "expression": "rank(ts_delta(short_term_price_change_2, 15))",
+      "description": "Simple momentum (baseline for robustness)",
+      "level": 19,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.501,
+          "fitness": 0.356,
+          "turnover": 0.00189,
+          "returns": 4.67
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:15:00.000000+00:00"
+    },
+    {
+      "alpha_id": "L19.02",
+      "expression": "rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20))",
+      "description": "Simple divergence (baseline for robustness)",
+      "level": 19,
+      "status": "COMPLETE",
+      "sim_data": {
+        "is": {
+          "sharpe": 0.923,
+          "fitness": 0.812,
+          "turnover": 0.00301,
+          "returns": 8.34
+        }
+      },
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "simulated_at": "2026-08-18T10:16:00.000000+00:00"
+    }
+  ]
+}

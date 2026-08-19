@@ -1,0 +1,248 @@
+# ============================================================================
+# CMF (Chaikin Money Flow) Alpha Family - Wyckoff Thesis
+# Dataset: short_term_price_change_2
+# Region: GLB | Universe: TOPDIV3000 | Delay: 1
+# Settings: Neut=MARKET, Trunc=0.08, Decay=10
+# ============================================================================
+
+# ==== LEVEL 1 — BASELINE ====
+
+# L1.01 - CMF Level (Raw)
+rank(short_term_price_change_2)
+
+# L1.02 - CMF Level (20-day MA)
+rank(ts_mean(short_term_price_change_2, 20))
+
+# L1.03 - CMF Level (40-day MA)
+rank(ts_mean(short_term_price_change_2, 40))
+
+# ==== LEVEL 2 — CMF TREND / MOMENTUM ====
+
+# L2.01 - CMF Delta 20
+rank(ts_delta(short_term_price_change_2, 20))
+
+# L2.02 - CMF Delta 10
+rank(ts_delta(short_term_price_change_2, 10))
+
+# L2.03 - CMF Acceleration (fast - slow)
+rank(ts_mean(short_term_price_change_2, 10) - ts_mean(short_term_price_change_2, 40))
+
+# ==== LEVEL 3 — CMF PERSISTENCE ====
+
+# L3.01 - CMF Persistence: Mean > 0
+rank(ts_mean(short_term_price_change_2, 20) * sign(ts_mean(short_term_price_change_2, 20)))
+
+# L3.02 - CMF Sustained Flow (high MA / low MA ratio, inverted)
+rank(1.0 / (1.0 + abs(ts_mean(short_term_price_change_2, 40))))
+
+# ==== LEVEL 4 — CMF + PRICE DIVERGENCE (Core Wyckoff) ====
+
+# L4.01 - CMF momentum vs Price momentum (divergence)
+rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20))
+
+# L4.02 - CMF momentum vs Price momentum (scaled)
+rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 10))
+
+# L4.03 - CMF level vs Price level
+rank(short_term_price_change_2) - rank(ts_delta(close, 20))
+
+# ==== LEVEL 5 — ACCUMULATION SIGNAL (CMF in, Price out) ====
+
+# L5.01 - Accumulation: Strong CMF + weak price (negative turnover)
+rank(ts_delta(short_term_price_change_2, 20)) + rank(-ts_delta(close, 20))
+
+# L5.02 - Accumulation: CMF level + low price change
+rank(short_term_price_change_2) + rank(-abs(ts_delta(close, 20)))
+
+# L5.03 - Accumulation: CMF improving + price consolidating
+rank(ts_delta(short_term_price_change_2, 20)) + rank(1.0 / (1.0 + abs(ts_delta(close, 20))))
+
+# ==== LEVEL 6 — BREAKOUT CONFIRMATION (CMF + Price Action) ====
+
+# L6.01 - CMF level + close to 60-day high
+rank(short_term_price_change_2) * rank(close / ts_max(close, 60))
+
+# L6.02 - CMF momentum + breakout pressure
+rank(ts_delta(short_term_price_change_2, 20)) * rank(close / ts_max(close, 60))
+
+# L6.03 - CMF level + close above 50-day MA
+rank(short_term_price_change_2) * rank(sign(close - ts_mean(close, 50)))
+
+# ==== LEVEL 7 — COUNTRY-RELATIVE CMF (GLB-specific) ====
+
+# L7.01 - Country-relative CMF momentum
+group_rank(ts_delta(short_term_price_change_2, 20), country) - group_rank(ts_delta(close, 20), country)
+
+# L7.02 - Country-relative CMF level
+group_rank(short_term_price_change_2, country)
+
+# L7.03 - Country-relative CMF + price divergence
+group_rank(ts_delta(short_term_price_change_2, 20), country) - group_rank(ts_delta(close, 20), country)
+
+# ==== LEVEL 8 — REGION-RELATIVE CMF ====
+
+# L8.01 - Region-relative CMF momentum divergence
+group_rank(rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20)), region)
+
+# L8.02 - Region-relative accumulation signal
+group_rank(rank(ts_delta(short_term_price_change_2, 20)) + rank(-ts_delta(close, 20)), region)
+
+# ==== LEVEL 9 — LAYERED NEUTRALIZATION (Country → Region) ====
+
+# L9.01 - Double neutralize: country-relative divergence, then region-neutralize
+group_neutralize(
+  rank(group_rank(ts_delta(short_term_price_change_2, 20), country) - group_rank(ts_delta(close, 20), country)),
+  region
+)
+
+# L9.02 - Double neutralize: CMF momentum
+group_neutralize(
+  rank(group_rank(ts_delta(short_term_price_change_2, 20), country)),
+  region
+)
+
+# ==== LEVEL 10 — ENHANCED CMF MOMENTUM (Decay preparation) ====
+
+# L10.01 - CMF momentum with time-series strength
+rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(short_term_price_change_2, 40))
+
+# L10.02 - CMF momentum reversal detection (mean reversion)
+-rank(ts_delta(short_term_price_change_2, 20))
+
+# ==== LEVEL 11 — CMF LEVELS + MOMENTUM COMBINATION ====
+
+# L11.01 - CMF level * CMF momentum
+rank(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 20))
+
+# L11.02 - CMF level + CMF momentum (additive)
+rank(short_term_price_change_2) + rank(ts_delta(short_term_price_change_2, 20))
+
+# L11.03 - CMF level - CMF momentum (mean reversion)
+rank(short_term_price_change_2) - rank(ts_delta(short_term_price_change_2, 20))
+
+# ==== LEVEL 12 — CUMULATIVE CMF STRENGTH ====
+
+# L12.01 - CMF 20-day + 40-day combination (mean)
+rank((ts_mean(short_term_price_change_2, 20) + ts_mean(short_term_price_change_2, 40)) / 2.0)
+
+# L12.02 - CMF persistence over 60 days
+rank(ts_mean(short_term_price_change_2, 60))
+
+# ==== LEVEL 13 — PRICE ACTION REGIME FILTERS ====
+
+# L13.01 - CMF momentum only in uptrend
+rank(ts_delta(short_term_price_change_2, 20)) * sign(close - ts_mean(close, 50))
+
+# L13.02 - CMF divergence in consolidation (low volatility)
+(rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20))) / (1.0 + ts_std(close, 20) / ts_mean(abs(close), 20))
+
+# ==== LEVEL 14 — ADVANCED: MULTI-TIMEFRAME CMF ====
+
+# L14.01 - CMF momentum short-term leading long-term
+rank(ts_delta(short_term_price_change_2, 5)) - rank(ts_delta(short_term_price_change_2, 30))
+
+# L14.02 - CMF multi-frame sum
+rank(ts_delta(short_term_price_change_2, 10)) + rank(ts_delta(short_term_price_change_2, 20)) + rank(ts_delta(short_term_price_change_2, 30))
+
+# ==== LEVEL 15 — WYCKOFF SPECIFIC: SPRING + SHAKEOUT ====
+
+# L15.01 - Spring detection: negative price momentum + positive CMF
+rank(-ts_delta(close, 20)) * sign(short_term_price_change_2)
+
+# L15.02 - Shakeout: CMF leading during selling
+rank(ts_delta(short_term_price_change_2, 20)) - rank(-ts_delta(close, 20))
+
+# ==== LEVEL 16 — HIGH-PASS FILTERS ====
+
+# L16.01 - CMF momentum above threshold
+sign(ts_delta(short_term_price_change_2, 20)) * rank(ts_delta(short_term_price_change_2, 20))
+
+# L16.02 - Accumulation only when positive CMF
+sign(short_term_price_change_2) * rank(ts_delta(short_term_price_change_2, 20))
+
+# ==== LEVEL 17 — NORMALIZED CMF VARIANTS ====
+
+# L17.01 - CMF normalized by its own volatility
+rank(ts_delta(short_term_price_change_2, 20) / (1.0 + ts_std(short_term_price_change_2, 20)))
+
+# L17.02 - CMF z-score style
+rank((ts_delta(short_term_price_change_2, 20) - ts_mean(ts_delta(short_term_price_change_2, 20), 60)) / (1.0 + ts_std(ts_delta(short_term_price_change_2, 20), 60)))
+
+# ==== LEVEL 18 — INTERACTION TERMS ====
+
+# L18.01 - CMF divergence * breakout pressure
+(rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20))) * rank(close / ts_max(close, 60))
+
+# L18.02 - Country-relative accumulation with region bias
+group_neutralize(
+  rank(group_rank(ts_delta(short_term_price_change_2, 20), country) + rank(-group_rank(ts_delta(close, 20), country))),
+  region
+)
+
+# ==== LEVEL 19 — ROBUST CROSS-VALIDATION CORES ====
+
+# L19.01 - Simple momentum (baseline for robustness)
+rank(ts_delta(short_term_price_change_2, 15))
+
+# L19.02 - Simple divergence (baseline for robustness)
+rank(ts_delta(short_term_price_change_2, 20)) - rank(ts_delta(close, 20))
+
+# L19.03 - Simple accumulation (baseline for robustness)
+rank(ts_delta(short_term_price_change_2, 20)) + rank(-ts_delta(close, 20))
+
+# ==== LEVEL 20 — EXPERIMENTAL VARIANTS ====
+
+# L20.01 - Inverted CMF (mean reversion)
+-rank(short_term_price_change_2)
+
+# L20.02 - CMF oscillator (fast - slow)
+rank(ts_mean(short_term_price_change_2, 5) - ts_mean(short_term_price_change_2, 20))
+
+# ============================================================================
+# NOTES FOR TESTING:
+# ============================================================================
+#
+# Fixed Settings:
+#   - Region: GLB
+#   - Universe: TOPDIV3000
+#   - Delay: 1
+#   - Neutralization: SUBINDUSTRY (proxy for market-level; MARKET not available in GLB/TOPDIV3000)
+#   - Truncation: 0.08
+#   - Decay: 10
+#   - Pasteurization: ON
+#   - Unit Handling: VERIFY
+#   - NaN Handling: OFF
+#
+# Alpha Families:
+#   L1: Baseline CMF levels (2 alphas)
+#   L2: CMF trends/momentum (3 alphas)
+#   L3: CMF persistence (2 alphas)
+#   L4: CMF vs Price divergence (3 alphas)
+#   L5: Accumulation signals (3 alphas)
+#   L6: Breakout confirmation (3 alphas)
+#   L7: Country-relative CMF (3 alphas)
+#   L8: Region-relative CMF (2 alphas)
+#   L9: Layered neutralization (2 alphas)
+#   L10: Enhanced momentum (2 alphas)
+#   L11: Level + Momentum combo (3 alphas)
+#   L12: Cumulative strength (2 alphas)
+#   L13: Regime filters (2 alphas)
+#   L14: Multi-timeframe (2 alphas)
+#   L15: Wyckoff specific (2 alphas)
+#   L16: High-pass filters (2 alphas)
+#   L17: Normalized variants (2 alphas)
+#   L18: Interaction terms (2 alphas)
+#   L19: Robust cores (3 alphas)
+#   L20: Experimental (2 alphas)
+#
+# Total: 53 alphas to test
+#
+# Expected Metrics to Compare:
+#   - Sharpe Ratio (target: > 1.0 for GLB)
+#   - Fitness (compound metric)
+#   - Turnover (lower is better for practical deployment)
+#   - Returns (annualized %)
+#   - Regional breadth (check country/region distribution)
+#   - Correlation with existing alpha pool
+#
+# ============================================================================

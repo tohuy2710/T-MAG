@@ -1,0 +1,255 @@
+# ============================================================================
+# SENTIMENT ALPHA TEMPLATES — headline_positive_score_value_v2
+# ============================================================================
+#
+# Data Field: headline_positive_score_value_v2
+# Definition: Tỷ lệ trung bình giữa số từ tích cực và tổng số từ trong tiêu đề
+#             bài báo của một mã chứng khoán trong ngày.
+#
+# Phát triển theo 3 giai đoạn:
+#   1. Single Operator (Baseline)
+#   2. Parameterized Templates (Parameter Sweeping)
+#   3. Nested Operators (Complex Combinations)
+#
+# Settings (Fixed):
+#   Region: GLB
+#   Universe: TOPDIV3000
+#   Delay: 1
+#   Neutralization: SUBINDUSTRY
+#   Truncation: 0.08
+#   Decay: 10
+#   Pasteurization: ON
+#
+# ============================================================================
+
+# ============================================================================
+# GIAI ĐOẠN 1: SINGLE OPERATOR (BASELINE)
+# ============================================================================
+
+# Alpha 1 — Cross-sectional Rank
+rank(headline_positive_score_value_v2)
+
+# Alpha 2 — Time-series Rank 10D
+ts_rank(headline_positive_score_value_v2, 10)
+
+# Alpha 3 — Z-Score Normalization
+zscore(headline_positive_score_value_v2)
+
+# Alpha 4 — Subindustry Neutralization
+group_neutralize(headline_positive_score_value_v2, subindustry)
+
+# Alpha 5 — Sector Neutralization
+group_neutralize(headline_positive_score_value_v2, sector)
+
+# Alpha 6 — Industry Neutralization
+group_neutralize(headline_positive_score_value_v2, industry)
+
+# Alpha 7 — Decay Linear 5D
+decay_linear(headline_positive_score_value_v2, 5)
+
+# Alpha 8 — Moving Average 10D
+ts_mean(headline_positive_score_value_v2, 10)
+
+# Alpha 9 — Delta 5D (Short-term Momentum)
+ts_delta(headline_positive_score_value_v2, 5)
+
+# Alpha 10 — Standard Deviation 20D (Sentiment Volatility)
+ts_std_dev(headline_positive_score_value_v2, 20)
+
+
+# ============================================================================
+# GIAI ĐOẠN 2: PARAMETERIZED TEMPLATES (PARAMETER SWEEPING)
+# ============================================================================
+
+# ---- Template 2.1: TS-Rank (Window Sweep) ----
+
+# Alpha 11 — TS-Rank 5D (Ultra short-term)
+ts_rank(headline_positive_score_value_v2, 5)
+
+# Alpha 12 — TS-Rank 10D (Short-term)
+ts_rank(headline_positive_score_value_v2, 10)
+
+# Alpha 13 — TS-Rank 20D (Medium-term)
+ts_rank(headline_positive_score_value_v2, 20)
+
+# Alpha 14 — TS-Rank 60D (Intermediate)
+ts_rank(headline_positive_score_value_v2, 60)
+
+# Alpha 15 — TS-Rank 120D (Long-term)
+ts_rank(headline_positive_score_value_v2, 120)
+
+# Alpha 16 — TS-Rank 252D (Annual)
+ts_rank(headline_positive_score_value_v2, 252)
+
+
+# ---- Template 2.2: TS-Mean (Window Sweep) ----
+
+# Alpha 17 — TS-Mean 5D (Weekly average)
+ts_mean(headline_positive_score_value_v2, 5)
+
+# Alpha 18 — TS-Mean 10D (Bi-weekly average)
+ts_mean(headline_positive_score_value_v2, 10)
+
+# Alpha 19 — TS-Mean 20D (Monthly average)
+ts_mean(headline_positive_score_value_v2, 20)
+
+# Alpha 20 — TS-Mean 60D (Quarterly average)
+ts_mean(headline_positive_score_value_v2, 60)
+
+# Alpha 21 — TS-Mean 120D (Half-year average)
+ts_mean(headline_positive_score_value_v2, 120)
+
+# Alpha 22 — TS-Mean 252D (Annual average)
+ts_mean(headline_positive_score_value_v2, 252)
+
+
+# ---- Template 2.3: TS-Delta (Momentum Window Sweep) ----
+
+# Alpha 23 — TS-Delta 5D (Weekly momentum)
+ts_delta(headline_positive_score_value_v2, 5)
+
+# Alpha 24 — TS-Delta 10D (Bi-weekly momentum)
+ts_delta(headline_positive_score_value_v2, 10)
+
+# Alpha 25 — TS-Delta 20D (Monthly momentum)
+ts_delta(headline_positive_score_value_v2, 20)
+
+# Alpha 26 — TS-Delta 60D (Quarterly momentum)
+ts_delta(headline_positive_score_value_v2, 60)
+
+# Alpha 27 — TS-Delta 120D (Half-year momentum)
+ts_delta(headline_positive_score_value_v2, 120)
+
+# Alpha 28 — TS-Delta 252D (Annual momentum)
+ts_delta(headline_positive_score_value_v2, 252)
+
+
+# ---- Template 2.4: TS-StdDev (Volatility Window Sweep) ----
+
+# Alpha 29 — TS-StdDev 5D (Weekly volatility)
+ts_std_dev(headline_positive_score_value_v2, 5)
+
+# Alpha 30 — TS-StdDev 10D (Bi-weekly volatility)
+ts_std_dev(headline_positive_score_value_v2, 10)
+
+# Alpha 31 — TS-StdDev 20D (Monthly volatility)
+ts_std_dev(headline_positive_score_value_v2, 20)
+
+# Alpha 32 — TS-StdDev 60D (Quarterly volatility)
+ts_std_dev(headline_positive_score_value_v2, 60)
+
+# Alpha 33 — TS-StdDev 120D (Half-year volatility)
+ts_std_dev(headline_positive_score_value_v2, 120)
+
+# Alpha 34 — TS-StdDev 252D (Annual volatility)
+ts_std_dev(headline_positive_score_value_v2, 252)
+
+
+# ---- Template 2.5: Decay Linear (Window Sweep) ----
+
+# Alpha 35 — Decay Linear 5D (Recent bias - weekly)
+decay_linear(headline_positive_score_value_v2, 5)
+
+# Alpha 36 — Decay Linear 10D (Recent bias - bi-weekly)
+decay_linear(headline_positive_score_value_v2, 10)
+
+# Alpha 37 — Decay Linear 20D (Recent bias - monthly)
+decay_linear(headline_positive_score_value_v2, 20)
+
+# Alpha 38 — Decay Linear 60D (Recent bias - quarterly)
+decay_linear(headline_positive_score_value_v2, 60)
+
+# Alpha 39 — Decay Linear 120D (Recent bias - half-year)
+decay_linear(headline_positive_score_value_v2, 120)
+
+# Alpha 40 — Decay Linear 252D (Recent bias - annual)
+decay_linear(headline_positive_score_value_v2, 252)
+
+
+# ============================================================================
+# GIAI ĐOẠN 3: NESTED OPERATORS (COMPLEX COMBINATIONS)
+# ============================================================================
+
+# ---- 3.1: Group Neutralize + TS-Rank ----
+
+# Alpha 41 — Subindustry-Neutral TS-Rank 10D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 10), subindustry)
+
+# Alpha 42 — Subindustry-Neutral TS-Rank 20D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 20), subindustry)
+
+# Alpha 43 — Subindustry-Neutral TS-Rank 60D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 60), subindustry)
+
+# Alpha 44 — TS-Rank of Sector-Neutral 10D
+ts_rank(group_neutralize(headline_positive_score_value_v2, sector), 10)
+
+# Alpha 45 — TS-Rank of Sector-Neutral 20D
+ts_rank(group_neutralize(headline_positive_score_value_v2, sector), 20)
+
+# Alpha 46 — Industry-Neutral TS-Rank 20D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 20), industry)
+
+
+# ---- 3.2: Smooth Momentum + Rank ----
+
+# Alpha 47 — Ranked Smooth Momentum 5-10D
+rank(ts_delta(ts_mean(headline_positive_score_value_v2, 5), 10))
+
+# Alpha 48 — Ranked Smooth Momentum 5-20D
+rank(ts_delta(ts_mean(headline_positive_score_value_v2, 5), 20))
+
+# Alpha 49 — Ranked Smooth Momentum 10-20D
+rank(ts_delta(ts_mean(headline_positive_score_value_v2, 10), 20))
+
+# Alpha 50 — Subind-Neutral Decay Momentum 10D
+group_neutralize(ts_rank(decay_linear(headline_positive_score_value_v2, 10), 20), subindustry)
+
+# Alpha 51 — Subind-Neutral Decay Momentum 5-10D
+group_neutralize(ts_rank(decay_linear(headline_positive_score_value_v2, 5), 10), subindustry)
+
+
+# ---- 3.3: Risk/Volatility Adjusted ----
+
+# Alpha 52 — Volatility-Adjusted Sentiment 10D
+rank(ts_rank(headline_positive_score_value_v2, 10) / (ts_std_dev(headline_positive_score_value_v2, 10) + 1e-4))
+
+# Alpha 53 — Volatility-Adjusted Sentiment 20-60D
+rank(ts_rank(headline_positive_score_value_v2, 20) / (ts_std_dev(headline_positive_score_value_v2, 60) + 1e-4))
+
+# Alpha 54 — Volatility-Adjusted Sentiment 60-120D
+rank(ts_rank(headline_positive_score_value_v2, 60) / (ts_std_dev(headline_positive_score_value_v2, 120) + 1e-4))
+
+# Alpha 55 — Industry-Neutral Momentum Spread 20-60D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 20) - ts_rank(headline_positive_score_value_v2, 60), industry)
+
+# Alpha 56 — Sector-Neutral Momentum Spread 10-20D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 10) - ts_rank(headline_positive_score_value_v2, 20), sector)
+
+# Alpha 57 — Subind-Neutral Momentum Spread 5-10D
+group_neutralize(ts_rank(headline_positive_score_value_v2, 5) - ts_rank(headline_positive_score_value_v2, 10), subindustry)
+
+
+# ---- 3.4: Advanced Combinations ----
+
+# Alpha 58 — Normalized Momentum Ratio 10-20D
+rank((ts_rank(headline_positive_score_value_v2, 10) + 1e-4) / (ts_rank(headline_positive_score_value_v2, 20) + 1e-4))
+
+# Alpha 59 — Volatility-Normalized Delta 20D
+rank(ts_delta(headline_positive_score_value_v2, 20) / (ts_std_dev(headline_positive_score_value_v2, 20) + 1e-4))
+
+# Alpha 60 — Subind-Neutral Volatility-Adj 10D
+group_neutralize(rank(ts_rank(headline_positive_score_value_v2, 10) / (ts_std_dev(headline_positive_score_value_v2, 20) + 1e-4)), subindustry)
+
+# Alpha 61 — Mean Reversion Signal 5-20D
+rank(ts_mean(headline_positive_score_value_v2, 5) - ts_mean(headline_positive_score_value_v2, 20))
+
+# Alpha 62 — Acceleration Signal 5-10-20D
+rank(ts_delta(ts_mean(headline_positive_score_value_v2, 5), 10) - ts_delta(ts_mean(headline_positive_score_value_v2, 10), 20))
+
+# Alpha 63 — Industry-Neutral Decay Spread
+group_neutralize(decay_linear(headline_positive_score_value_v2, 5) - decay_linear(headline_positive_score_value_v2, 20), industry)
+
+# ============================================================================
+# END OF ALPHA TEMPLATES
+# ============================================================================

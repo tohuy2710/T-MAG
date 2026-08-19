@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-08-19T00:17:10.227129+00:00",
+  "settings": {
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 10,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unit_handling": "VERIFY",
+    "nan_handling": "OFF"
+  },
+  "total_alphas": 3,
+  "results": [
+    {
+      "alpha_id": "alpha1_spring_w110",
+      "expression": "rank(-ts_delta(close, 10)) * sign(short_term_price_change_2)",
+      "description": "L15 — Wyckoff spring pattern | Params: {'w1': 10}",
+      "level": 1,
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "status": "DRY_RUN",
+      "sim_data": {},
+      "simulated_at": "2026-08-19T00:17:10.227005+00:00"
+    },
+    {
+      "alpha_id": "alpha1_spring_w115",
+      "expression": "rank(-ts_delta(close, 15)) * sign(short_term_price_change_2)",
+      "description": "L15 — Wyckoff spring pattern | Params: {'w1': 15}",
+      "level": 1,
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "status": "DRY_RUN",
+      "sim_data": {},
+      "simulated_at": "2026-08-19T00:17:10.227115+00:00"
+    },
+    {
+      "alpha_id": "alpha1_spring_w120",
+      "expression": "rank(-ts_delta(close, 20)) * sign(short_term_price_change_2)",
+      "description": "L15 — Wyckoff spring pattern | Params: {'w1': 20}",
+      "level": 1,
+      "settings": {
+        "region": "GLB",
+        "universe": "TOPDIV3000",
+        "delay": 1,
+        "neutralization": "SUBINDUSTRY",
+        "decay": 10,
+        "truncation": 0.08,
+        "pasteurization": "ON",
+        "unit_handling": "VERIFY",
+        "nan_handling": "OFF"
+      },
+      "status": "DRY_RUN",
+      "sim_data": {},
+      "simulated_at": "2026-08-19T00:17:10.227117+00:00"
+    }
+  ]
+}

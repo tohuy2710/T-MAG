@@ -1,0 +1,4 @@
+alpha_id,level,description,expression,status,sharpe,fitness,turnover,returns,simulated_at
+alpha1_spring_w110,1,L15 — Wyckoff spring pattern | Params: {'w1': 10},"rank(-ts_delta(close, 10)) * sign(short_term_price_change_2)",DRY_RUN,,,,,2026-08-19T00:17:10.227005+00:00
+alpha1_spring_w115,1,L15 — Wyckoff spring pattern | Params: {'w1': 15},"rank(-ts_delta(close, 15)) * sign(short_term_price_change_2)",DRY_RUN,,,,,2026-08-19T00:17:10.227115+00:00
+alpha1_spring_w120,1,L15 — Wyckoff spring pattern | Params: {'w1': 20},"rank(-ts_delta(close, 20)) * sign(short_term_price_change_2)",DRY_RUN,,,,,2026-08-19T00:17:10.227117+00:00

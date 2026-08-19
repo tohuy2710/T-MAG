@@ -1,0 +1,150 @@
+2026-08-17 22:15:48,952 INFO [brain_api] Connecting to BRAIN API session
+2026-08-17 22:15:48,952 INFO [brain_api] BRAIN authentication: using cookie header; password login skipped
+2026-08-17 22:15:48,952 INFO [brain_api] BRAIN session ready
+
+========================================================================================================================
+  TEST NEUTRALIZATION SETTINGS - REGIONAL ANALYSIS
+========================================================================================================================
+
+📝 Using default alpha formula
+
+📊 Testing 5 neutralization settings: SLOW, FAST, SLOW_AND_FAST, SUBINDUSTRY, CROWDING
+   (Note: replacing <neut> placeholder in expression)
+
+Expression:
+   rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * ...
+
+🔗 Connecting to BRAIN API...
+[brain_api] Authenticated
+2026-08-17 22:15:48,955 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-17 22:15:48,955 INFO [brain_api] Simulation submit start expr_hash=40667e407099 expr_len=134 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:15:50,152 INFO [brain_api] Simulation created sim_id=30aDzxbDJ4TxbzmtATTF4sN expr_hash=40667e407099
+2026-08-17 22:15:50,152 INFO [brain_api] Polling simulation start sim_id=30aDzxbDJ4TxbzmtATTF4sN timeout=600s
+2026-08-17 22:15:50,432 INFO [brain_api] Polling simulation status changed sim_id=30aDzxbDJ4TxbzmtATTF4sN status=ERROR
+2026-08-17 22:15:50,432 INFO [brain_api] Polling simulation failed sim_id=30aDzxbDJ4TxbzmtATTF4sN status=ERROR data_keys=['id', 'links', 'location', 'message', 'status', 'type']
+2026-08-17 22:15:50,432 INFO [brain_api] Simulation finished non-complete sim_id=30aDzxbDJ4TxbzmtATTF4sN status=ERROR expr_hash=40667e407099 status_code=None error_hash=None
+2026-08-17 22:15:50,432 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=40667e407099
+✓ Connected!
+
+⏳ Running simulations...
+
+[1/5] Testing SLOW...
+  [1/1] ERROR — rank(group_neutralize(rank(ts_rank(sign(short_term
+2026-08-17 22:15:50,433 INFO [brain_api] Batch simulate stream complete candidate_count=1
+2026-08-17 22:15:50,433 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-17 22:15:50,433 INFO [brain_api] Simulation submit start expr_hash=bfb9d2af30f7 expr_len=134 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:15:50,735 INFO [brain_api] Simulation created sim_id=1NxsEH26N4KIa9ivllklVs9 expr_hash=bfb9d2af30f7
+2026-08-17 22:15:50,735 INFO [brain_api] Polling simulation start sim_id=1NxsEH26N4KIa9ivllklVs9 timeout=600s
+2026-08-17 22:15:51,070 INFO [brain_api] Polling simulation status changed sim_id=1NxsEH26N4KIa9ivllklVs9 status=UNKNOWN
+2026-08-17 22:15:56,388 INFO [brain_api] Polling simulation status changed sim_id=1NxsEH26N4KIa9ivllklVs9 status=ERROR
+2026-08-17 22:15:56,389 INFO [brain_api] Polling simulation failed sim_id=1NxsEH26N4KIa9ivllklVs9 status=ERROR data_keys=['id', 'links', 'location', 'message', 'status', 'type']
+2026-08-17 22:15:56,389 INFO [brain_api] Simulation finished non-complete sim_id=1NxsEH26N4KIa9ivllklVs9 status=ERROR expr_hash=bfb9d2af30f7 status_code=None error_hash=None
+2026-08-17 22:15:56,389 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=bfb9d2af30f7
+     ✗ None
+[2/5] Testing FAST...
+  [1/1] ERROR — rank(group_neutralize(rank(ts_rank(sign(short_term
+2026-08-17 22:15:56,389 INFO [brain_api] Batch simulate stream complete candidate_count=1
+2026-08-17 22:15:56,389 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-17 22:15:56,390 INFO [brain_api] Simulation submit start expr_hash=fb999af417e5 expr_len=143 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:15:56,695 INFO [brain_api] Simulation created sim_id=2040bI9I24pn9QrvcxtWff8 expr_hash=fb999af417e5
+2026-08-17 22:15:56,695 INFO [brain_api] Polling simulation start sim_id=2040bI9I24pn9QrvcxtWff8 timeout=600s
+2026-08-17 22:15:57,085 INFO [brain_api] Polling simulation status changed sim_id=2040bI9I24pn9QrvcxtWff8 status=ERROR
+2026-08-17 22:15:57,086 INFO [brain_api] Polling simulation failed sim_id=2040bI9I24pn9QrvcxtWff8 status=ERROR data_keys=['id', 'links', 'location', 'message', 'status', 'type']
+2026-08-17 22:15:57,086 INFO [brain_api] Simulation finished non-complete sim_id=2040bI9I24pn9QrvcxtWff8 status=ERROR expr_hash=fb999af417e5 status_code=None error_hash=None
+2026-08-17 22:15:57,086 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=fb999af417e5
+     ✗ None
+[3/5] Testing SLOW_AND_FAST...
+  [1/1] ERROR — rank(group_neutralize(rank(ts_rank(sign(short_term
+2026-08-17 22:15:57,086 INFO [brain_api] Batch simulate stream complete candidate_count=1
+2026-08-17 22:15:57,086 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-17 22:15:57,087 INFO [brain_api] Simulation submit start expr_hash=652f1148edcc expr_len=141 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:15:57,419 INFO [brain_api] Simulation created sim_id=1KleI8bsF5dLa5HUDSmMytv expr_hash=652f1148edcc
+2026-08-17 22:15:57,419 INFO [brain_api] Polling simulation start sim_id=1KleI8bsF5dLa5HUDSmMytv timeout=600s
+2026-08-17 22:15:57,719 INFO [brain_api] Polling simulation status changed sim_id=1KleI8bsF5dLa5HUDSmMytv status=UNKNOWN
+2026-08-17 22:16:27,210 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:16:27.210030+00:00 elapsed=30s progress=0/1 in_flight=1 last_status=-
+     ✗ None
+[4/5] Testing SUBINDUSTRY...
+  [heartbeat] 22:16:27 elapsed=30s 0/1 in_flight=1 last=-
+2026-08-17 22:16:57,368 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:16:57.367931+00:00 elapsed=60s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 22:16:57 elapsed=60s 0/1 in_flight=1 last=-
+2026-08-17 22:17:27,486 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:17:27.486529+00:00 elapsed=90s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 22:17:27 elapsed=90s 0/1 in_flight=1 last=-
+2026-08-17 22:17:57,597 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:17:57.597427+00:00 elapsed=121s progress=0/1 in_flight=1 last_status=-
+  [heartbeat] 22:17:57 elapsed=121s 0/1 in_flight=1 last=-
+2026-08-17 22:18:07,461 INFO [brain_api] Polling simulation status changed sim_id=1KleI8bsF5dLa5HUDSmMytv status=COMPLETE
+2026-08-17 22:18:07,461 INFO [brain_api] Polling simulation terminal sim_id=1KleI8bsF5dLa5HUDSmMytv status=COMPLETE alpha_id=78jkJXbx
+2026-08-17 22:18:07,461 INFO [brain_api] Fetching alpha details alpha_id=78jkJXbx retries=3
+2026-08-17 22:18:07,858 INFO [brain_api] Fetched alpha details alpha_id=78jkJXbx status=UNSUBMITTED sharpe=1.85 fitness=0.75 turnover=0.6849
+2026-08-17 22:18:07,858 INFO [brain_api] Simulation complete alpha_id=78jkJXbx sharpe=1.85 fitness=0.75 turnover=0.6849 expr_hash=652f1148edcc
+2026-08-17 22:18:07,858 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=COMPLETE attempts=1 retryable=False expr_hash=652f1148edcc
+  [1/1] COMPLETE — rank(group_neutralize(rank(ts_rank(sign(short_term
+2026-08-17 22:18:07,859 INFO [brain_api] Batch simulate stream complete candidate_count=1
+2026-08-17 22:18:07,859 INFO [brain_api] Batch simulate stream start candidate_count=1 concurrency=1 max_retries=2
+2026-08-17 22:18:07,859 INFO [brain_api] Simulation submit start expr_hash=1727c9a8c9c1 expr_len=138 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:18:08,162 INFO [brain_api] Simulation created sim_id=3Ww77MeOa4zi9BOKcmRnI69 expr_hash=1727c9a8c9c1
+2026-08-17 22:18:08,162 INFO [brain_api] Polling simulation start sim_id=3Ww77MeOa4zi9BOKcmRnI69 timeout=600s
+2026-08-17 22:18:08,438 INFO [brain_api] Polling simulation status changed sim_id=3Ww77MeOa4zi9BOKcmRnI69 status=UNKNOWN
+2026-08-17 22:18:13,723 INFO [brain_api] Polling simulation status changed sim_id=3Ww77MeOa4zi9BOKcmRnI69 status=ERROR
+2026-08-17 22:18:13,723 INFO [brain_api] Polling simulation failed sim_id=3Ww77MeOa4zi9BOKcmRnI69 status=ERROR data_keys=['id', 'links', 'location', 'message', 'status', 'type']
+2026-08-17 22:18:13,723 INFO [brain_api] Simulation finished non-complete sim_id=3Ww77MeOa4zi9BOKcmRnI69 status=ERROR expr_hash=1727c9a8c9c1 status_code=None error_hash=None
+2026-08-17 22:18:13,723 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=ERROR attempts=1 retryable=False expr_hash=1727c9a8c9c1
+     ✓ Sharpe: 1.850, Returns: 0.1113, Turnover: 0.6849
+[5/5] Testing CROWDING...
+  [1/1] ERROR — rank(group_neutralize(rank(ts_rank(sign(short_term
+2026-08-17 22:18:13,723 INFO [brain_api] Batch simulate stream complete candidate_count=1
+     ✗ None
+
+💾 Saving results...
+✓ Saved JSON results to: /Volumes/SSD-WDBlue/tohuy/y3s2/T-MAG/phase_1_plus/output/neutralization_robustness/neutralization_comparison.json
+
+✓ Saved CSV results to: /Volumes/SSD-WDBlue/tohuy/y3s2/T-MAG/phase_1_plus/output/neutralization_robustness/neutralization_comparison.csv
+
+
+========================================================================================================================
+  NEUTRALIZATION SETTINGS COMPARISON REPORT
+========================================================================================================================
+
+📊 OVERALL METRICS COMPARISON
+------------------------------------------------------------------------------------------------------------------------
+Neutralization       Status       Sharpe     Returns      Turnover     Fitness   
+------------------------------------------------------------------------------------------------------------------------
+SLOW                 ✗ ERROR          0.000      0.0000      0.0000      0.000
+FAST                 ✗ ERROR          0.000      0.0000      0.0000      0.000
+SLOW_AND_FAST        ✗ ERROR          0.000      0.0000      0.0000      0.000
+SUBINDUSTRY          ✓ COMPLETE       1.850      0.1113      0.6849      0.750
+CROWDING             ✗ ERROR          0.000      0.0000      0.0000      0.000
+
+========================================================================================================================
+📍 REGIONAL METRICS BREAKDOWN
+========================================================================================================================
+
+🌍 APAC REGION
+----------------------------------------------------------------------------------------------------
+Neutralization       Sharpe       Returns      Turnover     Fitness   
+----------------------------------------------------------------------------------------------------
+SUBINDUSTRY               2.020      0.0659      0.1859      1.200
+
+🌍 EMEA REGION
+----------------------------------------------------------------------------------------------------
+Neutralization       Sharpe       Returns      Turnover     Fitness   
+----------------------------------------------------------------------------------------------------
+SUBINDUSTRY               0.080      0.0021      0.1518      0.010
+
+🌍 AMER REGION
+----------------------------------------------------------------------------------------------------
+Neutralization       Sharpe       Returns      Turnover     Fitness   
+----------------------------------------------------------------------------------------------------
+SUBINDUSTRY               0.900      0.0433      0.3472      0.320
+
+========================================================================================================================
+📈 KEY INSIGHTS
+========================================================================================================================
+
+✓ Best Sharpe Ratio: SUBINDUSTRY (1.850)
+✓ Best Returns: SUBINDUSTRY (0.1113)
+✓ Best Fitness: SUBINDUSTRY (0.750)
+
+========================================================================================================================
+
+✓ Test completed!
+

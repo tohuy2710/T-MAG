@@ -1,0 +1,431 @@
+2026-08-17 22:18:21,884 INFO [brain_api] Connecting to BRAIN API session
+2026-08-17 22:18:21,884 INFO [brain_api] BRAIN authentication: using cookie header; password login skipped
+2026-08-17 22:18:21,885 INFO [brain_api] BRAIN session ready
+
+======================================================================================================================================================
+  BATCH NEUTRALIZATION TEST - REGIONAL ANALYSIS
+======================================================================================================================================================
+
+📄 Loading alphas from: /Volumes/SSD-WDBlue/tohuy/y3s2/T-MAG/phase_1_plus/alphas_4steps_cmf.txt
+✓ Loaded 3 alphas
+✓ Testing with 5 neutralization settings: SLOW, FAST, SLOW_AND_FAST, SUBINDUSTRY, CROWDING
+
+Sample alphas:
+  1. Param: CMF_window=3, Reversal_window=5
+  2. Param: CMF_window=3, Reversal_window=10
+  ... and 1 more
+
+🔗 Connecting to BRAIN API...
+[brain_api] Authenticated
+2026-08-17 22:18:21,887 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-17 22:18:21,888 INFO [brain_api] Simulation submit start expr_hash=879520897eb1 expr_len=65 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:18:21,888 INFO [brain_api] Simulation submit start expr_hash=879520897eb1 expr_len=65 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:18:21,888 INFO [brain_api] Simulation submit start expr_hash=879520897eb1 expr_len=65 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:18:23,009 INFO [brain_api] Simulation created sim_id=30D3Fw5ao4ROaGMTAPGW49b expr_hash=879520897eb1
+2026-08-17 22:18:23,009 INFO [brain_api] Polling simulation start sim_id=30D3Fw5ao4ROaGMTAPGW49b timeout=600s
+2026-08-17 22:18:23,046 INFO [brain_api] Simulation created sim_id=3j5ju75Gq4VJ8Om1finevev4 expr_hash=879520897eb1
+2026-08-17 22:18:23,046 INFO [brain_api] Polling simulation start sim_id=3j5ju75Gq4VJ8Om1finevev4 timeout=600s
+2026-08-17 22:18:23,080 INFO [brain_api] Simulation created sim_id=4GukqdaMl5aQb57wC3qT0hg expr_hash=879520897eb1
+2026-08-17 22:18:23,081 INFO [brain_api] Polling simulation start sim_id=4GukqdaMl5aQb57wC3qT0hg timeout=600s
+2026-08-17 22:18:23,281 INFO [brain_api] Polling simulation status changed sim_id=30D3Fw5ao4ROaGMTAPGW49b status=UNKNOWN
+2026-08-17 22:18:23,320 INFO [brain_api] Polling simulation status changed sim_id=3j5ju75Gq4VJ8Om1finevev4 status=UNKNOWN
+2026-08-17 22:18:23,359 INFO [brain_api] Polling simulation status changed sim_id=4GukqdaMl5aQb57wC3qT0hg status=UNKNOWN
+2026-08-17 22:18:52,000 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:18:52.000930+00:00 elapsed=30s progress=0/3 in_flight=3 last_status=-
+✓ Connected!
+
+
+⏳ Running 15 simulations (3 alphas × 5 settings)...
+
+[1/5] Simulating 3 candidates...
+  [heartbeat] 22:18:52 elapsed=30s 0/3 in_flight=3 last=-
+2026-08-17 22:19:22,134 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:19:22.134437+00:00 elapsed=60s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:19:22 elapsed=60s 0/3 in_flight=3 last=-
+2026-08-17 22:19:52,250 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:19:52.250259+00:00 elapsed=90s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:19:52 elapsed=90s 0/3 in_flight=3 last=-
+2026-08-17 22:20:22,370 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:20:22.370817+00:00 elapsed=120s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:20:22 elapsed=120s 0/3 in_flight=3 last=-
+2026-08-17 22:20:52,494 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:20:52.494833+00:00 elapsed=151s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:20:52 elapsed=151s 0/3 in_flight=3 last=-
+2026-08-17 22:21:22,614 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:21:22.614715+00:00 elapsed=181s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:21:22 elapsed=181s 0/3 in_flight=3 last=-
+2026-08-17 22:21:52,737 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:21:52.737457+00:00 elapsed=211s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:21:52 elapsed=211s 0/3 in_flight=3 last=-
+2026-08-17 22:22:22,866 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:22:22.866528+00:00 elapsed=241s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:22:22 elapsed=241s 0/3 in_flight=3 last=-
+2026-08-17 22:22:52,999 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:22:52.999709+00:00 elapsed=271s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:22:52 elapsed=271s 0/3 in_flight=3 last=-
+2026-08-17 22:23:23,118 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:23:23.117988+00:00 elapsed=301s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:23:23 elapsed=301s 0/3 in_flight=3 last=-
+2026-08-17 22:23:26,327 INFO [brain_api] Polling simulation status changed sim_id=4GukqdaMl5aQb57wC3qT0hg status=COMPLETE
+2026-08-17 22:23:26,327 INFO [brain_api] Polling simulation terminal sim_id=4GukqdaMl5aQb57wC3qT0hg status=COMPLETE alpha_id=d5j2dv6v
+2026-08-17 22:23:26,327 INFO [brain_api] Fetching alpha details alpha_id=d5j2dv6v retries=3
+2026-08-17 22:23:29,223 INFO [brain_api] Fetched alpha details alpha_id=d5j2dv6v status=UNSUBMITTED sharpe=1.02 fitness=0.2 turnover=0.4026
+2026-08-17 22:23:29,223 INFO [brain_api] Simulation complete alpha_id=d5j2dv6v sharpe=1.02 fitness=0.2 turnover=0.4026 expr_hash=879520897eb1
+2026-08-17 22:23:29,224 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=COMPLETE attempts=1 retryable=False expr_hash=879520897eb1
+  [1/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:23:48,270 INFO [brain_api] Polling simulation status changed sim_id=30D3Fw5ao4ROaGMTAPGW49b status=COMPLETE
+2026-08-17 22:23:48,270 INFO [brain_api] Polling simulation terminal sim_id=30D3Fw5ao4ROaGMTAPGW49b status=COMPLETE alpha_id=Wj7E9R0d
+2026-08-17 22:23:48,270 INFO [brain_api] Fetching alpha details alpha_id=Wj7E9R0d retries=3
+2026-08-17 22:23:48,653 INFO [brain_api] Fetched alpha details alpha_id=Wj7E9R0d status=UNSUBMITTED sharpe=1.1 fitness=0.25 turnover=0.4143
+2026-08-17 22:23:48,653 INFO [brain_api] Simulation complete alpha_id=Wj7E9R0d sharpe=1.1 fitness=0.25 turnover=0.4143 expr_hash=879520897eb1
+2026-08-17 22:23:48,654 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=COMPLETE attempts=1 retryable=False expr_hash=879520897eb1
+     [1/15] ✓ SLOW_AND_FAST   sharpe=  1.020 returns=  0.0156
+  [2/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:23:53,243 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:23:53.243551+00:00 elapsed=331s progress=2/3 in_flight=1 last_status=COMPLETE
+     [2/15] ✓ FAST            sharpe=  1.100 returns=  0.0208
+  [heartbeat] 22:23:53 elapsed=331s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:24:23,362 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:24:23.362309+00:00 elapsed=361s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:24:23 elapsed=361s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:24:53,471 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:24:53.471551+00:00 elapsed=392s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:24:53 elapsed=392s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:25:23,600 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:25:23.599955+00:00 elapsed=422s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:25:23 elapsed=422s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:25:38,180 INFO [brain_api] Polling simulation status changed sim_id=3j5ju75Gq4VJ8Om1finevev4 status=COMPLETE
+2026-08-17 22:25:38,180 INFO [brain_api] Polling simulation terminal sim_id=3j5ju75Gq4VJ8Om1finevev4 status=COMPLETE alpha_id=2rl1K85J
+2026-08-17 22:25:38,180 INFO [brain_api] Fetching alpha details alpha_id=2rl1K85J retries=3
+2026-08-17 22:25:38,564 INFO [brain_api] Fetched alpha details alpha_id=2rl1K85J status=UNSUBMITTED sharpe=1.25 fitness=0.28 turnover=0.3935
+2026-08-17 22:25:38,564 INFO [brain_api] Simulation complete alpha_id=2rl1K85J sharpe=1.25 fitness=0.28 turnover=0.3935 expr_hash=879520897eb1
+2026-08-17 22:25:38,564 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=COMPLETE attempts=1 retryable=False expr_hash=879520897eb1
+  [3/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:25:38,565 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-17 22:25:38,565 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-17 22:25:38,565 INFO [brain_api] Simulation submit start expr_hash=879520897eb1 expr_len=65 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:25:38,566 INFO [brain_api] Simulation submit start expr_hash=879520897eb1 expr_len=65 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:25:38,567 INFO [brain_api] Simulation submit start expr_hash=19a8d5323914 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:25:38,871 INFO [brain_api] Simulation created sim_id=NTgoB31C5exafEWSCMysMD expr_hash=879520897eb1
+2026-08-17 22:25:38,871 INFO [brain_api] Polling simulation start sim_id=NTgoB31C5exafEWSCMysMD timeout=600s
+2026-08-17 22:25:39,171 INFO [brain_api] Polling simulation status changed sim_id=NTgoB31C5exafEWSCMysMD status=UNKNOWN
+2026-08-17 22:25:39,721 INFO [brain_api] Simulation created sim_id=2TJwBf1ZY4Vgc5q17qKiRXfe expr_hash=879520897eb1
+2026-08-17 22:25:39,721 INFO [brain_api] Polling simulation start sim_id=2TJwBf1ZY4Vgc5q17qKiRXfe timeout=600s
+2026-08-17 22:25:39,738 INFO [brain_api] Simulation created sim_id=8dTCAafi4F1azMYY7rz2D3 expr_hash=19a8d5323914
+2026-08-17 22:25:39,738 INFO [brain_api] Polling simulation start sim_id=8dTCAafi4F1azMYY7rz2D3 timeout=600s
+2026-08-17 22:25:39,993 INFO [brain_api] Polling simulation status changed sim_id=2TJwBf1ZY4Vgc5q17qKiRXfe status=UNKNOWN
+2026-08-17 22:25:40,037 INFO [brain_api] Polling simulation status changed sim_id=8dTCAafi4F1azMYY7rz2D3 status=UNKNOWN
+2026-08-17 22:26:08,681 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:26:08.681526+00:00 elapsed=30s progress=0/3 in_flight=3 last_status=-
+     [3/15] ✓ SLOW            sharpe=  1.250 returns=  0.0200
+[2/5] Simulating 3 candidates...
+  [heartbeat] 22:26:08 elapsed=30s 0/3 in_flight=3 last=-
+2026-08-17 22:26:38,813 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:26:38.813679+00:00 elapsed=60s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:26:38 elapsed=60s 0/3 in_flight=3 last=-
+2026-08-17 22:27:00,116 INFO [brain_api] Polling simulation status changed sim_id=2TJwBf1ZY4Vgc5q17qKiRXfe status=COMPLETE
+2026-08-17 22:27:00,116 INFO [brain_api] Polling simulation terminal sim_id=2TJwBf1ZY4Vgc5q17qKiRXfe status=COMPLETE alpha_id=bljY93rM
+2026-08-17 22:27:00,117 INFO [brain_api] Fetching alpha details alpha_id=bljY93rM retries=3
+2026-08-17 22:27:00,511 INFO [brain_api] Fetched alpha details alpha_id=bljY93rM status=UNSUBMITTED sharpe=1.16 fitness=0.34 turnover=0.4423
+2026-08-17 22:27:00,511 INFO [brain_api] Simulation complete alpha_id=bljY93rM sharpe=1.16 fitness=0.34 turnover=0.4423 expr_hash=879520897eb1
+2026-08-17 22:27:00,511 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=COMPLETE attempts=1 retryable=False expr_hash=879520897eb1
+  [1/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:27:08,982 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:27:08.982677+00:00 elapsed=90s progress=1/3 in_flight=2 last_status=COMPLETE
+     [4/15] ✓ CROWDING        sharpe=  1.160 returns=  0.0388
+  [heartbeat] 22:27:08 elapsed=90s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:27:39,119 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:27:39.119658+00:00 elapsed=121s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:27:39 elapsed=121s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:28:09,249 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:28:09.249158+00:00 elapsed=151s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:28:09 elapsed=151s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:28:14,375 INFO [brain_api] Polling simulation status changed sim_id=NTgoB31C5exafEWSCMysMD status=COMPLETE
+2026-08-17 22:28:14,375 INFO [brain_api] Polling simulation terminal sim_id=NTgoB31C5exafEWSCMysMD status=COMPLETE alpha_id=MPGNeAr9
+2026-08-17 22:28:14,375 INFO [brain_api] Fetching alpha details alpha_id=MPGNeAr9 retries=3
+2026-08-17 22:28:14,750 INFO [brain_api] Fetched alpha details alpha_id=MPGNeAr9 status=UNSUBMITTED sharpe=1.63 fitness=0.57 turnover=0.4457
+2026-08-17 22:28:14,750 INFO [brain_api] Simulation complete alpha_id=MPGNeAr9 sharpe=1.63 fitness=0.57 turnover=0.4457 expr_hash=879520897eb1
+2026-08-17 22:28:14,750 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=COMPLETE attempts=1 retryable=False expr_hash=879520897eb1
+  [2/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:28:39,369 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:28:39.369313+00:00 elapsed=181s progress=2/3 in_flight=1 last_status=COMPLETE
+     [5/15] ✓ SUBINDUSTRY     sharpe=  1.630 returns=  0.0544
+  [heartbeat] 22:28:39 elapsed=181s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:29:09,484 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:29:09.484365+00:00 elapsed=211s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:29:09 elapsed=211s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:29:39,596 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:29:39.596331+00:00 elapsed=241s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:29:39 elapsed=241s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:29:59,063 INFO [brain_api] Polling simulation status changed sim_id=8dTCAafi4F1azMYY7rz2D3 status=COMPLETE
+2026-08-17 22:29:59,063 INFO [brain_api] Polling simulation terminal sim_id=8dTCAafi4F1azMYY7rz2D3 status=COMPLETE alpha_id=N17XORwL
+2026-08-17 22:29:59,063 INFO [brain_api] Fetching alpha details alpha_id=N17XORwL retries=3
+2026-08-17 22:29:59,460 INFO [brain_api] Fetched alpha details alpha_id=N17XORwL status=UNSUBMITTED sharpe=1.26 fitness=0.29 turnover=0.3834
+2026-08-17 22:29:59,460 INFO [brain_api] Simulation complete alpha_id=N17XORwL sharpe=1.26 fitness=0.29 turnover=0.3834 expr_hash=19a8d5323914
+2026-08-17 22:29:59,460 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=COMPLETE attempts=1 retryable=False expr_hash=19a8d5323914
+  [3/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:29:59,461 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-17 22:29:59,461 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-17 22:29:59,461 INFO [brain_api] Simulation submit start expr_hash=19a8d5323914 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:29:59,462 INFO [brain_api] Simulation submit start expr_hash=19a8d5323914 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:29:59,462 INFO [brain_api] Simulation submit start expr_hash=19a8d5323914 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:29:59,854 INFO [brain_api] Simulation created sim_id=4nBUkabVd4Ms8XlsS1vtkln expr_hash=19a8d5323914
+2026-08-17 22:29:59,854 INFO [brain_api] Polling simulation start sim_id=4nBUkabVd4Ms8XlsS1vtkln timeout=600s
+2026-08-17 22:30:00,144 INFO [brain_api] Polling simulation status changed sim_id=4nBUkabVd4Ms8XlsS1vtkln status=UNKNOWN
+2026-08-17 22:30:00,626 INFO [brain_api] Simulation created sim_id=3AB0K91ba4oLceh1dwCJCpnI expr_hash=19a8d5323914
+2026-08-17 22:30:00,627 INFO [brain_api] Polling simulation start sim_id=3AB0K91ba4oLceh1dwCJCpnI timeout=600s
+2026-08-17 22:30:00,888 INFO [brain_api] Simulation created sim_id=2UsusYfpT4wDbaA1dja2WbXK expr_hash=19a8d5323914
+2026-08-17 22:30:00,888 INFO [brain_api] Polling simulation start sim_id=2UsusYfpT4wDbaA1dja2WbXK timeout=600s
+2026-08-17 22:30:00,913 INFO [brain_api] Polling simulation status changed sim_id=3AB0K91ba4oLceh1dwCJCpnI status=UNKNOWN
+2026-08-17 22:30:01,170 INFO [brain_api] Polling simulation status changed sim_id=2UsusYfpT4wDbaA1dja2WbXK status=UNKNOWN
+2026-08-17 22:30:29,597 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:30:29.597881+00:00 elapsed=30s progress=0/3 in_flight=3 last_status=-
+     [6/15] ✓ SLOW            sharpe=  1.260 returns=  0.0203
+[3/5] Simulating 3 candidates...
+  [heartbeat] 22:30:29 elapsed=30s 0/3 in_flight=3 last=-
+2026-08-17 22:30:59,719 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:30:59.719294+00:00 elapsed=60s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:30:59 elapsed=60s 0/3 in_flight=3 last=-
+2026-08-17 22:31:26,103 INFO [brain_api] Polling simulation status changed sim_id=3AB0K91ba4oLceh1dwCJCpnI status=COMPLETE
+2026-08-17 22:31:26,103 INFO [brain_api] Polling simulation terminal sim_id=3AB0K91ba4oLceh1dwCJCpnI status=COMPLETE alpha_id=wpak2Lb5
+2026-08-17 22:31:26,103 INFO [brain_api] Fetching alpha details alpha_id=wpak2Lb5 retries=3
+2026-08-17 22:31:26,513 INFO [brain_api] Fetched alpha details alpha_id=wpak2Lb5 status=UNSUBMITTED sharpe=1.67 fitness=0.62 turnover=0.4356
+2026-08-17 22:31:26,513 INFO [brain_api] Simulation complete alpha_id=wpak2Lb5 sharpe=1.67 fitness=0.62 turnover=0.4356 expr_hash=19a8d5323914
+2026-08-17 22:31:26,513 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=COMPLETE attempts=1 retryable=False expr_hash=19a8d5323914
+  [1/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:31:29,841 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:31:29.841631+00:00 elapsed=90s progress=1/3 in_flight=2 last_status=COMPLETE
+     [7/15] ✓ SUBINDUSTRY     sharpe=  1.670 returns=  0.0600
+  [heartbeat] 22:31:29 elapsed=90s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:31:59,972 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:31:59.972605+00:00 elapsed=121s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:31:59 elapsed=121s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:32:30,083 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:32:30.083286+00:00 elapsed=151s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:32:30 elapsed=151s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:33:00,319 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:33:00.319683+00:00 elapsed=181s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:33:00 elapsed=181s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:33:30,581 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:33:30.581119+00:00 elapsed=211s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:33:30 elapsed=211s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:34:00,794 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:34:00.794147+00:00 elapsed=241s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:34:00 elapsed=241s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:34:31,022 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:34:31.022420+00:00 elapsed=272s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:34:31 elapsed=272s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:35:01,242 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:35:01.241985+00:00 elapsed=302s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:35:01 elapsed=302s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:35:31,467 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:35:31.467333+00:00 elapsed=332s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:35:31 elapsed=332s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:35:45,464 INFO [brain_api] Polling simulation status changed sim_id=2UsusYfpT4wDbaA1dja2WbXK status=COMPLETE
+2026-08-17 22:35:45,464 INFO [brain_api] Polling simulation terminal sim_id=2UsusYfpT4wDbaA1dja2WbXK status=COMPLETE alpha_id=QP71aZVM
+2026-08-17 22:35:45,464 INFO [brain_api] Fetching alpha details alpha_id=QP71aZVM retries=3
+2026-08-17 22:35:45,798 INFO [brain_api] Fetched alpha details alpha_id=QP71aZVM status=UNSUBMITTED sharpe=0.96 fitness=0.18 turnover=0.3955
+2026-08-17 22:35:45,799 INFO [brain_api] Simulation complete alpha_id=QP71aZVM sharpe=0.96 fitness=0.18 turnover=0.3955 expr_hash=19a8d5323914
+2026-08-17 22:35:45,799 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=COMPLETE attempts=1 retryable=False expr_hash=19a8d5323914
+  [2/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:36:01,679 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:36:01.679049+00:00 elapsed=362s progress=2/3 in_flight=1 last_status=COMPLETE
+     [8/15] ✓ SLOW_AND_FAST   sharpe=  0.960 returns=  0.0144
+  [heartbeat] 22:36:01 elapsed=362s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:36:31,902 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:36:31.902057+00:00 elapsed=392s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:36:31 elapsed=392s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:37:02,125 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:37:02.125806+00:00 elapsed=423s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:37:02 elapsed=423s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:37:32,333 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:37:32.333274+00:00 elapsed=453s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:37:32 elapsed=453s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:38:02,587 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:38:02.587038+00:00 elapsed=483s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:38:02 elapsed=483s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:38:10,752 INFO [brain_api] Polling simulation status changed sim_id=4nBUkabVd4Ms8XlsS1vtkln status=COMPLETE
+2026-08-17 22:38:10,752 INFO [brain_api] Polling simulation terminal sim_id=4nBUkabVd4Ms8XlsS1vtkln status=COMPLETE alpha_id=ZY7RpqKY
+2026-08-17 22:38:10,752 INFO [brain_api] Fetching alpha details alpha_id=ZY7RpqKY retries=3
+2026-08-17 22:38:11,123 INFO [brain_api] Fetched alpha details alpha_id=ZY7RpqKY status=UNSUBMITTED sharpe=1.01 fitness=0.22 turnover=0.408
+2026-08-17 22:38:11,123 INFO [brain_api] Simulation complete alpha_id=ZY7RpqKY sharpe=1.01 fitness=0.22 turnover=0.408 expr_hash=19a8d5323914
+2026-08-17 22:38:11,125 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=COMPLETE attempts=1 retryable=False expr_hash=19a8d5323914
+  [3/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:38:11,125 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-17 22:38:11,125 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-17 22:38:11,126 INFO [brain_api] Simulation submit start expr_hash=19a8d5323914 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:38:11,126 INFO [brain_api] Simulation submit start expr_hash=c58c22ae7e28 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:38:11,127 INFO [brain_api] Simulation submit start expr_hash=c58c22ae7e28 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:38:11,487 INFO [brain_api] Increasing BRAIN concurrency new_concurrency=4
+     [9/15] ✓ FAST            sharpe=  1.010 returns=  0.0193
+[4/5] Simulating 3 candidates...
+[brain_api] Success streak, concurrency -> 4
+2026-08-17 22:38:11,488 INFO [brain_api] Simulation created sim_id=1IMtso7rZ4nMbveySddeLdH expr_hash=c58c22ae7e28
+2026-08-17 22:38:11,488 INFO [brain_api] Polling simulation start sim_id=1IMtso7rZ4nMbveySddeLdH timeout=600s
+2026-08-17 22:38:11,793 INFO [brain_api] Polling simulation status changed sim_id=1IMtso7rZ4nMbveySddeLdH status=UNKNOWN
+2026-08-17 22:38:12,420 INFO [brain_api] Simulation created sim_id=1X9q897n57ebfDcnXIt25P expr_hash=19a8d5323914
+2026-08-17 22:38:12,420 INFO [brain_api] Polling simulation start sim_id=1X9q897n57ebfDcnXIt25P timeout=600s
+2026-08-17 22:38:12,427 INFO [brain_api] Simulation created sim_id=35lbb7ahp4OO8zIehvRKdc8 expr_hash=c58c22ae7e28
+2026-08-17 22:38:12,427 INFO [brain_api] Polling simulation start sim_id=35lbb7ahp4OO8zIehvRKdc8 timeout=600s
+2026-08-17 22:38:12,704 INFO [brain_api] Polling simulation status changed sim_id=1X9q897n57ebfDcnXIt25P status=UNKNOWN
+2026-08-17 22:38:12,707 INFO [brain_api] Polling simulation status changed sim_id=35lbb7ahp4OO8zIehvRKdc8 status=UNKNOWN
+2026-08-17 22:38:41,358 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:38:41.358054+00:00 elapsed=30s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:38:41 elapsed=30s 0/3 in_flight=3 last=-
+2026-08-17 22:39:11,563 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:39:11.563546+00:00 elapsed=60s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:39:11 elapsed=60s 0/3 in_flight=3 last=-
+2026-08-17 22:39:27,197 INFO [brain_api] Polling simulation status changed sim_id=1X9q897n57ebfDcnXIt25P status=COMPLETE
+2026-08-17 22:39:27,198 INFO [brain_api] Polling simulation terminal sim_id=1X9q897n57ebfDcnXIt25P status=COMPLETE alpha_id=KP7Kbnoz
+2026-08-17 22:39:27,198 INFO [brain_api] Fetching alpha details alpha_id=KP7Kbnoz retries=3
+2026-08-17 22:39:27,579 INFO [brain_api] Fetched alpha details alpha_id=KP7Kbnoz status=UNSUBMITTED sharpe=1.13 fitness=0.35 turnover=0.4309
+2026-08-17 22:39:27,580 INFO [brain_api] Simulation complete alpha_id=KP7Kbnoz sharpe=1.13 fitness=0.35 turnover=0.4309 expr_hash=19a8d5323914
+2026-08-17 22:39:27,580 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=COMPLETE attempts=1 retryable=False expr_hash=19a8d5323914
+  [1/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:39:41,729 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:39:41.729281+00:00 elapsed=91s progress=1/3 in_flight=2 last_status=COMPLETE
+     [10/15] ✓ CROWDING        sharpe=  1.130 returns=  0.0413
+  [heartbeat] 22:39:41 elapsed=91s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:40:11,864 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:40:11.864709+00:00 elapsed=121s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:40:11 elapsed=121s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:40:41,981 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:40:41.981289+00:00 elapsed=151s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:40:41 elapsed=151s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:41:12,113 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:41:12.113363+00:00 elapsed=181s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:41:12 elapsed=181s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:41:42,233 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:41:42.233430+00:00 elapsed=211s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:41:42 elapsed=211s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:42:12,345 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:42:12.345832+00:00 elapsed=241s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:42:12 elapsed=241s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:42:42,462 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:42:42.462510+00:00 elapsed=271s progress=1/3 in_flight=2 last_status=COMPLETE
+  [heartbeat] 22:42:42 elapsed=271s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:42:46,225 INFO [brain_api] Polling simulation status changed sim_id=35lbb7ahp4OO8zIehvRKdc8 status=COMPLETE
+2026-08-17 22:42:46,225 INFO [brain_api] Polling simulation terminal sim_id=35lbb7ahp4OO8zIehvRKdc8 status=COMPLETE alpha_id=N17XpKv8
+2026-08-17 22:42:46,225 INFO [brain_api] Fetching alpha details alpha_id=N17XpKv8 retries=3
+2026-08-17 22:42:46,635 INFO [brain_api] Fetched alpha details alpha_id=N17XpKv8 status=UNSUBMITTED sharpe=1.02 fitness=0.23 turnover=0.4023
+2026-08-17 22:42:46,635 INFO [brain_api] Simulation complete alpha_id=N17XpKv8 sharpe=1.02 fitness=0.23 turnover=0.4023 expr_hash=c58c22ae7e28
+2026-08-17 22:42:46,635 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=COMPLETE attempts=1 retryable=False expr_hash=c58c22ae7e28
+  [2/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:43:12,581 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:43:12.581705+00:00 elapsed=301s progress=2/3 in_flight=1 last_status=COMPLETE
+     [11/15] ✓ FAST            sharpe=  1.020 returns=  0.0196
+  [heartbeat] 22:43:12 elapsed=301s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:43:42,697 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:43:42.696990+00:00 elapsed=332s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:43:42 elapsed=332s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:44:12,824 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:44:12.824899+00:00 elapsed=362s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:44:12 elapsed=362s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:44:42,949 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:44:42.949761+00:00 elapsed=392s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:44:42 elapsed=392s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:45:13,133 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:45:13.133285+00:00 elapsed=422s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:45:13 elapsed=422s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:45:43,353 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:45:43.353070+00:00 elapsed=452s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:45:43 elapsed=452s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:46:13,592 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:46:13.592218+00:00 elapsed=482s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:46:13 elapsed=482s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:46:24,645 INFO [brain_api] Polling simulation status changed sim_id=1IMtso7rZ4nMbveySddeLdH status=COMPLETE
+2026-08-17 22:46:24,646 INFO [brain_api] Polling simulation terminal sim_id=1IMtso7rZ4nMbveySddeLdH status=COMPLETE alpha_id=88lmQ5Mm
+2026-08-17 22:46:24,646 INFO [brain_api] Fetching alpha details alpha_id=88lmQ5Mm retries=3
+2026-08-17 22:46:25,042 INFO [brain_api] Fetched alpha details alpha_id=88lmQ5Mm status=UNSUBMITTED sharpe=1.3 fitness=0.31 turnover=0.3746
+2026-08-17 22:46:25,042 INFO [brain_api] Simulation complete alpha_id=88lmQ5Mm sharpe=1.3 fitness=0.31 turnover=0.3746 expr_hash=c58c22ae7e28
+2026-08-17 22:46:25,043 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=COMPLETE attempts=1 retryable=False expr_hash=c58c22ae7e28
+  [3/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:46:25,044 INFO [brain_api] Batch simulate stream complete candidate_count=3
+2026-08-17 22:46:25,044 INFO [brain_api] Batch simulate stream start candidate_count=3 concurrency=3 max_retries=2
+2026-08-17 22:46:25,045 INFO [brain_api] Simulation submit start expr_hash=c58c22ae7e28 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:46:25,045 INFO [brain_api] Simulation submit start expr_hash=c58c22ae7e28 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:46:25,046 INFO [brain_api] Simulation submit start expr_hash=c58c22ae7e28 expr_len=66 settings_keys=['decay', 'delay', 'instrumentType', 'language', 'maxPosition', 'maxTrade', 'nanHandling', 'neutralization', 'pasteurization', 'region', 'truncation', 'unitHandling', 'universe', 'visualization']
+2026-08-17 22:46:25,389 INFO [brain_api] Simulation created sim_id=2YZqHsa5L4RnbsM1hqadrLY4 expr_hash=c58c22ae7e28
+2026-08-17 22:46:25,389 INFO [brain_api] Polling simulation start sim_id=2YZqHsa5L4RnbsM1hqadrLY4 timeout=600s
+2026-08-17 22:46:25,675 INFO [brain_api] Polling simulation status changed sim_id=2YZqHsa5L4RnbsM1hqadrLY4 status=UNKNOWN
+2026-08-17 22:46:26,284 INFO [brain_api] Simulation created sim_id=3Xuo2S2YM4qNcyPpN21jOPG expr_hash=c58c22ae7e28
+2026-08-17 22:46:26,285 INFO [brain_api] Polling simulation start sim_id=3Xuo2S2YM4qNcyPpN21jOPG timeout=600s
+2026-08-17 22:46:26,300 INFO [brain_api] Simulation created sim_id=1DPZn9e7054Q8SZlpUeGEUQ expr_hash=c58c22ae7e28
+2026-08-17 22:46:26,300 INFO [brain_api] Polling simulation start sim_id=1DPZn9e7054Q8SZlpUeGEUQ timeout=600s
+2026-08-17 22:46:26,591 INFO [brain_api] Polling simulation status changed sim_id=1DPZn9e7054Q8SZlpUeGEUQ status=UNKNOWN
+2026-08-17 22:46:26,621 INFO [brain_api] Polling simulation status changed sim_id=3Xuo2S2YM4qNcyPpN21jOPG status=UNKNOWN
+2026-08-17 22:46:55,260 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:46:55.259955+00:00 elapsed=30s progress=0/3 in_flight=3 last_status=-
+     [12/15] ✓ SLOW            sharpe=  1.300 returns=  0.0212
+[5/5] Simulating 3 candidates...
+  [heartbeat] 22:46:55 elapsed=30s 0/3 in_flight=3 last=-
+2026-08-17 22:47:25,365 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:47:25.365882+00:00 elapsed=60s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:47:25 elapsed=60s 0/3 in_flight=3 last=-
+2026-08-17 22:47:55,486 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:47:55.486729+00:00 elapsed=90s progress=0/3 in_flight=3 last_status=-
+  [heartbeat] 22:47:55 elapsed=90s 0/3 in_flight=3 last=-
+2026-08-17 22:48:02,225 INFO [brain_api] Polling simulation status changed sim_id=3Xuo2S2YM4qNcyPpN21jOPG status=COMPLETE
+2026-08-17 22:48:02,225 INFO [brain_api] Polling simulation terminal sim_id=3Xuo2S2YM4qNcyPpN21jOPG status=COMPLETE alpha_id=3qpvkA6P
+2026-08-17 22:48:02,225 INFO [brain_api] Fetching alpha details alpha_id=3qpvkA6P retries=3
+2026-08-17 22:48:02,592 INFO [brain_api] Fetched alpha details alpha_id=3qpvkA6P status=UNSUBMITTED sharpe=1.79 fitness=0.7 turnover=0.4257
+2026-08-17 22:48:02,593 INFO [brain_api] Simulation complete alpha_id=3qpvkA6P sharpe=1.79 fitness=0.7 turnover=0.4257 expr_hash=c58c22ae7e28
+2026-08-17 22:48:02,593 INFO [brain_api] Stream simulation candidate finished batch_idx=1 status=COMPLETE attempts=1 retryable=False expr_hash=c58c22ae7e28
+  [1/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:48:25,605 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:48:25.605493+00:00 elapsed=121s progress=1/3 in_flight=2 last_status=COMPLETE
+     [13/15] ✓ SUBINDUSTRY     sharpe=  1.790 returns=  0.0648
+  [heartbeat] 22:48:25 elapsed=121s 1/3 in_flight=2 last=COMPLETE
+2026-08-17 22:48:40,714 INFO [brain_api] Polling simulation status changed sim_id=1DPZn9e7054Q8SZlpUeGEUQ status=COMPLETE
+2026-08-17 22:48:40,714 INFO [brain_api] Polling simulation terminal sim_id=1DPZn9e7054Q8SZlpUeGEUQ status=COMPLETE alpha_id=zqkvmQb8
+2026-08-17 22:48:40,714 INFO [brain_api] Fetching alpha details alpha_id=zqkvmQb8 retries=3
+2026-08-17 22:48:41,094 INFO [brain_api] Fetched alpha details alpha_id=zqkvmQb8 status=UNSUBMITTED sharpe=1.08 fitness=0.34 turnover=0.4197
+2026-08-17 22:48:41,094 INFO [brain_api] Simulation complete alpha_id=zqkvmQb8 sharpe=1.08 fitness=0.34 turnover=0.4197 expr_hash=c58c22ae7e28
+2026-08-17 22:48:41,094 INFO [brain_api] Stream simulation candidate finished batch_idx=2 status=COMPLETE attempts=1 retryable=False expr_hash=c58c22ae7e28
+  [2/3] COMPLETE — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:48:55,730 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:48:55.730356+00:00 elapsed=151s progress=2/3 in_flight=1 last_status=COMPLETE
+     [14/15] ✓ CROWDING        sharpe=  1.080 returns=  0.0405
+  [heartbeat] 22:48:55 elapsed=151s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:49:25,841 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:49:25.840993+00:00 elapsed=181s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:49:25 elapsed=181s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:49:55,972 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:49:55.972340+00:00 elapsed=211s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:49:55 elapsed=211s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:50:26,081 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:50:26.081595+00:00 elapsed=241s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:50:26 elapsed=241s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:50:56,192 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:50:56.192881+00:00 elapsed=271s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:50:56 elapsed=271s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:51:26,286 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:51:26.286658+00:00 elapsed=301s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:51:26 elapsed=301s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:51:56,393 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:51:56.393885+00:00 elapsed=331s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:51:56 elapsed=331s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:52:26,592 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:52:26.592861+00:00 elapsed=362s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:52:26 elapsed=362s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:52:56,793 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:52:56.793580+00:00 elapsed=392s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:52:56 elapsed=392s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:53:27,027 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:53:27.027086+00:00 elapsed=422s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:53:27 elapsed=422s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:53:57,250 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:53:57.250593+00:00 elapsed=452s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:53:57 elapsed=452s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:54:27,475 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:54:27.475251+00:00 elapsed=482s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:54:27 elapsed=482s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:54:57,723 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:54:57.723673+00:00 elapsed=513s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:54:57 elapsed=513s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:55:27,934 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:55:27.933951+00:00 elapsed=543s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:55:27 elapsed=543s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:55:58,144 INFO [brain_api] Batch heartbeat ts=2026-08-17T15:55:58.144671+00:00 elapsed=573s progress=2/3 in_flight=1 last_status=COMPLETE
+  [heartbeat] 22:55:58 elapsed=573s 2/3 in_flight=1 last=COMPLETE
+2026-08-17 22:56:25,811 INFO [brain_api] Polling simulation timeout sim_id=2YZqHsa5L4RnbsM1hqadrLY4 elapsed=600.4s
+2026-08-17 22:56:25,811 INFO [brain_api] Simulation finished non-complete sim_id=2YZqHsa5L4RnbsM1hqadrLY4 status=TIMEOUT expr_hash=c58c22ae7e28 status_code=None error_hash=None
+2026-08-17 22:56:25,813 INFO [brain_api] Stream simulation candidate finished batch_idx=0 status=TIMEOUT attempts=1 retryable=False expr_hash=c58c22ae7e28
+  [3/3] TIMEOUT — ts_rank(short_term_price_change_2, 3) * (1 - ts_ra
+2026-08-17 22:56:25,814 INFO [brain_api] Batch simulate stream complete candidate_count=3
+     [15/15] ✗ SLOW_AND_FAST   unknown
+
+💾 Saving results...
+
+✓ Saved matrix results to: /Volumes/SSD-WDBlue/tohuy/y3s2/T-MAG/phase_1_plus/output/neutralization_robustness/batch_neutralization_matrix.json
+✓ Saved CSV matrix to: /Volumes/SSD-WDBlue/tohuy/y3s2/T-MAG/phase_1_plus/output/neutralization_robustness/batch_neutralization_matrix.csv
+
+======================================================================================================================================================
+  NEUTRALIZATION SETTINGS COMPARISON MATRIX
+======================================================================================================================================================
+
+Testing 3 alphas × 5 settings:
+Settings: CROWDING, FAST, SLOW, SLOW_AND_FAST, SUBINDUSTRY
+
+SHARPE RATIO COMPARISON
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Alpha                                    CROWDING     FAST         SLOW         SLOW_AND_FAST SUBINDUSTRY 
+------------------------------------------------------------------------------------------------------------------------------------------------------
+ts_rank(short_term_price_change_2, 3) *        1.160       1.100       1.250       1.020       1.630
+ts_rank(short_term_price_change_2, 3) *        1.130       1.010       1.260       0.960       1.670
+ts_rank(short_term_price_change_2, 3) *        1.080       1.020       1.300       ERROR       1.790
+
+======================================================================================================================================================
+  REGIONAL BREAKDOWN - TOP PERFORMERS
+======================================================================================================================================================
+
+🌍 CROWDING
+----------------------------------------------------------------------------------------------------
+Alpha                                    APAC         EMEA         AMER         Overall     
+----------------------------------------------------------------------------------------------------
+ts_rank(short_term_price_change_2, 3) *        0.750        0.580        0.840        1.160
+ts_rank(short_term_price_change_2, 3) *        0.800        0.590        0.800        1.130
+ts_rank(short_term_price_change_2, 3) *        0.690        0.750        0.730        1.080
+
+🌍 FAST
+----------------------------------------------------------------------------------------------------
+Alpha                                    APAC         EMEA         AMER         Overall     
+----------------------------------------------------------------------------------------------------
+ts_rank(short_term_price_change_2, 3) *        0.730        0.820        0.630        1.100
+ts_rank(short_term_price_change_2, 3) *        0.490        1.000        0.610        1.020
+ts_rank(short_term_price_change_2, 3) *        0.510        0.840        0.640        1.010
+
+🌍 SLOW
+----------------------------------------------------------------------------------------------------
+Alpha                                    APAC         EMEA         AMER         Overall     
+----------------------------------------------------------------------------------------------------
+ts_rank(short_term_price_change_2, 3) *        0.810        1.010        0.720        1.300
+ts_rank(short_term_price_change_2, 3) *        0.840        0.900        0.690        1.260
+ts_rank(short_term_price_change_2, 3) *        0.910        0.760        0.690        1.250
+
+🌍 SLOW_AND_FAST
+----------------------------------------------------------------------------------------------------
+Alpha                                    APAC         EMEA         AMER         Overall     
+----------------------------------------------------------------------------------------------------
+ts_rank(short_term_price_change_2, 3) *        0.760        0.670        0.520        1.020
+ts_rank(short_term_price_change_2, 3) *        0.580        0.750        0.520        0.960
+
+🌍 SUBINDUSTRY
+----------------------------------------------------------------------------------------------------
+Alpha                                    APAC         EMEA         AMER         Overall     
+----------------------------------------------------------------------------------------------------
+ts_rank(short_term_price_change_2, 3) *        1.320        0.500        1.030        1.790
+ts_rank(short_term_price_change_2, 3) *        1.380        0.340        0.930        1.670
+ts_rank(short_term_price_change_2, 3) *        1.210        0.500        0.880        1.630
+
+======================================================================================================================================================
+✓ Batch test completed!
+

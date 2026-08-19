@@ -1,0 +1,462 @@
+{
+  "timestamp": "2026-08-17T15:18:13.724117+00:00",
+  "total_settings_tested": 5,
+  "results": [
+    {
+      "neutralization": "SLOW",
+      "status": "ERROR",
+      "alpha_id": null,
+      "sim_data": {
+        "id": "30aDzxbDJ4TxbzmtATTF4sN",
+        "type": "REGULAR",
+        "status": "ERROR",
+        "message": "Attempted to use unknown variable \"slow\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+        "location": {
+          "line": 1,
+          "start": 128,
+          "end": 132,
+          "property": "regular"
+        },
+        "links": {
+          "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+        }
+      },
+      "expression": "rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * (1 - ts_rank(returns, 10)), SLOW))",
+      "error": null
+    },
+    {
+      "neutralization": "FAST",
+      "status": "ERROR",
+      "alpha_id": null,
+      "sim_data": {
+        "id": "1NxsEH26N4KIa9ivllklVs9",
+        "type": "REGULAR",
+        "status": "ERROR",
+        "message": "Attempted to use unknown variable \"fast\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+        "location": {
+          "line": 1,
+          "start": 128,
+          "end": 132,
+          "property": "regular"
+        },
+        "links": {
+          "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+        }
+      },
+      "expression": "rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * (1 - ts_rank(returns, 10)), FAST))",
+      "error": null
+    },
+    {
+      "neutralization": "SLOW_AND_FAST",
+      "status": "ERROR",
+      "alpha_id": null,
+      "sim_data": {
+        "id": "2040bI9I24pn9QrvcxtWff8",
+        "type": "REGULAR",
+        "status": "ERROR",
+        "message": "Attempted to use unknown variable \"slow_and_fast\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+        "location": {
+          "line": 1,
+          "start": 128,
+          "end": 141,
+          "property": "regular"
+        },
+        "links": {
+          "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+        }
+      },
+      "expression": "rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * (1 - ts_rank(returns, 10)), SLOW_AND_FAST))",
+      "error": null
+    },
+    {
+      "neutralization": "SUBINDUSTRY",
+      "status": "COMPLETE",
+      "alpha_id": "78jkJXbx",
+      "sim_data": {
+        "id": "78jkJXbx",
+        "type": "REGULAR",
+        "author": "TH98365",
+        "settings": {
+          "instrumentType": "EQUITY",
+          "region": "GLB",
+          "universe": "TOPDIV3000",
+          "delay": 1,
+          "decay": 10,
+          "neutralization": "SUBINDUSTRY",
+          "truncation": 0.08,
+          "pasteurization": "ON",
+          "unitHandling": "VERIFY",
+          "nanHandling": "OFF",
+          "maxTrade": "OFF",
+          "maxPosition": "OFF",
+          "language": "FASTEXPR",
+          "visualization": false,
+          "startDate": "2014-01-01",
+          "endDate": "2023-12-31"
+        },
+        "regular": {
+          "code": "rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * (1 - ts_rank(returns, 10)), SUBINDUSTRY))",
+          "description": null,
+          "operatorCount": 9
+        },
+        "dateCreated": "2026-08-17T11:18:02-04:00",
+        "dateSubmitted": null,
+        "dateModified": "2026-08-17T11:18:02-04:00",
+        "name": null,
+        "favorite": false,
+        "hidden": false,
+        "color": null,
+        "category": null,
+        "tags": [],
+        "classifications": [
+          {
+            "id": "HIGH_TURNOVER:HIGH_TURNOVER",
+            "name": "High Turnover"
+          }
+        ],
+        "grade": null,
+        "stage": "IS",
+        "status": "UNSUBMITTED",
+        "is": {
+          "pnl": 11511382,
+          "bookSize": 20000000,
+          "longCount": 848,
+          "shortCount": 848,
+          "turnover": 0.6849,
+          "returns": 0.1113,
+          "drawdown": 0.079,
+          "margin": 0.000325,
+          "sharpe": 1.85,
+          "fitness": 0.75,
+          "startDate": "2014-01-01",
+          "glbAmer": {
+            "pnl": 4483182,
+            "bookSize": 20000000,
+            "longCount": 464,
+            "shortCount": 461,
+            "turnover": 0.3472,
+            "returns": 0.0433,
+            "drawdown": 0.0902,
+            "margin": 0.00025,
+            "fitness": 0.32,
+            "sharpe": 0.9
+          },
+          "glbApac": {
+            "pnl": 6812320,
+            "bookSize": 20000000,
+            "longCount": 207,
+            "shortCount": 210,
+            "turnover": 0.1859,
+            "returns": 0.0659,
+            "drawdown": 0.0468,
+            "margin": 0.000709,
+            "fitness": 1.2,
+            "sharpe": 2.02
+          },
+          "glbEmea": {
+            "pnl": 215886,
+            "bookSize": 20000000,
+            "longCount": 176,
+            "shortCount": 176,
+            "turnover": 0.1518,
+            "returns": 0.0021,
+            "drawdown": 0.0855,
+            "margin": 2.7e-05,
+            "fitness": 0.01,
+            "sharpe": 0.08
+          },
+          "investabilityConstrained": {
+            "pnl": 9622678,
+            "bookSize": 20000000,
+            "longCount": 878,
+            "shortCount": 885,
+            "turnover": 0.601,
+            "returns": 0.093,
+            "drawdown": 0.0767,
+            "margin": 0.00031,
+            "fitness": 0.64,
+            "sharpe": 1.63
+          },
+          "riskNeutralized": {
+            "pnl": 2579355,
+            "bookSize": 20000000,
+            "longCount": 848,
+            "shortCount": 848,
+            "turnover": 0.6849,
+            "returns": 0.0249,
+            "drawdown": 0.0204,
+            "margin": 7.3e-05,
+            "fitness": 0.31,
+            "sharpe": 1.64
+          },
+          "checks": [
+            {
+              "name": "LOW_SHARPE",
+              "result": "PASS",
+              "limit": 1.58,
+              "value": 1.85
+            },
+            {
+              "name": "CLUSTER_TEST",
+              "result": "WARNING",
+              "limit": 1.58,
+              "value": 1.41
+            },
+            {
+              "name": "LOW_FITNESS",
+              "result": "FAIL",
+              "limit": 1.0,
+              "value": 0.75
+            },
+            {
+              "name": "LOW_GLB_AMER_SHARPE",
+              "result": "FAIL",
+              "limit": 1,
+              "value": 0.9
+            },
+            {
+              "name": "LOW_GLB_EMEA_SHARPE",
+              "result": "FAIL",
+              "limit": 1,
+              "value": 0.08
+            },
+            {
+              "name": "LOW_GLB_APAC_SHARPE",
+              "result": "PASS",
+              "limit": 1,
+              "value": 2.02
+            },
+            {
+              "name": "LOW_TURNOVER",
+              "result": "PASS",
+              "limit": 0.01,
+              "value": 0.6849
+            },
+            {
+              "name": "HIGH_TURNOVER",
+              "result": "PASS",
+              "limit": 0.7,
+              "value": 0.6849
+            },
+            {
+              "name": "CONCENTRATED_WEIGHT",
+              "result": "PASS"
+            },
+            {
+              "name": "LOW_SUB_UNIVERSE_SHARPE",
+              "result": "PASS",
+              "limit": 1.13,
+              "value": 1.62
+            },
+            {
+              "name": "SELF_CORRELATION",
+              "result": "PENDING"
+            },
+            {
+              "name": "DATA_DIVERSITY",
+              "result": "PENDING"
+            },
+            {
+              "name": "PROD_CORRELATION",
+              "result": "PENDING"
+            },
+            {
+              "name": "REGULAR_SUBMISSION",
+              "result": "PENDING"
+            },
+            {
+              "name": "IS_LADDER_SHARPE",
+              "result": "FAIL",
+              "year": 3,
+              "startDate": "2024-01-01",
+              "endDate": "2021-01-02",
+              "limit": 1.58,
+              "value": 1.49
+            },
+            {
+              "name": "HT_TURNOVER",
+              "result": "PASS",
+              "limit": 0.2,
+              "value": 0.6849
+            },
+            {
+              "name": "HT_HIGH_TURNOVER_RETURNS_RATIO",
+              "result": "PASS",
+              "limit": 0.75,
+              "value": 0.7844
+            },
+            {
+              "name": "HT_LIQUID_TOPDIV3000_SHARPE",
+              "result": "PASS",
+              "limit": 1.7,
+              "value": 1.85
+            },
+            {
+              "name": "HT_INVESTABLE_MAX_TRADE_SHARPE",
+              "result": "WARNING",
+              "limit": 2.0,
+              "value": 1.63
+            },
+            {
+              "name": "HT_INVESTABLE_MAX_TRADE_TURNOVER",
+              "result": "PASS",
+              "limit": 0.2,
+              "value": 0.601
+            },
+            {
+              "name": "HT_INVESTABLE_MAX_POSITION_SHARPE",
+              "result": "WARNING",
+              "limit": 2.0,
+              "value": 1.79
+            },
+            {
+              "name": "HT_INVESTABLE_MAX_POSITION_TURNOVER",
+              "result": "PASS",
+              "limit": 0.2,
+              "value": 0.678
+            },
+            {
+              "name": "HT_ORTHOGONAL_RAM_NEUTRALIZATION",
+              "result": "WARNING",
+              "limit": "RAM",
+              "value": "Subindustry"
+            },
+            {
+              "name": "MATCHES_CLASSIFICATION",
+              "result": "PASS",
+              "value": [
+                "High Turnover"
+              ]
+            },
+            {
+              "name": "MATCHES_COMPETITION",
+              "result": "PASS",
+              "competitions": [
+                {
+                  "id": "GAC2026",
+                  "name": "Global Alpha Competition 2026"
+                }
+              ]
+            },
+            {
+              "result": "PASS",
+              "name": "MATCHES_PYRAMID",
+              "effective": 2,
+              "multiplier": 1.0,
+              "pyramids": [
+                {
+                  "name": "GLB/D1/PV",
+                  "multiplier": 1.0
+                },
+                {
+                  "name": "GLB/D1/MODEL",
+                  "multiplier": 1.3
+                }
+              ]
+            },
+            {
+              "result": "WARNING",
+              "name": "MATCHES_THEMES",
+              "themes": [
+                {
+                  "id": "9BKPE8D",
+                  "multiplier": 1.0,
+                  "name": "GLB/D1 Power Pool Aug`26 2"
+                }
+              ]
+            },
+            {
+              "name": "OSMOSIS_ALLOCATION",
+              "result": "WARNING"
+            }
+          ]
+        },
+        "os": null,
+        "train": null,
+        "test": null,
+        "prod": null,
+        "competitions": null,
+        "themes": null,
+        "pyramids": null,
+        "pyramidThemes": null,
+        "team": null,
+        "osmosisPoints": null,
+        "origin": "PLATFORM"
+      },
+      "expression": "rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * (1 - ts_rank(returns, 10)), SUBINDUSTRY))",
+      "error": null,
+      "metrics": {
+        "OVERALL": {
+          "sharpe": 1.85,
+          "returns": 0.1113,
+          "turnover": 0.6849,
+          "fitness": 0.75,
+          "drawdown": 0.079,
+          "pnl": 11511382,
+          "bookSize": 20000000,
+          "longCount": 848,
+          "shortCount": 848,
+          "margin": 0.000325
+        },
+        "APAC": {
+          "sharpe": 2.02,
+          "returns": 0.0659,
+          "turnover": 0.1859,
+          "fitness": 1.2,
+          "drawdown": 0.0468,
+          "pnl": 6812320,
+          "bookSize": 20000000,
+          "longCount": 207,
+          "shortCount": 210,
+          "margin": 0.000709
+        },
+        "EMEA": {
+          "sharpe": 0.08,
+          "returns": 0.0021,
+          "turnover": 0.1518,
+          "fitness": 0.01,
+          "drawdown": 0.0855,
+          "pnl": 215886,
+          "bookSize": 20000000,
+          "longCount": 176,
+          "shortCount": 176,
+          "margin": 2.7e-05
+        },
+        "AMER": {
+          "sharpe": 0.9,
+          "returns": 0.0433,
+          "turnover": 0.3472,
+          "fitness": 0.32,
+          "drawdown": 0.0902,
+          "pnl": 4483182,
+          "bookSize": 20000000,
+          "longCount": 464,
+          "shortCount": 461,
+          "margin": 0.00025
+        }
+      }
+    },
+    {
+      "neutralization": "CROWDING",
+      "status": "ERROR",
+      "alpha_id": null,
+      "sim_data": {
+        "id": "3Ww77MeOa4zi9BOKcmRnI69",
+        "type": "REGULAR",
+        "status": "ERROR",
+        "message": "Attempted to use unknown variable \"crowding\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+        "location": {
+          "line": 1,
+          "start": 128,
+          "end": 136,
+          "property": "regular"
+        },
+        "links": {
+          "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+        }
+      },
+      "expression": "rank(group_neutralize(rank(ts_rank(sign(short_term_price_change_2 - short_term_price_change), 2)) * (1 - ts_rank(returns, 10)), CROWDING))",
+      "error": null
+    }
+  ]
+}

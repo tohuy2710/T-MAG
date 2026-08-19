@@ -1,0 +1,34 @@
+{
+  "alpha_id": "?",
+  "expression": "region",
+  "description": "Country-relative accumulation with region bias",
+  "level": 18,
+  "status": "ERROR",
+  "sim_data": {
+    "id": "2cIVP37Es4Dx8DZ14myxIsd4",
+    "type": "REGULAR",
+    "status": "ERROR",
+    "message": "Attempted to use unknown variable \"region\". <linkToCommonErrorMessages>Learn more</linkToCommonErrorMessages>",
+    "location": {
+      "line": 1,
+      "start": 0,
+      "end": 6,
+      "property": "regular"
+    },
+    "links": {
+      "linkToCommonErrorMessages": "https://support.worldquantbrain.com/hc/en-us/articles/18423410021783--BRAIN-TIPS-Troubleshooting-common-error-messages"
+    }
+  },
+  "settings": {
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 10,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unit_handling": "VERIFY",
+    "nan_handling": "OFF"
+  },
+  "simulated_at": "2026-08-18T16:51:46.226064+00:00"
+}

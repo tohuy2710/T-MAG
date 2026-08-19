@@ -1,0 +1,270 @@
+{
+  "alpha_id": "ak7Yq6P9",
+  "expression": "ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20)",
+  "description": "Base wrapped with ts_rank(window=20)",
+  "level": 1,
+  "status": "COMPLETE",
+  "sim_data": {
+    "id": "ak7Yq6P9",
+    "type": "REGULAR",
+    "author": "TH98365",
+    "settings": {
+      "instrumentType": "EQUITY",
+      "region": "GLB",
+      "universe": "TOPDIV3000",
+      "delay": 1,
+      "decay": 10,
+      "neutralization": "SUBINDUSTRY",
+      "truncation": 0.08,
+      "pasteurization": "ON",
+      "unitHandling": "VERIFY",
+      "nanHandling": "OFF",
+      "maxTrade": "OFF",
+      "maxPosition": "OFF",
+      "language": "FASTEXPR",
+      "visualization": false,
+      "startDate": "2014-01-01",
+      "endDate": "2023-12-31"
+    },
+    "regular": {
+      "code": "ts_rank(rank(-ts_delta(close, 10)) * sign(short_term_price_change_2), 20)",
+      "description": null,
+      "operatorCount": 6
+    },
+    "dateCreated": "2026-08-18T20:29:09-04:00",
+    "dateSubmitted": null,
+    "dateModified": "2026-08-18T20:29:09-04:00",
+    "name": null,
+    "favorite": false,
+    "hidden": false,
+    "color": null,
+    "category": null,
+    "tags": [],
+    "classifications": [],
+    "grade": null,
+    "stage": "IS",
+    "status": "UNSUBMITTED",
+    "is": {
+      "pnl": 800701,
+      "bookSize": 20000000,
+      "longCount": 853,
+      "shortCount": 864,
+      "turnover": 0.2344,
+      "returns": 0.0077,
+      "drawdown": 0.058,
+      "margin": 6.6e-05,
+      "sharpe": 0.31,
+      "fitness": 0.06,
+      "startDate": "2014-01-01",
+      "glbAmer": {
+        "pnl": 181703,
+        "bookSize": 20000000,
+        "longCount": 456,
+        "shortCount": 467,
+        "turnover": 0.1228,
+        "returns": 0.0018,
+        "drawdown": 0.0947,
+        "margin": 2.9e-05,
+        "fitness": 0.01,
+        "sharpe": 0.08
+      },
+      "glbApac": {
+        "pnl": 418178,
+        "bookSize": 20000000,
+        "longCount": 207,
+        "shortCount": 209,
+        "turnover": 0.0583,
+        "returns": 0.004,
+        "drawdown": 0.0296,
+        "margin": 0.000139,
+        "fitness": 0.06,
+        "sharpe": 0.32
+      },
+      "glbEmea": {
+        "pnl": 200822,
+        "bookSize": 20000000,
+        "longCount": 188,
+        "shortCount": 187,
+        "turnover": 0.0533,
+        "returns": 0.0019,
+        "drawdown": 0.0253,
+        "margin": 7.3e-05,
+        "fitness": 0.02,
+        "sharpe": 0.19
+      },
+      "investabilityConstrained": {
+        "pnl": 734379,
+        "bookSize": 20000000,
+        "longCount": 890,
+        "shortCount": 893,
+        "turnover": 0.2317,
+        "returns": 0.0071,
+        "drawdown": 0.0599,
+        "margin": 6.1e-05,
+        "fitness": 0.05,
+        "sharpe": 0.28
+      },
+      "riskNeutralized": {
+        "pnl": 666547,
+        "bookSize": 20000000,
+        "longCount": 853,
+        "shortCount": 864,
+        "turnover": 0.2344,
+        "returns": 0.0064,
+        "drawdown": 0.0346,
+        "margin": 5.5e-05,
+        "fitness": 0.07,
+        "sharpe": 0.45
+      },
+      "checks": [
+        {
+          "name": "LOW_SHARPE",
+          "result": "FAIL",
+          "limit": 1.58,
+          "value": 0.31
+        },
+        {
+          "name": "CLUSTER_TEST",
+          "result": "WARNING",
+          "limit": 1.58,
+          "value": 0.4
+        },
+        {
+          "name": "LOW_FITNESS",
+          "result": "FAIL",
+          "limit": 1.0,
+          "value": 0.06
+        },
+        {
+          "name": "LOW_GLB_AMER_SHARPE",
+          "result": "FAIL",
+          "limit": 1,
+          "value": 0.08
+        },
+        {
+          "name": "LOW_GLB_EMEA_SHARPE",
+          "result": "FAIL",
+          "limit": 1,
+          "value": 0.19
+        },
+        {
+          "name": "LOW_GLB_APAC_SHARPE",
+          "result": "FAIL",
+          "limit": 1,
+          "value": 0.32
+        },
+        {
+          "name": "LOW_TURNOVER",
+          "result": "PASS",
+          "limit": 0.01,
+          "value": 0.2344
+        },
+        {
+          "name": "HIGH_TURNOVER",
+          "result": "PASS",
+          "limit": 0.7,
+          "value": 0.2344
+        },
+        {
+          "name": "CONCENTRATED_WEIGHT",
+          "result": "PASS"
+        },
+        {
+          "name": "LOW_SUB_UNIVERSE_SHARPE",
+          "result": "PASS",
+          "limit": 0.19,
+          "value": 0.2
+        },
+        {
+          "name": "SELF_CORRELATION",
+          "result": "PENDING"
+        },
+        {
+          "name": "DATA_DIVERSITY",
+          "result": "PENDING"
+        },
+        {
+          "name": "PROD_CORRELATION",
+          "result": "PENDING"
+        },
+        {
+          "name": "REGULAR_SUBMISSION",
+          "result": "PENDING"
+        },
+        {
+          "name": "IS_LADDER_SHARPE",
+          "result": "FAIL",
+          "year": 2,
+          "startDate": "2024-01-01",
+          "endDate": "2022-01-02",
+          "limit": 1.58,
+          "value": -0.28
+        },
+        {
+          "name": "MATCHES_COMPETITION",
+          "result": "PASS",
+          "competitions": [
+            {
+              "id": "GAC2026",
+              "name": "Global Alpha Competition 2026"
+            }
+          ]
+        },
+        {
+          "result": "PASS",
+          "name": "MATCHES_PYRAMID",
+          "effective": 2,
+          "multiplier": 1.0,
+          "pyramids": [
+            {
+              "name": "GLB/D1/PV",
+              "multiplier": 1.0
+            },
+            {
+              "name": "GLB/D1/MODEL",
+              "multiplier": 1.3
+            }
+          ]
+        },
+        {
+          "result": "WARNING",
+          "name": "MATCHES_THEMES",
+          "themes": [
+            {
+              "id": "9BKPE8D",
+              "multiplier": 1.0,
+              "name": "GLB/D1 Liquid Power Pool Aug`26"
+            }
+          ]
+        },
+        {
+          "name": "OSMOSIS_ALLOCATION",
+          "result": "WARNING"
+        }
+      ]
+    },
+    "os": null,
+    "train": null,
+    "test": null,
+    "prod": null,
+    "competitions": null,
+    "themes": null,
+    "pyramids": null,
+    "pyramidThemes": null,
+    "team": null,
+    "osmosisPoints": null,
+    "origin": "PLATFORM"
+  },
+  "settings": {
+    "region": "GLB",
+    "universe": "TOPDIV3000",
+    "delay": 1,
+    "neutralization": "SUBINDUSTRY",
+    "decay": 10,
+    "truncation": 0.08,
+    "pasteurization": "ON",
+    "unit_handling": "VERIFY",
+    "nan_handling": "OFF"
+  },
+  "simulated_at": "2026-08-19T00:29:12.988944+00:00"
+}
